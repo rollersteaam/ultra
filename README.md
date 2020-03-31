@@ -4,6 +4,9 @@ Become ultimate in all your desired talents, with habit science designed game Ul
 ## Getting Started with Developing Ultra
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Launching with Docker
+Command: docker run -v ${PWD}:/app -v /app/node_modules -p 3000:3000 --rm reactapp:v1
+
 ### Available Scripts
 
 In the project directory, you can run:

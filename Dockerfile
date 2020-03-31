@@ -1,6 +1,6 @@
 FROM node:12.2.0-alpine
 
-LABEL MAINTAINER "Ashwin Goel"
+LABEL MAINTAINER "Jordan Peters"
 
 WORKDIR /app
 

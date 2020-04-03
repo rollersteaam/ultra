@@ -1,7 +1,4 @@
-import React, { ReactElement } from "react";
-
 import IDataStore from "./IDataStore";
-import Talent from "../models/Talent";
 import { AppState } from "../App";
 
 class DataStore implements IDataStore {

@@ -1,6 +1,4 @@
-import React, { ReactElement } from 'react';
 import ITalentController from "./ITalentController";
-import Talent from '../models/Talent';
 import IDataStore from '../stores/IDataStore';
 
 class TalentController implements ITalentController {

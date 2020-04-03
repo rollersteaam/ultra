@@ -1,6 +1,7 @@
-import React, { Component, MouseEvent } from "react";
+import React, { Component } from "react";
 
 import { Button } from 'reactstrap';
+
 import ITalentController from "../controllers/ITalentController";
 
 export type TalentListItemProps = {

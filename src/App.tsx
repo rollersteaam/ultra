@@ -3,24 +3,30 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
-import { Talents } from './components/Talents';
-import { TalentProps } from './components/Talent';
+import TalentList from './components/TalentList';
+import ITalentController from './controllers/ITalentController';
+import TalentController from './controllers/TalentController';
+import IDataStore from './stores/IDataStore';
+import DataStore from './stores/DataStore';
 
 
-function App() {
-    let talents: Array<TalentProps> = [
-        {
-            name: "Programming"
-        },
-        {
-            name: "Music Creation"
-        }
-    ];
-    return (
+type AppState = {
+    talentController: ITalentController;
+    dataStore: IDataStore;
+}
+
+class App extends React.Component<Object, AppState> {
+    render() {
+        return (
         <div className="App">
-            <Talents talents={talents} />
+            <DataStore>
+                <TalentController>
+                    <TalentList />
+                </TalentController>
+            </DataStore>
         </div>
-    );
+        );
+    }
 }
 
 export default App;

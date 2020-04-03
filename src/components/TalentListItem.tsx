@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import { Button } from 'reactstrap';
+import { useDispatch } from 'react-redux';
 
-import ITalentController from "../controllers/ITalentController";
+import { DELETE_TALENT } from "../actions/types";
+import Talent from "../models/Talent";
 
 export type TalentListItemProps = {
-    id: number;
-    name: string;
-    controller: ITalentController;
+    talent: Talent;
 }
 
 function TalentListItem(props: TalentListItemProps) {
-    const deleteTalent = (...args: any[]) => {
-        props.controller.deleteTalent(props.id);
-    }
-
+    const dispatch = useDispatch();
+    const deleteTalent = useCallback(
+        () => dispatch({ type: DELETE_TALENT, payload: props.talent.id }),
+        [dispatch]
+    );
     return (
         <div className="Talent py-1">
-            {props.name}
+            {props.talent.name}
             <Button className="ml-3" color="danger" onClick={deleteTalent}>Delete</Button>
         </div>
     )

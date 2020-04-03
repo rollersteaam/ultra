@@ -1,12 +1,11 @@
 import IDataStore from "./IDataStore";
-import { AppState } from "../App";
 
 class DataStore implements IDataStore {
-    private state: Readonly<AppState>;
-    private setStateFunction: (state: AppState) => void;
+    private state: Readonly<any>;
+    private setStateFunction: (state: any) => void;
     private counter: number = 3;
 
-    constructor(setStateFunction: (state: AppState) => void) {
+    constructor(setStateFunction: (state: any) => void) {
         this.setStateFunction = setStateFunction;
         this.state = {
             talents: [
@@ -44,18 +43,18 @@ class DataStore implements IDataStore {
         });
     }
 
-    getInitialDataCopy(): AppState {
+    getInitialDataCopy(): any {
         return {...this.state};
     }
 
     deleteTalent = (id: number) => {
         var newTalents = this.state.talents.filter(
-            talent => talent.id !== id
+            (talent: any) => talent.id !== id
         )
         this.setState({...this.state, talents: newTalents});
     }
 
-    setState(state: AppState) {
+    setState(state: any) {
         this.state = state;
         this.setStateFunction(state);
     }

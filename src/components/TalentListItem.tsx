@@ -17,7 +17,7 @@ class TalentListItem extends Component<TalentListItemProps> {
 
     render() {
         return (
-            <div className="Talent">
+            <div className="Talent py-1">
                 {this.props.name}
                 <Button className="ml-3" color="danger" onClick={this.deleteTalent}>Delete</Button>
             </div>

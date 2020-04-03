@@ -9,6 +9,7 @@ import TalentController from './controllers/TalentController';
 import IDataStore from './stores/IDataStore';
 import DataStore from './stores/DataStore';
 import Talent from './models/Talent';
+import NewTalentForm from './components/NewTalentForm';
 
 export type AppState = {
     talents: Talent[]
@@ -23,7 +24,7 @@ class App extends React.Component<Object, AppState> {
         
         this.dataStore = new DataStore((state) => this.setState(state));
         this.talentController = new TalentController(this.dataStore);
-        
+
         this.state = this.dataStore.getInitialDataCopy();
     }
 
@@ -31,6 +32,7 @@ class App extends React.Component<Object, AppState> {
         return (
         <div className="App">
             <TalentList talents={this.state.talents} controller={this.talentController} />
+            <NewTalentForm controller={this.talentController} />
         </div>
         );
     }

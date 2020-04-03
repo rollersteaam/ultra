@@ -4,6 +4,7 @@ import { AppState } from "../App";
 class DataStore implements IDataStore {
     private state: Readonly<AppState>;
     private setStateFunction: (state: AppState) => void;
+    private counter: number = 3;
 
     constructor(setStateFunction: (state: AppState) => void) {
         this.setStateFunction = setStateFunction;
@@ -29,9 +30,18 @@ class DataStore implements IDataStore {
         }
     }
     
-    setState(state: AppState) {
-        this.state = state;
-        this.setStateFunction(state);
+    createTalent(name: string) {
+        this.counter++;
+        this.setState({
+            ...this.state,
+            talents: [
+                ...this.state.talents,
+                {
+                    id: this.counter,
+                    name: name
+                }
+            ]
+        });
     }
 
     getInitialDataCopy(): AppState {
@@ -43,6 +53,11 @@ class DataStore implements IDataStore {
             talent => talent.id !== id
         )
         this.setState({...this.state, talents: newTalents});
+    }
+
+    setState(state: AppState) {
+        this.state = state;
+        this.setStateFunction(state);
     }
 }
 

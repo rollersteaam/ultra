@@ -8,6 +8,10 @@ class TalentController implements ITalentController {
         this.dataStore = dataStore;
     }
 
+    createTalent(name: string) {
+        this.dataStore.createTalent(name);
+    }
+
     deleteTalent(id: number) {
         this.dataStore.deleteTalent(id);
     }

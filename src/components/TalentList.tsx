@@ -4,9 +4,11 @@ import { Col } from 'reactstrap';
 
 import TalentListItem from './TalentListItem';
 import ITalentController from '../controllers/ITalentController';
+import Talent from '../models/Talent';
 
 type TalentListProps = {
-    talentController?: ITalentController
+    talents: Talent[];
+    controller: ITalentController;
 }
 
 /**
@@ -14,13 +16,12 @@ type TalentListProps = {
  */
 class TalentList extends Component<TalentListProps> {
     render() {
-        const talentsData = this.props.talentController!.getTalents();
-        const talents = talentsData.map(
+        const talents = this.props.talents.map(
             talent => <TalentListItem
                 key={talent.id}
                 id={talent.id}
                 name={talent.name}
-                talentController={this.props.talentController!}
+                controller={this.props.controller}
             />
         );
         return (

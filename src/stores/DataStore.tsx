@@ -2,16 +2,14 @@ import React, { ReactElement } from "react";
 
 import IDataStore from "./IDataStore";
 import Talent from "../models/Talent";
+import { AppState } from "../App";
 
-export type DataStoreState = {
-    talents : Talent[];
-}
+class DataStore implements IDataStore {
+    private state: Readonly<AppState>;
+    private setStateFunction: (state: AppState) => void;
 
-export type DataStoreProps = {}
-
-class DataStore extends React.Component<DataStoreProps, DataStoreState> implements IDataStore {
-    constructor(props: DataStoreProps) {
-        super(props);
+    constructor(setStateFunction: (state: AppState) => void) {
+        this.setStateFunction = setStateFunction;
         this.state = {
             talents: [
                 {
@@ -33,20 +31,21 @@ class DataStore extends React.Component<DataStoreProps, DataStoreState> implemen
             ]
         }
     }
+    
+    setState(state: AppState) {
+        this.state = state;
+        this.setStateFunction(state);
+    }
+
+    getInitialDataCopy(): AppState {
+        return {...this.state};
+    }
 
     deleteTalent = (id: number) => {
         var newTalents = this.state.talents.filter(
             talent => talent.id !== id
         )
         this.setState({...this.state, talents: newTalents});
-    }
-
-    getTalents = (): Talent[] => this.state.talents;
-
-    render() {
-        return React.cloneElement(this.props.children as ReactElement, {
-            dataStore: this
-        });
     }
 }
 

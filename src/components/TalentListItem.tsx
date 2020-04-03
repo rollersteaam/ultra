@@ -6,12 +6,12 @@ import ITalentController from "../controllers/ITalentController";
 export type TalentListItemProps = {
     id: number;
     name: string;
-    talentController: ITalentController;
+    controller: ITalentController;
 }
 
 class TalentListItem extends Component<TalentListItemProps> {
-    deleteTalent = (e: MouseEvent) => {
-        this.props.talentController.deleteTalent(this.props.id);
+    deleteTalent = (...args: any[]) => {
+        this.props.controller.deleteTalent(this.props.id);
     }
 
     render() {

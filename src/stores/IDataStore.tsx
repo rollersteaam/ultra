@@ -1,8 +1,9 @@
-import Talent from "../models/Talent";
+import { AppState } from '../App';
+
 
 interface IDataStore {
-    getTalents(): Talent[]
-    deleteTalent(id: number): void
+    deleteTalent(id: number): void;
+    getInitialDataCopy(): AppState;
 }
 
 export default IDataStore;

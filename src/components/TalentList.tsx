@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { Col } from 'reactstrap';
 
@@ -14,22 +14,20 @@ type TalentListProps = {
 /**
  * A list of talents.
  */
-class TalentList extends Component<TalentListProps> {
-    render() {
-        const talents = this.props.talents.map(
-            talent => <TalentListItem
-                key={talent.id}
-                id={talent.id}
-                name={talent.name}
-                controller={this.props.controller}
-            />
-        );
-        return (
-            <Col>
-                {talents}
-            </Col>
-        );
-    }
+function TalentList(props: TalentListProps) {
+    const talents = props.talents.map(
+        talent => <TalentListItem
+            key={talent.id}
+            id={talent.id}
+            name={talent.name}
+            controller={props.controller}
+        />
+    );
+    return (
+        <Col>
+            {talents}
+        </Col>
+    );
 }
 
 export default TalentList;

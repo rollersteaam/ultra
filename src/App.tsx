@@ -19,7 +19,7 @@ class App extends React.Component<Object, AppState> {
     private dataStore: IDataStore;
     private talentController: ITalentController;
 
-    constructor(props: any) {
+    constructor(props: Object) {
         super(props);
         
         this.dataStore = new DataStore((state) => this.setState(state));

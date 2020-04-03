@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Button } from 'reactstrap';
 
@@ -10,19 +10,17 @@ export type TalentListItemProps = {
     controller: ITalentController;
 }
 
-class TalentListItem extends Component<TalentListItemProps> {
-    deleteTalent = (...args: any[]) => {
-        this.props.controller.deleteTalent(this.props.id);
+function TalentListItem(props: TalentListItemProps) {
+    const deleteTalent = (...args: any[]) => {
+        props.controller.deleteTalent(props.id);
     }
 
-    render() {
-        return (
-            <div className="Talent py-1">
-                {this.props.name}
-                <Button className="ml-3" color="danger" onClick={this.deleteTalent}>Delete</Button>
-            </div>
-        )
-    }
+    return (
+        <div className="Talent py-1">
+            {props.name}
+            <Button className="ml-3" color="danger" onClick={deleteTalent}>Delete</Button>
+        </div>
+    )
 }
 
 export default TalentListItem;

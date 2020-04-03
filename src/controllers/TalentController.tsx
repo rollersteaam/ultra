@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import ITalentController from "./ITalentController";
 import Talent from '../models/Talent';
 import IDataStore from '../stores/IDataStore';
+import { AppState } from '../App';
 
 type TalentControllerProps = {
     dataStore?: IDataStore;
@@ -12,8 +13,11 @@ class TalentController extends React.Component<TalentControllerProps> implements
         return this.props.dataStore!.getTalents();
     }
 
-    deleteTalent(id: number) {
-        this.props.dataStore!.deleteTalent(id);
+    deleteTalent(appState: AppState, id: number): AppState {
+        return {
+            ...appState,
+            talents: appState.talents.filter(talent => talent.id !== id)
+        };
     }
 
     render() {

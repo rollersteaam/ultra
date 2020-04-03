@@ -8,22 +8,50 @@ import ITalentController from './controllers/ITalentController';
 import TalentController from './controllers/TalentController';
 import IDataStore from './stores/IDataStore';
 import DataStore from './stores/DataStore';
+import Talent from './models/Talent';
 
 
-type AppState = {
-    talentController: ITalentController;
-    dataStore: IDataStore;
+export type AppState = {
+    talents: Talent[]
 }
 
 class App extends React.Component<Object, AppState> {
+    private talentController: ITalentController;
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            talents: [
+                {
+                    id: 0,
+                    name: "Example Talent 1"
+                },
+                {
+                    id: 1,
+                    name: "Example Talent 2"
+                },
+                {
+                    id: 2,
+                    name: "Example Talent 3"
+                }
+            ]
+        };
+        this.talentController = new TalentController({});
+    }
+
+    reflect = (fn: Function) => {
+        return (...args: any[]) => {
+            this.setState(fn(this.state, ...args));
+        }
+    }
+
     render() {
         return (
         <div className="App">
-            <DataStore>
-                <TalentController>
-                    <TalentList />
-                </TalentController>
-            </DataStore>
+            <TalentList
+                talents={this.state.talents}
+                deleteTalent={this.reflect(this.talentController.deleteTalent)}
+            />
         </div>
         );
     }

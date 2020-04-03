@@ -10,15 +10,15 @@ function NewTalentForm() {
 
     const dispatch = useDispatch();
     const newTalent = useCallback(
-        (name: string) => {
+        () => {
             dispatch({ type: NEW_TALENT, payload: name })
         },
-        [dispatch]
+        [dispatch, name]
     );
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
-        newTalent(name);
+        newTalent();
         setName("");
     }
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {

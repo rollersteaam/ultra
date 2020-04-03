@@ -21,17 +21,10 @@ class App extends React.Component<Object, AppState> {
     constructor(props: any) {
         super(props);
         
-        // Bind data store to the app state
         this.dataStore = new DataStore((state) => this.setState(state));
-        this.state = this.dataStore.getInitialDataCopy();
-
         this.talentController = new TalentController(this.dataStore);
-
-        // Make components read dependent upon app state
-        // Supply update commands via 'controller' reference from constructor
-        // Initialize data store and talent controller through DI in constructor
-
-        // Scalable architecture created?
+        
+        this.state = this.dataStore.getInitialDataCopy();
     }
 
     render() {

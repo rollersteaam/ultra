@@ -1,27 +1,27 @@
-import React, { Component, MouseEvent } from "react";
+import React, { useCallback } from "react";
 
 import { Button } from 'reactstrap';
-import ITalentController from "../controllers/ITalentController";
+import { useDispatch } from 'react-redux';
+
+import { DELETE_TALENT } from "../actions/types";
+import Talent from "../models/Talent";
 
 export type TalentListItemProps = {
-    id: number;
-    name: string;
-    talentController: ITalentController;
+    talent: Talent;
 }
 
-class TalentListItem extends Component<TalentListItemProps> {
-    deleteTalent = (e: MouseEvent) => {
-        this.props.talentController.deleteTalent(this.props.id);
-    }
-
-    render() {
-        return (
-            <div className="Talent">
-                {this.props.name}
-                <Button className="ml-3" color="danger" onClick={this.deleteTalent}>Delete</Button>
-            </div>
-        )
-    }
+function TalentListItem(props: TalentListItemProps) {
+    const dispatch = useDispatch();
+    const deleteTalent = useCallback(
+        () => dispatch({ type: DELETE_TALENT, payload: props.talent.id }),
+        [dispatch]
+    );
+    return (
+        <div className="Talent py-1">
+            {props.talent.name}
+            <Button className="ml-3" color="danger" onClick={deleteTalent}>Delete</Button>
+        </div>
+    )
 }
 
 export default TalentListItem;

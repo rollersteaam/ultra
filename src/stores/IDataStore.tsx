@@ -1,8 +1,7 @@
-import Talent from "../models/Talent";
-
 interface IDataStore {
-    getTalents(): Talent[]
-    deleteTalent(id: number): void
+    deleteTalent(id: number): void;
+    createTalent(name: string): void;
+    getInitialDataCopy(): any;
 }
 
 export default IDataStore;

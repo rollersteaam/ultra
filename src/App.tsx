@@ -1,32 +1,22 @@
 import React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider, useSelector } from 'react-redux';
 
 import './App.css';
 import TalentList from './components/TalentList';
-import ITalentController from './controllers/ITalentController';
-import TalentController from './controllers/TalentController';
-import IDataStore from './stores/IDataStore';
-import DataStore from './stores/DataStore';
+import NewTalentForm from './components/NewTalentForm';
+import { RootState } from './store';
 
-
-type AppState = {
-    talentController: ITalentController;
-    dataStore: IDataStore;
-}
-
-class App extends React.Component<Object, AppState> {
-    render() {
-        return (
+function App() {
+    const state = useSelector((state: RootState) => state);
+    const talents = state.talents.items;
+    return (
         <div className="App">
-            <DataStore>
-                <TalentController>
-                    <TalentList />
-                </TalentController>
-            </DataStore>
+            <TalentList talents={talents} />
+            <NewTalentForm />
         </div>
-        );
-    }
+    );
 }
 
 export default App;

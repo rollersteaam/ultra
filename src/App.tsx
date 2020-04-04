@@ -13,6 +13,7 @@ function App() {
     const talents = state.talents.items;
     return (
         <div className="App">
+            <TalentTimer talent={} />
             <TalentList talents={talents} />
             <NewTalentForm />
         </div>

@@ -1,6 +1,22 @@
 # Ultra
 Become ultimate in all your desired talents, with habit science designed game Ultra.
 
+Main objective of this project is to learn and execute the full MERN stack on a cool project idea that I had, which I think may actually enrich my life due to my obsession with mastery! It also acts as a proper mark of a PWA developer by accomplishing such a project.
+
+## Technology Used
+1. Bootstrap
+2. React
+3. Redux
+4. TypeScript
+5. Jest
+6. Node.js
+7. MongoDB
+8. Express
+9. Feather (Express, MongoDB, Node.js)
+10. Docker
+11. Git
+12. Adobe XD
+
 ## Getting Started with Developing Ultra
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

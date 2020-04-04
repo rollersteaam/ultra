@@ -16,14 +16,21 @@ function NewTalentForm() {
         [dispatch, name]
     );
 
-    const onSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        newTalent();
-        setName("");
-    }
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    }
+    const onSubmit = useCallback(
+        (e: FormEvent) => {
+            e.preventDefault();
+            newTalent();
+            setName("");
+        },
+        [setName, newTalent]
+    );
+    const onChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            setName(e.target.value);
+        },
+        [setName]
+    );
+
     return (
         <Form className="pt-3" onSubmit={onSubmit}>
             <Input name="name" onChange={onChange} value={name} />

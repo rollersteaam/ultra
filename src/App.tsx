@@ -1,7 +1,7 @@
 import React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Provider, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import './App.css';
 import TalentList from './components/TalentList';

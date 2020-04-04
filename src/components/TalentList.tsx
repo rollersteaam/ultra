@@ -3,7 +3,7 @@ import React from 'react';
 import { Col } from 'reactstrap';
 
 import TalentListItem from './TalentListItem';
-import Talent from '../models/Talent';
+import { Talent } from '../models/Talent';
 
 type TalentListProps = {
     talents: Talent[]

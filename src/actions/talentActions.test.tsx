@@ -1,28 +1,39 @@
-import { newTalent, deleteTalent, configureModel }  from './talentActions';
-import { NEW_TALENT, DELETE_TALENT } from './types';
+import { newTalent, deleteTalent, getTalents, configureModel }  from './talentActions';
+import { NEW_TALENT, DELETE_TALENT, GET_TALENTS } from './types';
 import jokeDispatch from '../testutils/jokeDispatch';
 import { createTalent, Talent } from '../models/Talent';
 import IModel from '../models/IModel';
+import LocalTalentModel from '../models/LocalTalentModel';
 
-// Unit Tests
+// Integration Tests
 
-/**
- * 
- */
+const testTalents = [
+    createTalent(0, "Programming"),
+    createTalent(1, "Music Creation")
+];
 
+let model: IModel<Talent>;
 
-// configureModel()
+beforeEach(() => {
+    model = new LocalTalentModel(testTalents);
+    configureModel(model);
+})
 
-it("returns correct new talent dispatch", () => {
-    let expectedTalent = createTalent(0, "My Talent");
+afterEach(() => {
+    model = null;
+    configureModel(null);
+})
+
+it("creates talent with correct dispatch", () => {
+    let expectedTalent = createTalent(2, "My Talent");
     let dis = jokeDispatch(newTalent("My Talent"));
     expect(dis).toBeCalledWith({
         type: NEW_TALENT,
         payload: expectedTalent
-    })
-});
+    });
+})
 
-it("returns correct delete talent dispatch", () => {
+it("deletes talent with correct dispatch", () => {
     let dis = jokeDispatch(deleteTalent(7));
     expect(dis).toBeCalledWith({
         type: DELETE_TALENT,
@@ -30,7 +41,13 @@ it("returns correct delete talent dispatch", () => {
     })
 })
 
-// Integration Tests
+it("gets talents with correct dispatch", () => {
+    let dis = jokeDispatch(getTalents());
+    expect(dis).toBeCalledWith({
+        type: GET_TALENTS,
+        payload: testTalents
+    });
+})
 
 it("new talent creates new talent in state", () => {
 

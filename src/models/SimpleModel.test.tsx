@@ -37,6 +37,79 @@ afterEach(() => {
     sm = null;
 })
 
+it("constructs from empty list without crashing", () => {
+    sm = new SimpleModel<TestType>(
+        [],
+        (id: number, name: string) => ({
+            id: id,
+            name: name
+        }),
+        (el: TestType) => ({
+            id: el.id,
+            name: el.name
+        }),
+        (el: TestType) => el.id
+    );
+})
+
+it("throws error when an initialization model of NaN id is passed into constructor", () => {
+    expect(() => {
+        sm = new SimpleModel<TestType>(
+            [[NaN, {id: NaN, name: "Trojan Horse"}]],
+            (id: number, name: string) => ({
+                id: id,
+                name: name
+            }),
+            (el: TestType) => ({
+                id: el.id,
+                name: el.name
+            }),
+            (el: TestType) => el.id
+        );
+    }).toThrowError(EvalError);
+})
+
+it("throws error when any constructor argument is undefined", () => {
+    function construct(kvPairs: [number, TestType][],
+        creationFunc: (id: number, name: string) => TestType,
+        cloneFunc: (el: TestType) => TestType,
+        idFunc: (el: TestType) => number) {
+            return new SimpleModel<TestType>(
+                kvPairs,
+                creationFunc,
+                cloneFunc,
+                idFunc
+            );
+    }
+
+    const arg1 = elements;
+    const arg2 = (id: number, name: string) => ({
+        id: id,
+        name: name
+    });
+    const arg3 = (el: TestType) => ({
+        id: el.id,
+        name: el.name
+    });
+    const arg4 = (el: TestType) => el.id;
+
+    expect(() => {
+        construct(undefined, arg2, arg3, arg4)
+    }).toThrowError(ReferenceError);
+
+    expect(() => {
+        construct(arg1, undefined, arg3, arg4)
+    }).toThrowError(ReferenceError);
+
+    expect(() => {
+        construct(arg1, arg2, undefined, arg4)
+    }).toThrowError(ReferenceError);
+
+    expect(() => {
+        construct(arg1, arg2, arg3, undefined)
+    }).toThrowError(ReferenceError);
+});
+
 it("creates an element", () => {
     let name = "Gangley";
     let elm = sm.create(name);
@@ -49,6 +122,10 @@ it("creates an element and saves it in the model", () => {
     let elm = sm.create(name);
 
     expect(sm.get(elm.id)).toStrictEqual(elm);
+});
+
+it("creates an element from next highest id", () => {
+    expect(sm.create("Maverick").id).toBe(4);
 });
 
 it("doesn't create an element when name is null or undefined", () => {

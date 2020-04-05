@@ -1,17 +1,35 @@
 import IModel from './IModel';
 
+/**
+ * Provides simple and fast in-memory storage for model items through a map.
+ * 
+ * Usefully combined with specialised model implementations for quick model
+ * implementation and local caching capabilities.
+ */
 export default class SimpleModel<T> implements IModel<T> {
     protected counter: number = 0;
     protected models: Map<number, T>;
 
-    private creationFunc: (id, name: string) => T;
+    private creationFunc: (id: number, name: string) => T;
     private cloneFunc: (el: T) => T;
     private idFunc: (el: T) => number;
 
     constructor(kvPairs: [number, T][],
-        creationFunc: (id, name: string) => T,
+        creationFunc: (id: number, name: string) => T,
         cloneFunc: (el: T) => T,
         idFunc: (el: T) => number) {
+        if (kvPairs === undefined)
+            throw new ReferenceError("Couldn't construct. KV Pairs argument was undefined.");
+            
+        if (creationFunc === undefined)
+            throw new ReferenceError("Couldn't construct. Creation function argument was undefined.");
+
+        if (cloneFunc === undefined)
+            throw new ReferenceError("Couldn't construct. Clone function argument was undefined.");
+
+        if (idFunc === undefined)
+            throw new ReferenceError("Couldn't construct. ID function argument was undefined.");
+
         this.creationFunc = creationFunc;
         this.cloneFunc = cloneFunc;
         this.idFunc = idFunc;
@@ -19,9 +37,12 @@ export default class SimpleModel<T> implements IModel<T> {
         kvPairs = kvPairs.map(pair => [pair[0], this.cloneFunc(pair[1])]);
         this.models = new Map<number, T>(kvPairs);
 
-        for (let id in this.models) {
+        for (let id of Array.from(this.models.keys())) {
+            if (isNaN(id))
+                throw new EvalError(`Failed to initialize model object. Model ID: "${id}" evaluated to NaN during counter initialization.`);
+            
             // Pre-correct the counter for the ids of new elements
-            let nId = parseInt(id) + 1;
+            const nId = id + 1;
             this.counter = this.counter > nId ? this.counter : nId;
         }
     }
@@ -32,6 +53,9 @@ export default class SimpleModel<T> implements IModel<T> {
 
         if (name === undefined)
             throw new TypeError("Can't create an element with an undefined name.");
+
+        if (this.models.has(this.counter))
+            throw new RangeError("Couldn't create model. ID from counter already exists in the model, which should never happen. Model may be corrupt.");
 
         let model: T = this.creationFunc(this.counter, name);
         this.models.set(this.counter, model);

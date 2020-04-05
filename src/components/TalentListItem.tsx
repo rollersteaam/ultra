@@ -19,6 +19,7 @@ function TalentListItem(props: TalentListItemProps) {
     return (
         <div className="Talent py-1">
             {props.talent.name}
+            <Button className="mx-3" color="success" onClick={startTalent}>Start</Button>
             <Button className="ml-3" color="danger" onClick={deleteTalent}>Delete</Button>
         </div>
     )

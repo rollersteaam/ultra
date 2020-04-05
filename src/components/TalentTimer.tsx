@@ -10,8 +10,6 @@ type TalentTimerProps = {
 }
 
 function TalentTimer(props: TalentTimerProps) {
-    const [ elapsed, setElapsed ] = useState(0);
-
     if (props.talent === null || props.session === null)
         return <div>No talent selected.</div>
     

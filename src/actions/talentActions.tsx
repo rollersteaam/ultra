@@ -2,22 +2,26 @@ import { TalentReducerState } from '../reducers/talentReducer';
 import { Talent } from '../models/Talent';
 import LocalTalentModel from '../models/LocalTalentModel';
 import IModel from '../models/IModel';
+import { NEW_TALENT, DELETE_TALENT } from './types';
 
-const talentModel: IModel<Talent> = new LocalTalentModel();
+let talentModel: IModel<Talent> = new LocalTalentModel();
 
-export const newTalent = (state: TalentReducerState, name: string): TalentReducerState => {
-    let newTalent = talentModel.create(name);
-    const newTalents = [...state.items, newTalent];
-    return {
-        ...state,
-        items: newTalents
-    }
+export const configureModel = (model: IModel<Talent>) => {
+    talentModel = model;
 }
 
-export const deleteTalent = (state: TalentReducerState, id: number): TalentReducerState => {
+export const newTalent = (name: string) => (dispatch: any) => {
+    let newTalent = talentModel.create(name);
+    dispatch({
+        type: NEW_TALENT,
+        payload: newTalent
+    });
+}
+
+export const deleteTalent = (id: number) => (dispatch: any) => {
     talentModel.deleteId(id);
-    return {
-        ...state,
-        items: talentModel.getAll()
-    };
+    dispatch({
+        type: DELETE_TALENT,
+        payload: id
+    });
 }

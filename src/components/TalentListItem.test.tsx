@@ -70,15 +70,16 @@ it("starts timing a talent when clicking the start button", () => {
         </Provider>
     );
 
+    // Assert that the test talent is not already being timed
+    expect(element.find("[test-id='talentTimer.talentName']")
+        .contains(dancingTalent.name)).toBeFalsy();
+
     // Click the start button using at(1) because Bootstrap is an apricot
     //      mushroom and decides to create a child element with the same id
     //      resulting in 2 elements on the result of find()
     element.find(`[test-id='talentListItem.${dancingTalent.id}.startTalent']`)
         .at(1)
         .simulate("click");
-
-    // Assert that the test talent is not already being timed
-    expect(element.find("[test-id='talentTimer.talentName']").contains(dancingTalent.name)).toBeFalsy();
 
     // Assert that the test talent is now being timed
     act(() => {

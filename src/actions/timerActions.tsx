@@ -5,7 +5,7 @@
 import TalentSession from '../models/TalentSession';
 import IModel from '../models/IModel';
 import { Talent } from '../models/Talent';
-import { TIME_TALENT } from './types';
+import { START_SESSION } from './types';
 
 let sessionModel: IModel<TalentSession>;
 
@@ -13,7 +13,13 @@ export const configureModel = (model: IModel<TalentSession>) => {
     sessionModel = model;
 }
 
-export const startTalent = (talent: Talent) => (dispatch: any) => {
+const assertModelActive = () => {
+    if (sessionModel === null || sessionModel === undefined)
+        throw new EvalError("Could not evaluate dispatch action. configureModel() has not been called on this action script.");
+}
+
+export const startSession = (talent: Talent) => (dispatch: any) => {
+    assertModelActive();
     // let session: TalentSession = sessionModel.create(talent);
     // const payload = {
     //     talent: talent,

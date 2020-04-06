@@ -13,7 +13,13 @@ export const configureModel = (model: IModel<Talent>) => {
     talentModel = model;
 }
 
+const assertModelActive = () => {
+    if (talentModel === null || talentModel === undefined)
+        throw new EvalError("Could not evaluate dispatch action. configureModel() has not been called on this action script.");
+}
+
 export const getTalents = () => (dispatch: any) => {
+    assertModelActive();
     let talents = talentModel.getAll();
     dispatch({
         type: GET_TALENTS,
@@ -22,6 +28,7 @@ export const getTalents = () => (dispatch: any) => {
 }
 
 export const newTalent = (name: string) => (dispatch: any) => {
+    assertModelActive();
     let newTalent = talentModel.create(name);
     dispatch({
         type: NEW_TALENT,
@@ -30,6 +37,7 @@ export const newTalent = (name: string) => (dispatch: any) => {
 }
 
 export const deleteTalent = (id: number) => (dispatch: any) => {
+    assertModelActive();
     talentModel.deleteId(id);
     dispatch({
         type: DELETE_TALENT,

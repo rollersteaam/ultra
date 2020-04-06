@@ -4,7 +4,7 @@ import { Button } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 
 import { Talent } from "../models/Talent";
-import { startTalent } from '../actions/timerActions';
+import { startSession } from '../actions/timerActions';
 import { deleteTalent } from '../actions/talentActions';
 
 export type TalentListItemProps = {
@@ -17,15 +17,15 @@ function TalentListItem(props: TalentListItemProps) {
         () => dispatch(deleteTalent(props.talent.id)),
         [dispatch, props.talent]
     );
-    const startTalentMemo = useCallback(
-        () => dispatch(startTalent(props.talent)),
+    const startSessionMemo = useCallback(
+        () => dispatch(startSession(props.talent)),
         [dispatch, props.talent]
     );
     return (
         <div className="Talent py-1">
             <span test-id="talentName">{props.talent.name}</span>
             <Button
-                test-id={`talentListItem.${props.talent.id}.startTalent`} className="ml-2" color="success" onClick={startTalentMemo}>
+                test-id={`talentListItem.${props.talent.id}.startTalent`} className="ml-2" color="success" onClick={startSessionMemo}>
                     Start
             </Button>
             <Button className="ml-2" color="danger" onClick={deleteTalentMemo}>Delete</Button>

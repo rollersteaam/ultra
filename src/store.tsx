@@ -14,10 +14,11 @@ const initialState = {};
 
 const middleware = [thunk];
 
-const store = createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(...middleware)
-);
+const createUltraStore = () =>
+    createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(...middleware)
+    );
 
-export default store;
+export default createUltraStore;

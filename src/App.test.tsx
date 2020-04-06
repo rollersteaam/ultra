@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import App from './App';
-import store from './store';
+import createUltraStore from './store';
+import './modelSetup';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={createUltraStore()}>
         <App />
     </Provider>
   , div);

@@ -14,7 +14,7 @@ function TalentTimer(props: TalentTimerProps) {
         return <div>No talent selected.</div>
     
     return <div className="TalentTimer">
-        <div className="title">
+        <div test-id="talentTimer.talentName" className="title">
             {props.talent.name}
         </div>
         <span className="progress">

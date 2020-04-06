@@ -1,6 +1,4 @@
-import { TalentReducerState } from '../reducers/talentReducer';
 import { Talent } from '../models/Talent';
-import LocalTalentModel from '../models/LocalTalentModel';
 import IModel from '../models/IModel';
 import { NEW_TALENT, DELETE_TALENT, GET_TALENTS } from './types';
 

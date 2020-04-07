@@ -2,7 +2,9 @@
 Become ultimate in all your desired talents, with habit science designed game Ultra.
 
 ## What is Ultra?
-Ultra times how long you practice a talent, allowing you to earn ultra. 1 ultra is the equivalent of 7 consecutive days of 30 minutes practice, or 40 hours of total consistent progress. Both will progress towards an ultra, so you can put in as much effort as you want and be rewarded for it. 1 ultra represents 1 step of major improvement in a talent. If you don't keep up at minimum 30 minutes of practice, every other day for a talent, you'll lose 1 ultra.
+Ultra times how long you practice a talent, allowing you to earn ultra. 1 ultra is the equivalent of 7 consecutive days of 30 minutes practice, or 40 hours of total consistent progress.
+
+Both will progress towards an ultra, so you can put in as much effort as you want and be rewarded for it. 1 ultra represents 1 step of major improvement in a talent. If you don't keep up at minimum 30 minutes of practice, every other day for a talent, you'll lose 1 ultra.
 
 This temporal model of talent incentivizes consistent and meaningful practice, as well as allowing you reflect on how far you've came and see how actually following habits benefits your life.
 

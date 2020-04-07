@@ -1,4 +1,5 @@
 import SimpleModel from './SimpleModel';
+import { createTalent } from './Talent';
 
 // Unit Tests
 
@@ -20,15 +21,14 @@ beforeEach(() => {
     elements = typeElements.map(te => [te.id, te]);
     sm = new SimpleModel<TestType>(
         elements,
-        (id: number, name: string) => ({
-            id: id,
-            name: name
-        }),
         (el: TestType) => ({
             id: el.id,
             name: el.name
         }),
-        (el: TestType) => el.id
+        (el: TestType) => el.id,
+        (el: TestType, id: number) => {
+            el.id = id;
+        }
     );
 })
 
@@ -40,15 +40,14 @@ afterEach(() => {
 it("constructs from empty list without crashing", () => {
     sm = new SimpleModel<TestType>(
         [],
-        (id: number, name: string) => ({
-            id: id,
-            name: name
-        }),
         (el: TestType) => ({
             id: el.id,
             name: el.name
         }),
-        (el: TestType) => el.id
+        (el: TestType) => el.id,
+        (el: TestType, id: number) => {
+            el.id = id;
+        }
     );
 })
 
@@ -56,42 +55,38 @@ it("throws error when an initialization model of NaN id is passed into construct
     expect(() => {
         sm = new SimpleModel<TestType>(
             [[NaN, {id: NaN, name: "Trojan Horse"}]],
-            (id: number, name: string) => ({
-                id: id,
-                name: name
-            }),
             (el: TestType) => ({
                 id: el.id,
                 name: el.name
             }),
-            (el: TestType) => el.id
+            (el: TestType) => el.id,
+            (el: TestType, id: number) => {
+                el.id = id;
+            }
         );
     }).toThrowError(EvalError);
 })
 
 it("throws error when any constructor argument is undefined", () => {
     function construct(kvPairs: [number, TestType][],
-        creationFunc: (id: number, name: string) => TestType,
         cloneFunc: (el: TestType) => TestType,
-        idFunc: (el: TestType) => number) {
+        getIdFunc: (el: TestType) => number,
+        setIdFunc: (el: TestType, id: number) => void) {
             return new SimpleModel<TestType>(
                 kvPairs,
-                creationFunc,
                 cloneFunc,
-                idFunc
+                getIdFunc,
+                setIdFunc
             );
     }
 
     const arg1 = elements;
-    const arg2 = (id: number, name: string) => ({
-        id: id,
-        name: name
-    });
-    const arg3 = (el: TestType) => ({
+    const arg2 = (el: TestType) => ({
         id: el.id,
         name: el.name
     });
-    const arg4 = (el: TestType) => el.id;
+    const arg3 = (el: TestType) => el.id;
+    const arg4 = (el: TestType, id: number) => el.id = id;
 
     expect(() => {
         construct(undefined, arg2, arg3, arg4)
@@ -111,21 +106,37 @@ it("throws error when any constructor argument is undefined", () => {
 });
 
 it("creates an element", () => {
-    let name = "Gangley";
-    let elm = sm.create(name);
+    let talent = createTalent(0, "Gangley");
+    let modelTalent = sm.create(talent);
 
-    expect(elm.name).toBe(name);
+    // Assert that references are different
+    expect(modelTalent).not.toBe(talent);
+
+    // Assert that they are the same talent
+    expect(modelTalent.name).toBe(talent.name);
+
+    // Assert that given ID was not used
+    expect(modelTalent.id).not.toBe(talent.id);
 });
 
 it("creates an element and saves it in the model", () => {
-    let name = "Gangley";
-    let elm = sm.create(name);
+    let talent = createTalent(0, "Gangley");
+    let modelTalent = sm.create(talent);
+    let modelGetTalent = sm.get(talent.id);
 
-    expect(sm.get(elm.id)).toStrictEqual(elm);
+    // Assert that refs are not the same
+    expect(modelGetTalent).not.toBe(modelTalent);
+
+    // Assert model returned from creation has same properties as getting
+    expect(modelGetTalent).toStrictEqual(modelTalent);
 });
 
 it("creates an element from next highest id", () => {
-    expect(sm.create("Maverick").id).toBe(4);
+    let talent = createTalent(0, "Maverick");
+    let modelTalent = sm.create(talent);
+    
+    expect(modelTalent.id).toBe(4);
+    expect(modelTalent.name).toBe(talent.name);
 });
 
 it("doesn't create an element when name is null or undefined", () => {
@@ -164,7 +175,7 @@ it("updates element with deep copy", () => {
 
     expect(sm.get(el.id).name).not.toBe("August");
 
-    sm.update(el);
+    let newEl = sm.update(el);
 
     el.name = "June";
     let modelEl = sm.get(el.id);
@@ -172,6 +183,10 @@ it("updates element with deep copy", () => {
     expect(modelEl.name).not.toBe("June");
     expect(modelEl.name).toBe("August");
     expect(modelEl).not.toBe(el);
+
+    expect(newEl).not.toBe(el);
+    expect(newEl).not.toBe(modelEl);
+    expect(newEl).toStrictEqual(modelEl);
 })
 
 it("deletes element by reference", () => {

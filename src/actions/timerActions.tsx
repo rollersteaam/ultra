@@ -30,3 +30,11 @@ export const startSession = (talent: Talent) => (dispatch: any) => {
     //     payload: payload
     // });
 }
+
+export const stopSession = () => (dispatch: any) => {
+    assertModelActive();
+}
+
+export const pollSession = () => (dispatch: any) => {
+    assertModelActive();
+}

@@ -1,4 +1,4 @@
-import { Talent } from '../models/Talent';
+import { Talent, createTalent } from '../models/Talent';
 import IModel from '../models/IModel';
 import { NEW_TALENT, DELETE_TALENT, GET_TALENTS } from './types';
 
@@ -29,7 +29,7 @@ export const getTalents = () => (dispatch: any) => {
 
 export const newTalent = (name: string) => (dispatch: any) => {
     assertModelActive();
-    let newTalent = talentModel.create(name);
+    let newTalent = talentModel.create(createTalent(0, name));
     dispatch({
         type: NEW_TALENT,
         payload: newTalent

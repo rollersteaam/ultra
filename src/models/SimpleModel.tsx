@@ -10,29 +10,29 @@ export default class SimpleModel<T> implements IModel<T> {
     protected counter: number = 0;
     protected models: Map<number, T>;
 
-    private creationFunc: (id: number, name: string) => T;
     private cloneFunc: (el: T) => T;
-    private idFunc: (el: T) => number;
+    private getIdFunc: (el: T) => number;
+    private setIdFunc: (el: T, id: number) => void;
 
     constructor(kvPairs: [number, T][],
-        creationFunc: (id: number, name: string) => T,
         cloneFunc: (el: T) => T,
-        idFunc: (el: T) => number) {
+        getIdFunc: (el: T) => number,
+        setIdFunc: (el: T, id: number) => void) {
         if (kvPairs === undefined)
             throw new ReferenceError("Couldn't construct. KV Pairs argument was undefined.");
-            
-        if (creationFunc === undefined)
-            throw new ReferenceError("Couldn't construct. Creation function argument was undefined.");
 
         if (cloneFunc === undefined)
             throw new ReferenceError("Couldn't construct. Clone function argument was undefined.");
 
-        if (idFunc === undefined)
-            throw new ReferenceError("Couldn't construct. ID function argument was undefined.");
+        if (getIdFunc === undefined)
+            throw new ReferenceError("Couldn't construct. Get ID function argument was undefined.");
 
-        this.creationFunc = creationFunc;
+        if (setIdFunc === undefined)
+            throw new ReferenceError("Couldn't construct. Set ID function argument was undefined.");
+
         this.cloneFunc = cloneFunc;
-        this.idFunc = idFunc;
+        this.getIdFunc = getIdFunc;
+        this.setIdFunc = setIdFunc;
 
         kvPairs = kvPairs.map(pair => [pair[0], this.cloneFunc(pair[1])]);
         this.models = new Map<number, T>(kvPairs);
@@ -47,21 +47,22 @@ export default class SimpleModel<T> implements IModel<T> {
         }
     }
 
-    create(name: string): T {
-        if (name === null)
-            throw new TypeError("Can't create an element with a null name.");
+    create(model: T): T {
+        if (model === null)
+            throw new TypeError("Can't create an element with a null model argument.");
 
-        if (name === undefined)
-            throw new TypeError("Can't create an element with an undefined name.");
+        if (model === undefined)
+            throw new TypeError("Can't create an element with an undefined model argument.");
 
         if (this.models.has(this.counter))
             throw new RangeError("Couldn't create model. ID from counter already exists in the model, which should never happen. Model may be corrupt.");
 
-        let model: T = this.creationFunc(this.counter, name);
-        this.models.set(this.counter, model);
+        let clone = this.cloneFunc(model);
+        this.setIdFunc(clone, this.counter);
+        this.models.set(this.counter, clone);
         this.counter++;
         this.save();
-        return model
+        return this.cloneFunc(clone);
     }
 
     getAll(): T[] {
@@ -78,10 +79,11 @@ export default class SimpleModel<T> implements IModel<T> {
         return this.cloneFunc(el);
     }
 
-    update(element: T) {
+    update(element: T): T {
         let clone = this.cloneFunc(element);
-        this.models.set(this.idFunc(element), clone);
+        this.models.set(this.getIdFunc(element), clone);
         this.save();
+        return this.cloneFunc(clone);
     }
 
     delete(element: T) {
@@ -91,7 +93,7 @@ export default class SimpleModel<T> implements IModel<T> {
         if (element === undefined)
             throw new TypeError("Can't delete an undefined element.");
 
-        this.models.delete(this.idFunc(element));
+        this.models.delete(this.getIdFunc(element));
         this.save();
     }
 

@@ -6,7 +6,7 @@ import { TalentSession } from '../models/TalentSession';
 import { Talent } from '../models/Talent';
 import { START_SESSION, POLL_SESSION, STOP_SESSION } from './types';
 import { IExchangeModel } from '../models/IExchangeModel';
-import { updateTalent } from './talentActions';
+import { updateTalent, excludeTalent, includeTalent } from './talentActions';
 import { ITalentIncubator } from '../models/ITalentIncubator';
 import { NullTalentIncubator } from '../models/NullTalentIncubator';
 
@@ -34,6 +34,8 @@ export const startSession = (talent: Talent) => (dispatch: any) => {
         dispatch(stopSession());
     }
 
+    dispatch(excludeTalent(talent.id));
+
     let session: TalentSession = sessionModel.exchange(talent);
 
     incubator.incubate(talent, session);
@@ -47,10 +49,15 @@ export const startSession = (talent: Talent) => (dispatch: any) => {
 export const stopSession = () => (dispatch: any) => {
     assertModelActive();
 
+    let bredTalent: Talent | null = incubator.getTalent();
+
+    if (bredTalent === null)
+        throw new EvalError("Couldn't stop session. There was no session to stop.");
+
+    dispatch(includeTalent(bredTalent.id));
+
     // Save the latest changes before stopping
-    console.log("I need you to save the latest changes.");
     dispatch(pollSession());
-    console.log("I'm stopping the incubator.");
     incubator.stop();
 
     dispatch({
@@ -71,12 +78,8 @@ export const pollSession = () => (dispatch: any) => {
 
     if (poll === null) return;
 
-    console.log("I'm about to update both models.");
-
     sessionModel.update(poll.session);
     dispatch(updateTalent(poll.talent));
-
-    console.log("I've updated both models.");
 
     dispatch({
         type: POLL_SESSION,

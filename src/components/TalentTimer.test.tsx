@@ -7,13 +7,14 @@ import thunk from 'redux-thunk';
 
 import '../modelSetup';
 import autoStore from '../testutils/autoStore';
-import { createTalent } from "../models/Talent";
+import { createTalent, Talent } from "../models/Talent";
 import { createSession } from "../models/TalentSession";
 import TalentTimer from '../components/TalentTimer';
 import { startSession, configureIncubator } from '../actions/timerActions';
 import { RootState } from '../store';
 import { TalentIncubator } from '../models/TalentIncubator';
 import { NullTalentIncubator } from '../models/NullTalentIncubator';
+import { MockTalentIncubator } from '../testutils/MockTalentIncubator';
 
 afterEach(() => {
     configureIncubator(NullTalentIncubator.Null);
@@ -32,6 +33,20 @@ const mockStore = configureStore(middlewares)
 
 it("executes stop action on clicking stop", () => {
     let talent = createTalent(0, "Test", 7);
+    let incubeStop = jest.fn();
+
+    class TestIncubator extends MockTalentIncubator {
+        getTalent(): Talent | null {
+            return talent;
+        }
+
+        stop() : void {
+            incubeStop();
+        }
+    }
+
+    configureIncubator(new TestIncubator());
+
     let session = createSession(0, 0, 7);
 
     const store = mockStore({});
@@ -49,10 +64,7 @@ it("executes stop action on clicking stop", () => {
         .at(1)
         .simulate("click");
 
-    let expectedPayload = {
-        type: 'STOP_SESSION'
-    }
-    expect(store.getActions()).toEqual([expectedPayload]);
+    expect(incubeStop).toBeCalledTimes(1);
 })
 
 // Integration Tests

@@ -19,6 +19,10 @@ import { TimerReducerState } from '../reducers/timerReducer';
 import { createSession } from '../models/TalentSession';
 import { NullTalentIncubator } from '../models/NullTalentIncubator';
 import { TalentIncubator } from '../models/TalentIncubator';
+import { ITalentIncubator } from '../models/ITalentIncubator';
+import { Talent } from '../models/Talent';
+import { TalentSession } from '../models/TalentSession';
+import { MockTalentIncubator } from '../testutils/MockTalentIncubator';
 
 const testTalents = [
     createTalent(0, "Competitive Programming"),
@@ -30,6 +34,10 @@ beforeEach(() => {
     configureTalentModel(talentModel);
     let sessionModel = new LocalTalentSessionModel([]);
     configureSessionModel(sessionModel);
+    configureIncubator(NullTalentIncubator.Null);
+})
+
+afterEach(() => {
     configureIncubator(NullTalentIncubator.Null);
 })
 
@@ -49,12 +57,36 @@ it("prepares correct payload for timing a talent", () => {
 });
 
 it("prepares correct payload for stopping talent timing", () => {
+    class TestIncubator extends MockTalentIncubator {
+        getTalent(): Talent | null {
+            return createTalent(0, "Dummy", 7);
+        }
+
+        stop() : void {}
+    }
+
+    configureIncubator(new TestIncubator());
+
     let expectedRequest = {
         type: STOP_SESSION
     }
     expect(jokeDispatch(stopSession()))
         .toBeCalledWith(expectedRequest);
 });
+
+it("throws when stopping session with no talent incubating", () => {
+    class TestIncubator extends MockTalentIncubator {
+        getTalent(): Talent | null {
+            return null;
+        }
+
+        stop() : void {}
+    }
+
+    configureIncubator(new TestIncubator());
+
+    expect(() => jokeDispatch(stopSession())).toThrowError(EvalError);
+})
 
 // Integration Tests
 
@@ -76,11 +108,28 @@ it("begins timing a talent upon a time talent request", () => {
 });
 
 it("stops timing a talent upon a stop timing request", () => {
+    const talent = testTalents[1];
+    
+    class TestIncubator extends MockTalentIncubator {
+        getTalent(): Talent | null {
+            return talent;
+        }
+
+        incubate(talent: Talent, session: TalentSession) {}
+
+        isIncubating(): boolean {
+            return false;
+        }
+
+        stop() {}
+    }
+
+    configureIncubator(new TestIncubator());
+    
     const store = autoStore();
     let element = mount(
         <Provider store={store}></Provider>
     )
-    const talent = testTalents[1];
     
     store.dispatch(startSession(talent));
     

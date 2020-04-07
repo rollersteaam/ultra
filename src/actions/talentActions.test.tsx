@@ -1,14 +1,65 @@
-import { newTalent, deleteTalent, getTalents, configureModel, updateTalent }  from './talentActions';
-import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, UPDATE_TALENT } from './types';
+import { newTalent, deleteTalent, getTalents, configureModel, updateTalent, excludeTalent, includeTalent }  from './talentActions';
+import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, UPDATE_TALENT, EXCLUDE_TALENT, INCLUDE_TALENT } from './types';
 import jokeDispatch from '../testutils/jokeDispatch';
 import { createTalent, Talent } from '../models/Talent';
 import IModel from '../models/IModel';
 import LocalTalentModel from '../models/LocalTalentModel';
 
-// Integration Tests
-
 let testTalents: Talent[];
 let model: IModel<Talent>;
+
+class MockTalentModel implements IModel<Talent> {
+    create(element: Talent): Talent {
+        throw new Error("Method not implemented.");
+    }
+    getAll(): Talent[] {
+        throw new Error("Method not implemented.");
+    }
+    get(id: number): Talent {
+        throw new Error("Method not implemented.");
+    }
+    update(element: Talent): Talent {
+        throw new Error("Method not implemented.");
+    }
+    delete(element: Talent): void {
+        throw new Error("Method not implemented.");
+    }
+    deleteId(id: number): void {
+        throw new Error("Method not implemented.");
+    }
+}
+
+// Unit Tests
+
+it("dispatches exclude request correctly", () => {
+    let dis = jokeDispatch(excludeTalent(1));
+    expect(dis).toBeCalledWith({
+        type: EXCLUDE_TALENT,
+        payload: 1
+    })
+})
+
+it("dispatches include request correctly", () => {
+    let testTalent = createTalent(1, "Hooray", 7);
+    class TestTalentModel extends MockTalentModel {
+        get(id: number): Talent {
+            if (id === 1) {
+                return testTalent;
+            }
+
+            throw new Error("Unexpected get call received.");
+        }
+    }
+    configureModel(new TestTalentModel());
+
+    let dis = jokeDispatch(includeTalent(1));
+    expect(dis).toBeCalledWith({
+        type: INCLUDE_TALENT,
+        payload: testTalent
+    });
+})
+
+// Integration Tests
 
 beforeEach(() => {
     testTalents = [
@@ -57,8 +108,6 @@ it("updates talents with correct dispatch", () => {
         payload: testTalent
     });
 });
-
-// Integration Tests
 
 it("updates talent in model", () => {
     let testTalent = testTalents[0];

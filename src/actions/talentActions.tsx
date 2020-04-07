@@ -1,6 +1,6 @@
 import { Talent, createTalent } from '../models/Talent';
 import IModel from '../models/IModel';
-import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, UPDATE_TALENT } from './types';
+import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, UPDATE_TALENT, EXCLUDE_TALENT, INCLUDE_TALENT } from './types';
 
 let talentModel: IModel<Talent>;
 
@@ -50,6 +50,22 @@ export const updateTalent = (talent: Talent) => (dispatch: any) => {
     let modelTalent = talentModel.update(talent);
     dispatch({
         type: UPDATE_TALENT,
+        payload: modelTalent
+    });
+}
+
+export const excludeTalent = (id: number) => (dispatch: any) => {
+    dispatch({
+        type: EXCLUDE_TALENT,
+        payload: id
+    });
+}
+
+export const includeTalent = (id: number) => (dispatch: any) => {
+    assertModelActive();
+    let modelTalent = talentModel.get(id);
+    dispatch({
+        type: INCLUDE_TALENT,
         payload: modelTalent
     });
 }

@@ -52,4 +52,8 @@ export class TalentIncubator implements ITalentIncubator {
     isIncubating(): boolean {
         return this.talent !== null;
     }
+
+    getTalent() : Talent | null {
+        return this.talent;
+    }
 }

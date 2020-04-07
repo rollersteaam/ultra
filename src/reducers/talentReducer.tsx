@@ -1,4 +1,4 @@
-import { NEW_TALENT, DELETE_TALENT, GET_TALENTS } from '../actions/types';
+import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, EXCLUDE_TALENT, INCLUDE_TALENT } from '../actions/types';
 import { Talent } from '../models/Talent';
 
 export type TalentReducerState = {
@@ -32,6 +32,21 @@ export default function(state = initialState, action: any) {
             return {
                 ...state,
                 items: newItems
+            }
+        case EXCLUDE_TALENT:
+            let targetId = action.payload;
+            return {
+                ...state,
+                items: state.items.filter(tal => tal.id !== targetId)
+            }
+        case INCLUDE_TALENT:
+            let includeItem: Talent = action.payload;
+            return {
+                ...state,
+                items: [
+                    ...state.items,
+                    includeItem
+                ]
             }
         default:
             return state;

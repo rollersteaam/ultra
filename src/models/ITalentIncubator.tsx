@@ -5,5 +5,6 @@ export interface ITalentIncubator {
     incubate(talent: Talent, session: TalentSession): void
     poll(): {talent: Talent, session: TalentSession} | null
     stop(): void
+    getTalent(): Talent | null
     isIncubating(): boolean
 }

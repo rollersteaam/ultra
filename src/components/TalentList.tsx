@@ -20,9 +20,9 @@ function TalentList(props: TalentListProps) {
         />
     );
     return (
-        <Col>
-            {talents}
-        </Col>
+        <>
+        {talents}
+        </>
     );
 }
 

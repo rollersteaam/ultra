@@ -6,7 +6,7 @@ Ultra times how long you practice a talent, allowing you to earn ultra. 1 ultra 
 
 Both will progress towards an ultra, so you can put in as much effort as you want and be rewarded for it. 1 ultra represents 1 step of major improvement in a talent. If you don't keep up at minimum 30 minutes of practice, every other day for a talent, you'll lose 1 ultra.
 
-This temporal model of talent incentivizes consistent and meaningful practice, as well as allowing you reflect on how far you've came and see how actually following habits benefits your life.
+This temporal model of talent incentivizes consistent and meaningful practice, as well as allowing you reflect on how far you've came and see how actually following habits and practicing benefits your life.
 
 ## Why are you making Ultra?
 Main objective of this project is to learn and execute the full MERN stack on a cool project idea that I had, which I think may actually enrich my life due to my obsession with mastery! It also acts as a proper mark of a PWA developer by accomplishing such a project.

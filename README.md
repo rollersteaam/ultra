@@ -9,7 +9,15 @@ Both will progress towards an ultra, so you can put in as much effort as you wan
 This model of talent incentivizes consistent and meaningful practice, as well as allowing you to reflect on how far you've came and see how practicing and actually following habits benefits your life.
 
 ## Why are you making Ultra?
-Main objective of this project is to learn and execute the full MERN stack on a cool project idea that I had, which I think may actually enrich my life due to my obsession with mastery! It also acts as a proper mark of a PWA developer by accomplishing such a project.
+### The Primary Objective
+Neuroplasticity and habits are at the heart of people today. Never before has it been more important to develop talents, and frankly, never before have we been more concerned with the process of self-improvement. One could argue that society's push for it is unhealthy.
+
+Either way, people are happy when they recognise they're good at something. The problem is that it takes a while before someone does become good at something. Even worse - becoming good at something is dependent on motivation, consistency, and quality of practice.
+
+Neuroplasticity shows how much potential we have. We can become anything. Habits show the pathway. Ultra aims to combine both into a focus for every day - every ultra earned is a mark of habit and neuroplastic growth. Ultra is a tool that will help you realize your true potential.
+
+### The Secondary Objective
+To learn and execute the full MERN stack on a cool project idea that I think will enrich my life! It also acts as a proper mark of a PWA developer by accomplishing such a project.
 
 ## Technology Used
 1. Bootstrap

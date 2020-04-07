@@ -122,7 +122,7 @@ it("creates an element", () => {
 it("creates an element and saves it in the model", () => {
     let talent = createTalent(0, "Gangley");
     let modelTalent = sm.create(talent);
-    let modelGetTalent = sm.get(talent.id);
+    let modelGetTalent = sm.get(modelTalent.id);
 
     // Assert that refs are not the same
     expect(modelGetTalent).not.toBe(modelTalent);

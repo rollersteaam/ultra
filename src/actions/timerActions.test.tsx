@@ -1,19 +1,24 @@
+import React from 'react'
+
+import { advanceTo, advanceBy } from 'jest-date-mock';
+
 // Common Test Imports
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import jokeDispatch from '../testutils/jokeDispatch';
 import autoStore from '../testutils/autoStore';
-import { configureModel as configureSessionModel } from '../actions/timerActions';
+import { configureModel as configureSessionModel, configureIncubator } from '../actions/timerActions';
 import { configureModel as configureTalentModel } from '../actions/talentActions';
 import LocalTalentModel from '../models/LocalTalentModel';
 import LocalTalentSessionModel from '../models/LocalTalentSessionModel';
-
-import React from 'react'
 
 import { createTalent } from '../models/Talent';
 import { startSession, stopSession, pollSession } from './timerActions';
 import { START_SESSION, STOP_SESSION, POLL_SESSION } from '../actions/types';
 import { TimerReducerState } from '../reducers/timerReducer';
+import { createSession } from '../models/TalentSession';
+import { NullTalentIncubator } from '../models/NullTalentIncubator';
+import { TalentIncubator } from '../models/TalentIncubator';
 
 const testTalents = [
     createTalent(0, "Competitive Programming"),
@@ -25,33 +30,29 @@ beforeEach(() => {
     configureTalentModel(talentModel);
     let sessionModel = new LocalTalentSessionModel([]);
     configureSessionModel(sessionModel);
+    configureIncubator(NullTalentIncubator.Null);
 })
 
 // Unit Tests
 
-it("prepares correct request for timing a talent", () => {
+it("prepares correct payload for timing a talent", () => {
+    advanceTo(new Date());
+
     let testTalent = createTalent(0, "A Timely Talent");
+    let testSession = createSession(0, 0, 0, new Date());
     let expectedRequest = {
         type: START_SESSION,
-        payload: testTalent
+        payload: { talent: testTalent, session: testSession }
     }
     expect(jokeDispatch(startSession(testTalent)))
         .toBeCalledWith(expectedRequest);
 });
 
-it("prepares correct request for stopping talent timing", () => {
+it("prepares correct payload for stopping talent timing", () => {
     let expectedRequest = {
         type: STOP_SESSION
     }
     expect(jokeDispatch(stopSession()))
-        .toBeCalledWith(expectedRequest);
-});
-
-it("prepares correct request for timer polling", () => {
-    let expectedRequest = {
-        type: POLL_SESSION
-    }
-    expect(jokeDispatch(pollSession()))
         .toBeCalledWith(expectedRequest);
 });
 
@@ -67,9 +68,9 @@ it("begins timing a talent upon a time talent request", () => {
     store.dispatch(startSession(talent));
 
     let state: TimerReducerState = store.getState().timer;
-    expect(state.session.timedTalent).toStrictEqual(talent);
-    expect(state.session.timedSession).not.toBeFalsy();
-    expect(state.session.timedSession.talentId).toBe(talent.id);
+    expect(state.session.talent).toStrictEqual(talent);
+    expect(state.session.session).not.toBeFalsy();
+    expect(state.session.session.talentId).toBe(talent.id);
 
     element.unmount();
 });
@@ -84,21 +85,22 @@ it("stops timing a talent upon a stop timing request", () => {
     store.dispatch(startSession(talent));
     
     let state: TimerReducerState = store.getState().timer;
-    expect(state.session.timedTalent).toStrictEqual(talent);
-    expect(state.session.timedSession).not.toBeFalsy();
-    expect(state.session.timedSession.talentId).toBe(talent.id);
+    expect(state.session.talent).toStrictEqual(talent);
+    expect(state.session.session).not.toBeFalsy();
+    expect(state.session.session.talentId).toBe(talent.id);
     
     store.dispatch(stopSession());
     
     state = store.getState().timer;
-    expect(state.session.timedTalent).toBeNull();
-    expect(state.session.timedSession).toBeNull();
+    expect(state.session.talent).toBeNull();
+    expect(state.session.session).toBeNull();
 
     element.unmount();
 });
 
 it("refreshes session information upon a poll timer request", () => {
-    jest.useFakeTimers();
+    configureIncubator(new TalentIncubator());
+    advanceTo(new Date());
 
     const store = autoStore();
     let element = mount(
@@ -107,20 +109,20 @@ it("refreshes session information upon a poll timer request", () => {
     const talent = testTalents[1];
     
     let state: TimerReducerState = store.getState().timer;
-    expect(state.session.timedTalent).toBeNull();
-    expect(state.session.timedSession).toBeNull();
+    expect(state.session.talent).toBeNull();
+    expect(state.session.session).toBeNull();
 
     store.dispatch(startSession(talent));
     
     state = store.getState().timer;
-    expect(state.session.timedTalent).toStrictEqual(talent);
-    expect(state.session.timedSession).not.toBeFalsy();
-    expect(state.session.timedSession.talentId).toBe(talent.id);
+    expect(state.session.talent).toStrictEqual(talent);
+    expect(state.session.session).not.toBeFalsy();
+    expect(state.session.session.talentId).toBe(talent.id);
 
     let previousSession = state.session;
 
     // Ekko time ;)
-    jest.advanceTimersByTime(1000);
+    advanceBy(1000);
 
     store.dispatch(pollSession());
 
@@ -130,21 +132,21 @@ it("refreshes session information upon a poll timer request", () => {
     expect(state.session).not.toBe(previousSession);
     
     // Assert it is the same session
-    expect(state.session.timedSession.id).toBe(previousSession.timedSession.id);
-    expect(state.session.timedSession.userId)
-        .toBe(previousSession.timedSession.userId);
-    expect(state.session.timedTalent.id)
-        .toBe(previousSession.timedTalent.id);
-    expect(state.session.timedTalent.userId)
-        .toBe(previousSession.timedTalent.userId);
+    expect(state.session.session.id).toBe(previousSession.session.id);
+    expect(state.session.session.userId)
+        .toBe(previousSession.session.userId);
+    expect(state.session.talent.id)
+        .toBe(previousSession.talent.id);
+    expect(state.session.talent.userId)
+        .toBe(previousSession.talent.userId);
 
     // Assert that progress has been made
-    expect(state.session.timedSession.progressObtained)
-        .toBeGreaterThan(previousSession.timedSession.progressObtained);
-    expect(state.session.timedTalent.progress)
-        .toBeGreaterThan(previousSession.timedTalent.progress);
-    expect(state.session.timedTalent.totalSeconds)
-        .toBeGreaterThan(previousSession.timedTalent.totalSeconds);
+    expect(state.session.session.progressObtained)
+        .toBeGreaterThan(previousSession.session.progressObtained);
+    expect(state.session.talent.progress)
+        .toBeGreaterThan(previousSession.talent.progress);
+    expect(state.session.talent.totalSeconds)
+        .toBeGreaterThan(previousSession.talent.totalSeconds);
 
     element.unmount();
 });

@@ -12,8 +12,10 @@ import { Talent, createTalent } from '../models/Talent';
 import autoStore from '../testutils/autoStore';
 import { newTalent } from '../actions/talentActions';
 import LocalTalentModel from '../models/LocalTalentModel';
-import { configureModel } from '../actions/talentActions';
+import { configureModel as configureTalentModel } from '../actions/talentActions';
+import { configureModel as configureSessionModel } from '../actions/timerActions';
 import { RootState } from '../store';
+import LocalTalentSessionModel from '../models/LocalTalentSessionModel';
 
 // Unit Tests
 
@@ -50,7 +52,8 @@ it("starts timing a talent when clicking the start button", () => {
     const testTalents = [
         createTalent(0, "Dancing")
     ]
-    configureModel(new LocalTalentModel(testTalents));
+    configureTalentModel(new LocalTalentModel(testTalents));
+    configureSessionModel(new LocalTalentSessionModel());
 
     const store = autoStore();
     
@@ -58,7 +61,7 @@ it("starts timing a talent when clicking the start button", () => {
 
     const TestApp = () => {
         const timerState = useSelector((state: RootState) => state.timer);
-        const { timedTalent, timedSession } = timerState.session;
+        const { talent: timedTalent, session: timedSession } = timerState.session;
         return <>
             <TalentTimer talent={timedTalent} session={timedSession} />
             <TalentListItem talent={dancingTalent} />

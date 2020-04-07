@@ -1,4 +1,4 @@
-import TalentSession, { createSession, cloneSession } from './TalentSession';
+import { TalentSession, createSession, cloneSession } from './TalentSession';
 import { IExchangeModel } from './IExchangeModel';
 import { Talent } from './Talent';
 import SimpleModel from './SimpleModel';

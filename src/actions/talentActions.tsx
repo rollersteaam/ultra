@@ -1,6 +1,6 @@
 import { Talent, createTalent } from '../models/Talent';
 import IModel from '../models/IModel';
-import { NEW_TALENT, DELETE_TALENT, GET_TALENTS } from './types';
+import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, UPDATE_TALENT } from './types';
 
 let talentModel: IModel<Talent>;
 
@@ -42,5 +42,14 @@ export const deleteTalent = (id: number) => (dispatch: any) => {
     dispatch({
         type: DELETE_TALENT,
         payload: id
+    });
+}
+
+export const updateTalent = (talent: Talent) => (dispatch: any) => {
+    assertModelActive();
+    let modelTalent = talentModel.update(talent);
+    dispatch({
+        type: UPDATE_TALENT,
+        payload: modelTalent
     });
 }

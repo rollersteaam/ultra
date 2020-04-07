@@ -16,10 +16,10 @@ function App() {
 
     const state = useSelector((state: RootState) => state);
     const talents = state.talents.items;
-    const { timedTalent, timedSession } = state.timer.session;
+    const { talent, session } = state.timer.session;
     return (
         <div className="App">
-            <TalentTimer talent={timedTalent} session={timedSession} />
+            <TalentTimer talent={talent} session={session} />
             <TalentList talents={talents} />
             <NewTalentForm />
         </div>

@@ -1,4 +1,4 @@
-type TalentSession = {
+export type TalentSession = {
     id: number,
     userId: number,
     talentId: number,
@@ -24,5 +24,3 @@ export const cloneSession = (session: TalentSession) => ({
     endTimestamp: session.endTimestamp,
     progressObtained: session.progressObtained
 });
-
-export default TalentSession;

@@ -1,6 +1,7 @@
 import LocalTalentSessionModel from "./LocalTalentSessionModel"
 import { createSession } from "./TalentSession";
 import { Talent, createTalent } from './Talent';
+import { advanceTo } from 'jest-date-mock';
 
 // Unit Tests
 
@@ -19,14 +20,17 @@ it("creates a talent session", () => {
 // Integration Tests
 
 it("creates a talent session for a talent", () => {
+    advanceTo(new Date());
+
     let talent = createTalent(5, "Harry Pottering", 2);
     let model = new LocalTalentSessionModel();
+
     let modelSession = model.exchange(talent);
 
     expect(modelSession.talentId).toBe(talent.id);
     expect(modelSession.id).toBe(0);
     expect(modelSession.userId).toBe(talent.userId);
-    expect(modelSession.startTimestamp).toBe(Date.now());
+    expect(modelSession.startTimestamp).toStrictEqual(new Date());
     expect(modelSession.endTimestamp).toBeNull();
     expect(modelSession.progressObtained).toBe(0);
 });

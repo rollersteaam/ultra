@@ -1,6 +1,6 @@
 import talentReducer, { TalentReducerState } from './talentReducer';
-import { createTalent } from '../models/Talent';
-import { EXCLUDE_TALENT, INCLUDE_TALENT } from '../actions/types';
+import { createTalent, cloneTalent } from '../models/Talent';
+import { EXCLUDE_TALENT, INCLUDE_TALENT, UPDATE_TALENT } from '../actions/types';
 
 // Unit Tests
 
@@ -42,6 +42,37 @@ it("includes a talent into its state", () => {
         ]
     });
 });
+
+it("updates a talent within state", () => {
+    let targetTalent = createTalent(1, "My Excluded Talent");
+    let cloneTargetTalent = cloneTalent(targetTalent);
+
+    expect(cloneTargetTalent).not.toBe(targetTalent);
+    expect(cloneTargetTalent).toStrictEqual(targetTalent);
+
+    let innocentTalent = createTalent(0, "My Not Excluded Talent");
+
+    let state: TalentReducerState = {
+        items: [
+            innocentTalent,
+            cloneTargetTalent,
+        ]
+    }
+
+    targetTalent.name = "My Changed Talent";
+
+    let newState = talentReducer(state, {
+        type: UPDATE_TALENT,
+        payload: targetTalent
+    });
+    expect(newState).toStrictEqual({
+        ...state,
+        items: [
+            innocentTalent,
+            targetTalent
+        ]
+    });
+})
 
 it("new talent creates new talent in state", () => {
 

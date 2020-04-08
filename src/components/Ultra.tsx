@@ -5,7 +5,8 @@ import { cGhostBlue, cUltraBlue, cGold } from './constants';
 
 type UltraProps = {
     progress: number,
-    progressTarget: number
+    progressTarget: number,
+    background?: string,
     backgroundOpacity?: string,
 }
 
@@ -24,7 +25,8 @@ function Ultra(props: UltraProps) {
 
     return (
         <>
-        <UltraImage opacity={backgroundOpacity} fill={cGhostBlue} />
+        <UltraImage opacity={backgroundOpacity}
+            fill={props.background ?? cGhostBlue} />
         <UltraImage fill={topFill} style={{
             position: "absolute",
             top: `${newTopOffset}px`,

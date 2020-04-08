@@ -11,9 +11,6 @@ import { deleteTalent } from '../actions/talentActions';
 
 function TalentRightClickMenu(props: any) {
     const dispatch = useDispatch();
-    const editAction = useCallback(() => {
-        // Ignored, not implemented yet
-    }, []);
     const deleteAction = useCallback(() => {
         dispatch(deleteTalent(props.talent.id));
     }, [dispatch]);
@@ -30,7 +27,7 @@ function TalentRightClickMenu(props: any) {
             zIndex: 50,
             borderRadius: "20px",
         }}>
-            <MenuItem icon={EditIcon} text="Edit" click={editAction} style={{
+            <MenuItem icon={EditIcon} text="Edit" click={props.edit} style={{
                 marginTop: "0.9rem"
             }} />
             <MenuItem icon={DeleteIcon} text="Delete" click={deleteAction} />
@@ -59,7 +56,7 @@ function MenuItem(props: any) {
         }}
         onMouseEnter={mouseEnter}
         onMouseLeave={mouseLeave}
-        onMouseDown={props.click}>
+        onMouseUp={props.click}>
             <Col style={{
                 ...centerCell,
                 maxWidth: "25%"

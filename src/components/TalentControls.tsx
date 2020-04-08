@@ -63,6 +63,7 @@ function TalentControls(props: TalentControlsProps) {
             ghost={props.ghost}
             placeholder={props.placeholder}
             />
+            
         </>
     )
 }

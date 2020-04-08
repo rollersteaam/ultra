@@ -4,16 +4,44 @@ import { Button, Col, Row } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 
 import { Talent } from "../models/Talent";
-import { medBlue, bodyFont, centerCell } from './constants';
+import { cMedBlue, bodyFont, centerCell, cGhostBlue, cUltraBlue } from './constants';
 import Ultra from '../components/Ultra';
 import TalentControls from './TalentControls';
 import TalentRightClickMenu from './TalentRightClickMenu';
+import { updateTalent } from "../actions/talentActions";
 
 export type TalentListItemProps = {
     talent: Talent;
 }
 
 function TalentListItem(props: TalentListItemProps) {
+    const dispatch = useDispatch();
+
+    const [ editing, setEditing ] = useState(false);
+    const enableEditing = useCallback(() => {
+        setEditing(true);
+        blockCancel = true;
+        setTimeout(() => blockCancel = false, 100);
+    }, [setEditing]);
+    let blockCancel = false;
+
+    // Stop editing if focus is lost
+    useEffect(() => {
+        const handleDisableEditingOnDefocus = (e: any) => {
+            let target: HTMLElement = e.target;
+
+            if (blockCancel) return;
+
+            if (target.id !== `talent-nameInput`) {
+                setEditing(false);
+            }
+        }
+        document.addEventListener("click", handleDisableEditingOnDefocus);
+        return () => {
+            document.removeEventListener("click", handleDisableEditingOnDefocus);
+        }
+    }, []);
+
     const [ rightClick, setRightClick ] = useState(false);
     const [ rightClickCoords, setRightClickCoords ] = useState({x: 0, y: 0});
 
@@ -39,16 +67,33 @@ function TalentListItem(props: TalentListItemProps) {
 
     const progressDisplayValue = (id: number) => {
         let overflow = props.talent.whiteStars % 3;
-        if (overflow == id) return props.talent.progress
-        if (overflow > id) return props.talent.progressTarget
+        if (overflow == id) return props.talent.progress;
+        if (overflow > id) return props.talent.progressTarget;
         return 0
     };
 
+    let background = editing ?
+        cGhostBlue
+        :
+        "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 100%)";
+
+    const [ name, setName ] = useState(props.talent.name);
+    const onEditNameChange = useCallback((e: any) => {
+        setName(e.target.value);
+    }, [setName]);
+    const onEditNameFinished = useCallback((e: any) => {
+        e.preventDefault();
+        props.talent.name = name;
+        setEditing(false);
+        dispatch(updateTalent(props.talent));
+    }, [name, setEditing, props.talent, dispatch]);
+
     return (
-        <Row className="mb-3 mx-auto no-gutters"
+        <Row id={`talent-${props.talent.id}`}
+            className="mb-3 mx-auto no-gutters"
             style={{
                 maxWidth: "95vw",
-                background: "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 100%)",
+                background: background,
                 minHeight: "20vh",
                 maxHeight: "20vh",
                 borderRadius: "20px",
@@ -58,6 +103,7 @@ function TalentListItem(props: TalentListItemProps) {
             { rightClick ? 
                 <TalentRightClickMenu
                     talent={props.talent}
+                    edit={enableEditing}
                     x={rightClickCoords.x}
                     y={rightClickCoords.y}
                     />
@@ -66,13 +112,29 @@ function TalentListItem(props: TalentListItemProps) {
             }
 
             <Col style={{...centerCell}}>
-                <div test-id="talentName" style={{
-                    ...bodyFont,
-                    color: "#FFF",
-                    fontSize: "3rem",
-                }}>
-                    {props.talent.name}
-                </div>
+                { editing ?
+                    <form onSubmit={onEditNameFinished}>
+                        <input id="talent-nameInput" style={{
+                            ...bodyFont,
+                            backgroundColor: "transparent",
+                            border: "none",
+                            color: cMedBlue,
+                            fontSize: "3rem",
+                            padding: "0"
+                        }}
+                        value={name}
+                        onChange={onEditNameChange}
+                        ></input>
+                    </form>
+                :
+                    <div test-id="talentName" style={{
+                        ...bodyFont,
+                        color: "#FFF",
+                        fontSize: "3rem",
+                    }}>
+                        {props.talent.name}
+                    </div>
+                }
             </Col>
 
             <Col style={{...centerCell}}>
@@ -80,18 +142,21 @@ function TalentListItem(props: TalentListItemProps) {
                     <Col>
                         <Ultra progress={progressDisplayValue(0)}
                             progressTarget={props.talent.progressTarget}
+                            background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
                             />
                     </Col>
                     <Col>
                         <Ultra progress={progressDisplayValue(1)}
                             progressTarget={props.talent.progressTarget}
+                            background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
                             />
                     </Col>
                     <Col>
                         <Ultra progress={progressDisplayValue(2)}
                             progressTarget={props.talent.progressTarget}
+                            background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
                             />
                     </Col>
@@ -99,7 +164,7 @@ function TalentListItem(props: TalentListItemProps) {
             </Col>
 
             <Col style={{...centerCell}}>
-                <TalentControls talent={props.talent} />
+                <TalentControls talent={props.talent} ghost={editing ? true : undefined} />
             </Col>
 
         </Row>

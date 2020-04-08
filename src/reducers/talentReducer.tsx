@@ -15,7 +15,7 @@ export default function(state = initialState, action: any) {
             let talents: Talent[] = action.payload;
             return {
                 ...state,
-                items: talents
+                items: talents.sort((a, b) => a.id > b.id ? 1 : -1)
             }
         case NEW_TALENT:
             let newTalent: Talent = action.payload;
@@ -46,7 +46,7 @@ export default function(state = initialState, action: any) {
                 items: [
                     ...state.items,
                     includeItem
-                ]
+                ].sort((a, b) => a.id > b.id ? 1 : -1)
             }
         default:
             return state;

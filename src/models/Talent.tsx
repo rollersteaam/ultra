@@ -22,7 +22,7 @@ export function createTalent(id: number, name: string, userId: number = 0, progr
         userId: userId,
         name: name,
         progress: progress,
-        progressTarget: 40,
+        progressTarget: progressTarget,
         whiteStars: whiteStars,
         totalSeconds: totalSeconds,
         streakCount: streakCount,

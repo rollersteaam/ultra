@@ -6,7 +6,8 @@ export class TalentIncubator implements ITalentIncubator {
     private initialTalent: Talent | null = null;
     private talent: Talent | null = null;
     private session: TalentSession | null = null;
-
+    private lastUpdateMs?: number;
+    
     incubate(talent: Talent, session: TalentSession) {
         this.initialTalent = cloneTalent(talent);
         this.talent = cloneTalent(talent);
@@ -27,15 +28,25 @@ export class TalentIncubator implements ITalentIncubator {
         const progressRate = 1 / totalProgressSeconds;
 
         let nowMs = Date.now();
-        let msDelta = nowMs - this.session.startTimestamp.getTime();
+        this.lastUpdateMs = this.lastUpdateMs ?? nowMs;
+        let msDelta = nowMs - this.lastUpdateMs;
         let sDelta = msDelta / 1000;
+        this.lastUpdateMs = nowMs
 
         let progress = progressRate * sDelta;
 
-        this.session.progressObtained = progress;
+        this.session.progressObtained += progress;
 
-        this.talent.progress = this.initialTalent.progress + progress;
-        this.talent.totalSeconds = this.initialTalent.totalSeconds + sDelta;
+        this.talent.progress += progress;
+        if (this.talent.progress >= this.talent.progressTarget) {
+            // TODO: Account for multi-level overflow, which is unlikely but
+            //      implementing would make this a more robust system
+            this.talent.whiteStars += 1;
+            let overflow = this.talent.progress - this.talent.progressTarget;
+            this.talent.progress = overflow;
+        }
+
+        this.talent.totalSeconds += sDelta;
 
         return {
             talent: cloneTalent(this.talent),
@@ -47,6 +58,7 @@ export class TalentIncubator implements ITalentIncubator {
         this.initialTalent = null;
         this.talent = null;
         this.session = null;
+        this.lastUpdateMs = undefined;
     }
 
     isIncubating(): boolean {

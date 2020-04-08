@@ -63,13 +63,6 @@ function TalentControls(props: TalentControlsProps) {
             ghost={props.ghost}
             placeholder={props.placeholder}
             />
-
-        { props.ghost || props.placeholder ? 
-            <></> 
-        :
-            <Button className="ml-2" color="danger" onClick={deleteTalentAction}>Delete</Button>
-        }
-        
         </>
     )
 }

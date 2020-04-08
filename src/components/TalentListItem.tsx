@@ -25,12 +25,16 @@ function TalentListItem(props: TalentListItemProps) {
 
     // Close right click menu if focus is lost
     useEffect(() => {
-        document.addEventListener("click", (ev: any) => {
-            let target: HTMLElement = ev.target;
-            if (target.id !== "talent-right-click-menu") {
+        const handleCloseOnDefocus = (e: any) => {
+            let target: HTMLElement = e.target;
+            if (target.id !== `talent-${props.talent.id}-right-click-menu`) {
                 setRightClick(false);
             }
-        })
+        }
+        document.addEventListener("click", handleCloseOnDefocus);
+        return () => {
+            document.removeEventListener("click", handleCloseOnDefocus);
+        }
     }, []);
 
     const progressDisplayValue = (id: number) => {

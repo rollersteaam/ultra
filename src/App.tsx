@@ -10,6 +10,7 @@ import NewTalentForm from './components/NewTalentForm';
 import TalentTimer from './components/TalentTimer';
 import { getTalents } from './actions/talentActions';
 import Header from './components/Header';
+import NewTalentButton from './components/NewTalentButton';
 
 function App() {
     const dispatch = useDispatch();
@@ -23,7 +24,8 @@ function App() {
             <Header />
             <TalentTimer talent={talent} session={session} />
             <TalentList talents={talents} />
-            <NewTalentForm />
+            <NewTalentButton />
+            {/* <NewTalentForm /> */}
         </div>
     );
 }

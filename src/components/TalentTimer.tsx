@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Row, Col } from 'reactstrap';
 
-import { Talent } from '../models/Talent';
+import { Talent, createTalent } from '../models/Talent';
 import { pollSession, stopSession } from '../actions/timerActions';
 import { TalentSession } from '../models/TalentSession';
 import { medBlue, bodyFont, centerCell, cGhostBlue } from './constants';
 import { ReactComponent as StopButton } from '../assets/images/StopButton.svg';
 import Ultra from '../components/Ultra';
+import TalentControls from './TalentControls';
 
 type TalentTimerProps = {
     talent: Talent | null,
@@ -36,21 +37,17 @@ function TalentTimer(props: TalentTimerProps) {
     }
 
     if (timing)
-        return <TalentProgress talent={props.talent!} />
+        return <TalentProgress talent={props.talent!} session={props.session!} />
     else
         return <TalentPlaceholder />
 }
 
 type TalentProgressProps  = {
-    talent: Talent
+    talent: Talent,
+    session: TalentSession
 }
 
 function TalentProgress(props: TalentProgressProps) {
-    const dispatch = useDispatch();
-    const stop = useCallback((e: React.MouseEvent) => {
-        dispatch(stopSession());
-    }, [dispatch])
-
     const progressDisplayValue = (id: number) => {
         let overflow = props.talent.whiteStars % 3;
         if (overflow == id) return props.talent.progress
@@ -102,25 +99,13 @@ function TalentProgress(props: TalentProgressProps) {
                 </Row>
             </Col>
             <Col style={{...centerCell}}>
-                <div style={{
-                    ...bodyFont,
-                    color: "#FFF",
-                    fontSize: "3rem"
-                }}>
-                    LV. {props.talent.whiteStars}
-                </div>
-                <StopButton
-                    test-id="talentTimer.stop"
-                    onClick={stop}
-                    fill="#FFF"
-                    style={{
-                        cursor: "pointer"
-                    }}
-                    />
+                <TalentControls talent={props.talent} session={props.session} />
             </Col>
         </Row>
     )
 }
+
+const dummyTalent = createTalent(0, "Start a talent to begin earning ultra.", 7, 0, 1, 0, 0, 0);
 
 function TalentPlaceholder() {
     return (
@@ -161,7 +146,7 @@ function TalentPlaceholder() {
                 </Row>
             </Col>
             <Col style={{...centerCell}}>
-                <StopButton fill={cGhostBlue} />
+                <TalentControls talent={dummyTalent} placeholder />
             </Col>
         </Row>
     )

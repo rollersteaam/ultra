@@ -12,6 +12,7 @@ export class TalentIncubator implements ITalentIncubator {
         this.initialTalent = cloneTalent(talent);
         this.talent = cloneTalent(talent);
         this.session = cloneSession(session);
+        this.lastUpdateMs = Date.now();
     }
 
     poll(): {talent: Talent, session: TalentSession} {
@@ -25,10 +26,12 @@ export class TalentIncubator implements ITalentIncubator {
         if (totalProgressSeconds <= 0)
             throw new EvalError("Could not incubate talent. Progress target was 0, causing divide by zero. Set a progress target of N hours on the talent object.");
 
+        if (this.lastUpdateMs === undefined)
+            throw new EvalError("Could not incubate talent. Illegal program state. Last Update MS was not initialised to a millis, which is impossible, and implies incubate() was never called.");
+
         const progressRate = 1 / totalProgressSeconds;
 
         let nowMs = Date.now();
-        this.lastUpdateMs = this.lastUpdateMs ?? nowMs;
         let msDelta = nowMs - this.lastUpdateMs;
         let sDelta = msDelta / 1000;
         this.lastUpdateMs = nowMs

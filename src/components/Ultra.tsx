@@ -12,12 +12,13 @@ type UltraProps = {
 
 function Ultra(props: UltraProps) {
     let scaleRatio = 33 / 50;
+    console.log(scaleRatio);
 
     let initialWidth = 126;
     let progressNorm = props.progress / props.progressTarget;
-    let newWidth = progressNorm * initialWidth;
+    let newWidth = Math.round(progressNorm * initialWidth);
 
-    let newTopOffset = (initialWidth - newWidth) * scaleRatio * scaleRatio;
+    let newTopOffset = Math.round((initialWidth - newWidth) * scaleRatio * scaleRatio);
 
     let backgroundOpacity = props.backgroundOpacity ?? "1";
 

@@ -1,14 +1,13 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 
 import { Talent, createTalent } from '../models/Talent';
-import { pollSession, stopSession } from '../actions/timerActions';
+import { pollSession } from '../actions/timerActions';
 import { TalentSession } from '../models/TalentSession';
-import { medBlue, bodyFont, centerCell, cGhostBlue } from './constants';
-import { ReactComponent as StopButton } from '../assets/images/StopButton.svg';
+import { medBlue, bodyFont, centerCell } from './constants';
 import Ultra from '../components/Ultra';
 import TalentControls from './TalentControls';
 
@@ -50,7 +49,7 @@ type TalentProgressProps  = {
 function TalentProgress(props: TalentProgressProps) {
     const progressDisplayValue = (id: number) => {
         let overflow = props.talent.whiteStars % 3;
-        if (overflow == id) return props.talent.progress
+        if (overflow === id) return props.talent.progress
         if (overflow > id) return props.talent.progressTarget
         return 0
     }
@@ -72,11 +71,6 @@ function TalentProgress(props: TalentProgressProps) {
                 </div>
             </Col>
             <Col style={{...centerCell}}>
-                {/* <div style={{...bodyFont,
-                    color: "#FFF",
-                    fontSize: "3rem"}}>
-                    {(props.talent.progress / props.talent.progressTarget) * 100}%
-                </div> */}
                 <Row>
                     <Col>
                         <Ultra progress={progressDisplayValue(0)}

@@ -21,22 +21,20 @@ export class TalentIncubator implements ITalentIncubator {
             this.initialTalent === null)
             throw new EvalError("Cannot poll. No talents are being incubated.");
 
-        const totalProgressSeconds = this.talent.progressTarget * 60 * 60;
-
-        if (totalProgressSeconds <= 0)
+        if (this.talent.progressTarget <= 0)
             throw new EvalError("Could not incubate talent. Progress target was 0, causing divide by zero. Set a progress target of N hours on the talent object.");
 
         if (this.lastUpdateMs === undefined)
             throw new EvalError("Could not incubate talent. Illegal program state. Last Update MS was not initialised to a millis, which is impossible, and implies incubate() was never called.");
 
-        const progressRate = 1 / totalProgressSeconds;
-
         let nowMs = Date.now();
         let msDelta = nowMs - this.lastUpdateMs;
         let sDelta = msDelta / 1000;
+        // Cheat:
+        sDelta *= 10000 * 3;
         this.lastUpdateMs = nowMs
 
-        let progress = progressRate * sDelta;
+        let progress = sDelta;
 
         this.session.progressObtained += progress;
 
@@ -44,8 +42,9 @@ export class TalentIncubator implements ITalentIncubator {
         if (this.talent.progress >= this.talent.progressTarget) {
             // TODO: Account for multi-level overflow, which is unlikely but
             //      implementing would make this a more robust system
-            this.talent.whiteStars += 1;
             let overflow = this.talent.progress - this.talent.progressTarget;
+            let nOverflow = Math.floor(this.talent.progress / this.talent.progressTarget);
+            this.talent.whiteStars += nOverflow;
             this.talent.progress = overflow;
         }
 

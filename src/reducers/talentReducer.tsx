@@ -39,6 +39,7 @@ export default function(state = initialState, action: any) {
             // Update item if its already in the list, else its likely being
             // timed inside incubator
             let i = state.items.findIndex(tal => tal.id === payload.id)
+            
             if (i === -1)
                 return state
 

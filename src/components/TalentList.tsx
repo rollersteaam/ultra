@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Col } from 'reactstrap';
-
 import TalentListItem from './TalentListItem';
 import { Talent } from '../models/Talent';
 

@@ -1,16 +1,9 @@
 import React from 'react';
-import { useCallback } from 'react';
-
-import { useDispatch } from 'react-redux';
-import { Button } from 'reactstrap';
 
 import { Talent } from '../models/Talent';
 import { TalentSession } from '../models/TalentSession';
-import { bodyFont, cGhostBlue, cMedBlue } from './constants';
-import { startSession } from '../actions/timerActions';
-import { deleteTalent } from '../actions/talentActions';
+import { centerCell, bodyFont, cGhostBlue, cMedBlue } from './constants';
 import PlayToggleButton from './PlayToggleButton';
-import { centerCell } from './constants';
 
 type TalentControlsProps = {
     talent: Talent,
@@ -20,12 +13,6 @@ type TalentControlsProps = {
 }
 
 function TalentControls(props: TalentControlsProps) {
-    const dispatch = useDispatch();
-    
-    const deleteTalentAction = useCallback(
-        () => dispatch(deleteTalent(props.talent.id))
-    , [dispatch, props.talent])
-
     let textColor: string;
     if (props.placeholder)
         textColor = cGhostBlue
@@ -34,11 +21,10 @@ function TalentControls(props: TalentControlsProps) {
     else
         textColor = "#FFF";
 
-    let talentTimespan = new Date(props.talent.totalSeconds);
     let minutes = props.talent.totalSeconds / 60;
     let hours = props.talent.totalSeconds / 3600;
-    hours = Math.round(hours * 10) / 10;
-    minutes = Math.round(minutes);
+    hours = Math.floor(hours * 10) / 10;
+    minutes = Math.floor(minutes) % 60;
     let seconds = Math.round(props.talent.totalSeconds) % 60;
 
     return (
@@ -67,7 +53,7 @@ function TalentControls(props: TalentControlsProps) {
                     fontSize: "2rem",
                     mixBlendMode: props.ghost || props.placeholder ?
                         "exclusion" : "normal"
-                }}>🔥 </div>
+                }}><span role="img" aria-label="Streak">🔥</span> </div>
                 <div style={{
                     ...centerCell,
                     fontSize: "2.8rem",

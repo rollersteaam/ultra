@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 
-import { Button, Col, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 
 import { Talent } from "../models/Talent";
-import { cMedBlue, bodyFont, centerCell, cGhostBlue, cUltraBlue } from './constants';
+import { cMedBlue, bodyFont, centerCell, cGhostBlue } from './constants';
 import Ultra from '../components/Ultra';
 import TalentControls from './TalentControls';
 import TalentRightClickMenu from './TalentRightClickMenu';
@@ -17,20 +17,21 @@ export type TalentListItemProps = {
 function TalentListItem(props: TalentListItemProps) {
     const dispatch = useDispatch();
 
+    let blockCancel = useRef(false);
+
     const [ editing, setEditing ] = useState(false);
     const enableEditing = useCallback(() => {
         setEditing(true);
-        blockCancel = true;
-        setTimeout(() => blockCancel = false, 100);
-    }, [setEditing]);
-    let blockCancel = false;
+        blockCancel.current = true;
+        setTimeout(() => blockCancel.current = false, 100);
+    }, [setEditing, blockCancel]);
 
     // Stop editing if focus is lost
     useEffect(() => {
         const handleDisableEditingOnDefocus = (e: any) => {
             let target: HTMLElement = e.target;
 
-            if (blockCancel) return;
+            if (blockCancel.current) return;
 
             if (target.id !== `talent-nameInput`) {
                 setEditing(false);
@@ -63,11 +64,11 @@ function TalentListItem(props: TalentListItemProps) {
         return () => {
             document.removeEventListener("click", handleCloseOnDefocus);
         }
-    }, []);
+    }, [props.talent.id]);
 
     const progressDisplayValue = (id: number) => {
         let overflow = props.talent.whiteStars % 3;
-        if (overflow == id) return props.talent.progress;
+        if (overflow === id) return props.talent.progress;
         if (overflow > id) return props.talent.progressTarget;
         return 0
     };
@@ -97,7 +98,7 @@ function TalentListItem(props: TalentListItemProps) {
                 minHeight: "20vh",
                 maxHeight: "20vh",
                 borderRadius: "20px",
-            }}     
+            }}
             onContextMenu={openRightClickMenu}>
 
             { rightClick ? 
@@ -111,7 +112,9 @@ function TalentListItem(props: TalentListItemProps) {
                 <></>
             }
 
-            <Col style={{...centerCell}}>
+            <Col style={{...centerCell,
+                maxWidth: "33.33%"
+                }}>
                 { editing ?
                     <form onSubmit={onEditNameFinished}>
                         <input id="talent-nameInput" style={{
@@ -137,7 +140,9 @@ function TalentListItem(props: TalentListItemProps) {
                 }
             </Col>
 
-            <Col style={{...centerCell}}>
+            <Col style={{...centerCell,
+                maxWidth: "33.33%"
+            }}>
                 <Row>
                     <Col>
                         <Ultra progress={progressDisplayValue(0)}
@@ -163,7 +168,9 @@ function TalentListItem(props: TalentListItemProps) {
                 </Row>
             </Col>
 
-            <Col style={{...centerCell}}>
+            <Col style={{...centerCell,
+                maxWidth: "33.33%"
+            }}>
                 <TalentControls talent={props.talent} ghost={editing ? true : undefined} />
             </Col>
 

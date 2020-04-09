@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import { RootState } from './store';
 import TalentList from './components/TalentList';
-import NewTalentForm from './components/NewTalentForm';
 import TalentTimer from './components/TalentTimer';
 import { getTalents } from './actions/talentActions';
 import Header from './components/Header';

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Row, Col } from 'reactstrap';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,7 @@ function TalentRightClickMenu(props: any) {
     const dispatch = useDispatch();
     const deleteAction = useCallback(() => {
         dispatch(deleteTalent(props.talent.id));
-    }, [dispatch]);
+    }, [dispatch, props.talent.id]);
 
     return (
         <div id="talent-right-click-menu" style={{

@@ -122,7 +122,8 @@ function TalentPlaceholder() {
                 ...bodyFont,
                 ...medBlue,
                 ...centerCell,
-                fontSize: "3rem"
+                fontSize: "3rem",
+                width: "60%",
             }}>
                 Start a talent to begin earning ultra.
             </Col>

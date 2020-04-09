@@ -10,6 +10,7 @@ import { bodyFont, cGhostBlue, cMedBlue } from './constants';
 import { startSession } from '../actions/timerActions';
 import { deleteTalent } from '../actions/talentActions';
 import PlayToggleButton from './PlayToggleButton';
+import { centerCell } from './constants';
 
 type TalentControlsProps = {
     talent: Talent,
@@ -33,6 +34,13 @@ function TalentControls(props: TalentControlsProps) {
     else
         textColor = "#FFF";
 
+    let talentTimespan = new Date(props.talent.totalSeconds);
+    let minutes = props.talent.totalSeconds / 60;
+    let hours = props.talent.totalSeconds / 3600;
+    hours = Math.round(hours * 10) / 10;
+    minutes = Math.round(minutes);
+    let seconds = Math.round(props.talent.totalSeconds) % 60;
+
     return (
         <>
 
@@ -50,11 +58,25 @@ function TalentControls(props: TalentControlsProps) {
                     {props.talent.whiteStars}
                 </span>
             </div>
-            <div>
-                {props.talent.streakCount}
+            <div style={{
+                display: "flex",
+                justifyContent: "center"
+            }}>
+                <div style={{
+                    ...centerCell,
+                    fontSize: "2rem",
+                    mixBlendMode: props.ghost || props.placeholder ?
+                        "exclusion" : "normal"
+                }}>🔥 </div>
+                <div style={{
+                    ...centerCell,
+                    fontSize: "2.8rem",
+                }}>{props.talent.streakCount}</div>
             </div>
-            <div>
-                {props.talent.totalSeconds}
+            <div style={{
+                fontSize: "1.5rem"
+            }}>
+                {hours} hours, {minutes} minutes, {seconds} seconds
             </div>
         </div>
 

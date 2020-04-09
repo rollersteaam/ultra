@@ -80,6 +80,12 @@ export default class SimpleModel<T> implements IModel<T> {
     }
 
     update(element: T): T {
+        if (element === null)
+            throw new TypeError("Can't update a null element.");
+
+        if (element === undefined)
+            throw new TypeError("Can't update an undefined element.");
+
         let clone = this.cloneFunc(element);
         this.models.set(this.getIdFunc(element), clone);
         this.save();

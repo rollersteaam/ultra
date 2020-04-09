@@ -35,18 +35,28 @@ export default function(state = initialState, action: any) {
             }
         case UPDATE_TALENT:
             let payload: Talent = action.payload;
+
+            // Update item if its already in the list, else its likely being
+            // timed inside incubator
+            let i = state.items.findIndex(tal => tal.id === payload.id)
+            if (i === -1)
+                return state
+
+            let items = state.items.filter(tal => tal.id !== payload.id);
+
             return {
                 ...state,
                 items: [
-                    ...state.items.filter(tal => tal.id !== payload.id),
+                    ...items,
                     payload
                 ]
             }
         case EXCLUDE_TALENT:
             let targetId = action.payload;
+            let exclusionItems = state.items.filter(tal => tal.id !== targetId);
             return {
                 ...state,
-                items: state.items.filter(tal => tal.id !== targetId)
+                items: exclusionItems
             }
         case INCLUDE_TALENT:
             let includeItem: Talent = action.payload;

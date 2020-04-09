@@ -25,7 +25,6 @@ function App() {
             <TalentTimer talent={talent} session={session} />
             <TalentList talents={talents} />
             <NewTalentButton />
-            {/* <NewTalentForm /> */}
         </div>
     );
 }

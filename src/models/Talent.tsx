@@ -16,7 +16,7 @@ export type Talent = {
     expiring: boolean
 }
 
-export function createTalent(id: number, name: string, userId: number = 0, progress: number = 0, progressTarget: number = 40, whiteStars: number = 0, totalSeconds: number = 0, streakCount: number = 0, streakObtained: boolean = false, expiring: boolean = false): Talent {
+export function createTalent(id: number, name: string, userId: number = 0, progress: number = 0, progressTarget: number = (1/15), whiteStars: number = 0, totalSeconds: number = 0, streakCount: number = 0, streakObtained: boolean = false, expiring: boolean = false): Talent {
     return {
         id: id,
         userId: userId,

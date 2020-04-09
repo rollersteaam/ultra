@@ -29,7 +29,7 @@ export const getTalents = () => (dispatch: any) => {
 
 export const newTalent = (name: string) => (dispatch: any) => {
     assertModelActive();
-    let newTalent = talentModel.create(createTalent(0, name, 0, 0, 1/30));
+    let newTalent = talentModel.create(createTalent(0, name));
     dispatch({
         type: NEW_TALENT,
         payload: newTalent

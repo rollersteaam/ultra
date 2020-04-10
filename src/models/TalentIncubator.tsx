@@ -31,19 +31,26 @@ export class TalentIncubator implements ITalentIncubator {
         let msDelta = nowMs - this.lastUpdateMs;
         let sDelta = msDelta / 1000;
         // Cheat:
-        sDelta *= 10000 * 3;
-        this.lastUpdateMs = nowMs
+        // sDelta *= 10000 * 3;
+        sDelta *= 100;
+        this.lastUpdateMs = nowMs;
 
         let progress = sDelta;
 
+        this.session.endTimestamp = new Date();
         this.session.progressObtained += progress;
+        if (!this.talent.streakObtained && this.session.progressObtained >= 1800) {
+            progress += this.talent.progressTarget / 7;
+            this.talent.streakCount++;
+            this.talent.streakObtained = true;
+        }
 
         this.talent.progress += progress;
         if (this.talent.progress >= this.talent.progressTarget) {
             let overflow = this.talent.progress - this.talent.progressTarget;
             let nOverflow = Math.floor(this.talent.progress / this.talent.progressTarget);
             this.talent.goldUltras += nOverflow;
-            this.talent.progress = overflow / nOverflow;
+            this.talent.progress = this.talent.progress % this.talent.progressTarget;
         }
 
         this.talent.totalSeconds += sDelta;

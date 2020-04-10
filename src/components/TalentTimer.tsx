@@ -54,13 +54,18 @@ function TalentProgress(props: TalentProgressProps) {
         return 0
     }
 
+    let background = props.talent.streakObtained ?
+        "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(69,62,255,1) 75%, rgba(69,62,255,1) 100%)"
+        :
+        "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 50%, rgba(255,201,22,1) 100%)"
+
     return (
         <Row className="mb-3 mx-auto no-gutters" style={{
             maxWidth: "95vw",
             minHeight: "20vh",
             maxHeight: "20vh",
             borderRadius: "20px",
-            background: "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(69,62,255,1) 75%, rgba(69,62,255,1) 100%)",
+            background: background
         }}>
             <Col style={{...centerCell}}>
                 <div test-id="talentTimer.talentName" className="title"

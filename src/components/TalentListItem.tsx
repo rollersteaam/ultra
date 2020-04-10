@@ -74,10 +74,14 @@ function TalentListItem(props: TalentListItemProps) {
         return 0
     };
 
-    let background = editing ?
-        cGhostBlue
-        :
-        "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 100%)";
+    let background;
+    if (editing) {
+        background = cGhostBlue;
+    } else if (props.talent.streakObtained) {
+        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 100%)"
+    } else {
+        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 50%, rgba(255,201,22,1) 100%)"
+    }
 
     const [ name, setName ] = useState(props.talent.name);
     const onEditNameChange = useCallback((e: any) => {
@@ -97,7 +101,7 @@ function TalentListItem(props: TalentListItemProps) {
                 maxWidth: "95vw",
                 background: background,
                 minHeight: "190px",
-                borderRadius: "20px",
+                borderRadius: "20px"
             }}
             onContextMenu={openRightClickMenu}>
 

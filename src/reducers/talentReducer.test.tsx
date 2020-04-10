@@ -10,7 +10,8 @@ it("excludes a talent from state", () => {
             createTalent(0, "My Not Excluded Talent"),
             createTalent(1, "My Excluded Talent"),
             createTalent(2, "My Not Excluded Talent"),
-        ]
+        ],
+        lastBeginsEditing: false
     }
     let newState = talentReducer(state, {
         type: EXCLUDE_TALENT,
@@ -28,7 +29,8 @@ it("includes a talent into its state", () => {
         items: [
             createTalent(0, "My Not Excluded Talent"),
             createTalent(1, "My Excluded Talent"),
-        ]
+        ],
+        lastBeginsEditing: false
     }
     let newState = talentReducer(state, {
         type: INCLUDE_TALENT,
@@ -39,7 +41,8 @@ it("includes a talent into its state", () => {
         items: [
             ...state.items,
             newTalent
-        ]
+        ],
+        lastBeginsEditing: false
     });
 });
 
@@ -56,7 +59,8 @@ it("updates a talent within state", () => {
         items: [
             innocentTalent,
             cloneTargetTalent,
-        ]
+        ],
+        lastBeginsEditing: false
     }
 
     targetTalent.name = "My Changed Talent";

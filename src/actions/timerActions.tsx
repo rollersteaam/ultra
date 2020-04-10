@@ -1,10 +1,6 @@
-// Make polling timer from TalentTimer view object to repeatedly send dispatch requests?
-// Maybe use sockets? Toggl style system, set it up with backend, should be easy with feather, etc.
-// Hide away request latency from server's authoritative model of the talent's progression and or talent's session
-
 import { TalentSession } from '../models/TalentSession';
 import { Talent } from '../models/Talent';
-import { START_SESSION, POLL_SESSION, STOP_SESSION } from './types';
+import { START_SESSION, POLL_SESSION, STOP_SESSION, GET_SESSIONS } from './types';
 import { IExchangeModel } from '../models/IExchangeModel';
 import { updateTalent, excludeTalent, includeTalent } from './talentActions';
 import { ITalentIncubator } from '../models/ITalentIncubator';
@@ -84,5 +80,13 @@ export const pollSession = () => (dispatch: any) => {
     dispatch({
         type: POLL_SESSION,
         payload: poll
+    });
+}
+
+export const getSessions = () => (dispatch: any) => {
+    assertModelActive();
+    dispatch({
+        type: GET_SESSIONS,
+        payload: sessionModel.getAll()
     });
 }

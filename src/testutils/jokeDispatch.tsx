@@ -3,8 +3,8 @@
  * 
  * Makes testing actions easier.
  */
-export default function (action: Function) {
+export default function (action: Function, mockGetState?: Function) {
     let fn = jest.fn();
-    action(fn);
+    action(fn, mockGetState);
     return fn;
 }

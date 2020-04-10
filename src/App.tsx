@@ -7,13 +7,18 @@ import './App.css';
 import { RootState } from './store';
 import TalentList from './components/TalentList';
 import TalentTimer from './components/TalentTimer';
-import { getTalents } from './actions/talentActions';
+import { getTalents, calculateTalentProgression } from './actions/talentActions';
 import Header from './components/Header';
 import NewTalentButton from './components/NewTalentButton';
+import { getSessions } from './actions/timerActions';
 
 function App() {
     const dispatch = useDispatch();
-    useEffect(() => { dispatch(getTalents()) }, [dispatch]);
+    useEffect(() => {
+        dispatch(getTalents());
+        dispatch(getSessions());
+        dispatch(calculateTalentProgression());
+    });
 
     const state = useSelector((state: RootState) => state);
     const talents = state.talents.items;

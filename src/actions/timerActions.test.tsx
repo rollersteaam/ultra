@@ -13,8 +13,8 @@ import LocalTalentModel from '../models/LocalTalentModel';
 import LocalTalentSessionModel from '../models/LocalTalentSessionModel';
 
 import { createTalent } from '../models/Talent';
-import { startSession, stopSession, pollSession } from './timerActions';
-import { START_SESSION, STOP_SESSION, POLL_SESSION } from '../actions/types';
+import { startSession, stopSession, pollSession, getSessions } from './timerActions';
+import { START_SESSION, STOP_SESSION, POLL_SESSION, GET_SESSIONS, CALCULATE_PROGRESSION } from '../actions/types';
 import { TimerReducerState } from '../reducers/timerReducer';
 import { createSession } from '../models/TalentSession';
 import { NullTalentIncubator } from '../models/NullTalentIncubator';
@@ -86,6 +86,22 @@ it("throws when stopping session with no talent incubating", () => {
     configureIncubator(new TestIncubator());
 
     expect(() => jokeDispatch(stopSession())).toThrowError(EvalError);
+})
+
+it("returns all sessions", () => {
+    let today = new Date();
+    let adjDate = new Date().setMonth((today.getMonth() + 1) % 12);
+
+    let testSessions = [
+        createSession(0, 0, 7, today),
+        createSession(1, 0, 7, new Date(adjDate))
+    ];
+    configureSessionModel(new LocalTalentSessionModel(testSessions));
+
+    expect(jokeDispatch(getSessions())).toBeCalledWith({
+        type: GET_SESSIONS,
+        payload: testSessions
+    })
 })
 
 // Integration Tests

@@ -1,5 +1,5 @@
 import timerReducer, { TimerReducerState } from "./timerReducer";
-import { START_SESSION, STOP_SESSION, POLL_SESSION } from '../actions/types';
+import { START_SESSION, STOP_SESSION, POLL_SESSION, GET_SESSIONS } from '../actions/types';
 import { createTalent, cloneTalent } from "../models/Talent";
 import { createSession, cloneSession } from "../models/TalentSession";
 
@@ -86,6 +86,39 @@ it("updates state with new session info on a valid timer poll request", () => {
 
     let newState = timerReducer(initialState, updatePayload);
     
+    expect(newState).not.toStrictEqual(initialState);
+    expect(newState).toStrictEqual(expectedState);
+})
+
+it("gets all stored sessions into state", () => {
+    let testSessions = [
+        createSession(0, 0, 7),
+        createSession(1, 2, 7)
+    ]
+
+    let initialState: TimerReducerState = {
+        session: {
+            talent: null,
+            session: null,
+        },
+        sessions: []
+    }
+
+    let expectedState: TimerReducerState = {
+        session: {
+            talent: null,
+            session: null,
+        },
+        sessions: testSessions
+    }
+
+    let getPayload = {
+        type: GET_SESSIONS,
+        payload: testSessions
+    }
+
+    let newState = timerReducer(initialState, getPayload);
+
     expect(newState).not.toStrictEqual(initialState);
     expect(newState).toStrictEqual(expectedState);
 })

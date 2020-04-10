@@ -47,7 +47,6 @@ export class TalentIncubator implements ITalentIncubator {
 
         this.talent.progress += progress;
         if (this.talent.progress >= this.talent.progressTarget) {
-            let overflow = this.talent.progress - this.talent.progressTarget;
             let nOverflow = Math.floor(this.talent.progress / this.talent.progressTarget);
             this.talent.goldUltras += nOverflow;
             this.talent.progress = this.talent.progress % this.talent.progressTarget;

@@ -11,8 +11,7 @@ type UltraProps = {
 }
 
 function Ultra(props: UltraProps) {
-    let scaleRatio = 33 / 50;
-    console.log(scaleRatio);
+    let scaleRatio = 33/50;
 
     let initialWidth = 126;
     let progressNorm = props.progress / props.progressTarget;

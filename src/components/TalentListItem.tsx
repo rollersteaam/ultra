@@ -11,7 +11,8 @@ import TalentRightClickMenu from './TalentRightClickMenu';
 import { updateTalent } from "../actions/talentActions";
 
 export type TalentListItemProps = {
-    talent: Talent;
+    talent: Talent
+    beginEditing?: boolean
 }
 
 function TalentListItem(props: TalentListItemProps) {
@@ -19,7 +20,7 @@ function TalentListItem(props: TalentListItemProps) {
 
     let blockCancel = useRef(false);
 
-    const [ editing, setEditing ] = useState(false);
+    const [ editing, setEditing ] = useState(props.beginEditing);
     const enableEditing = useCallback(() => {
         setEditing(true);
         blockCancel.current = true;
@@ -91,7 +92,7 @@ function TalentListItem(props: TalentListItemProps) {
 
     return (
         <Row id={`talent-${props.talent.id}`}
-            className="mb-3 mx-auto no-gutters"
+            className="mb-4 mx-auto no-gutters"
             style={{
                 maxWidth: "95vw",
                 background: background,
@@ -116,14 +117,18 @@ function TalentListItem(props: TalentListItemProps) {
                 maxWidth: "33.33%"
                 }}>
                 { editing ?
-                    <form onSubmit={onEditNameFinished}>
+                    <form onSubmit={onEditNameFinished} style={{
+                        maxWidth: "100%"
+                    }}>
                         <input id="talent-nameInput" style={{
                             ...bodyFont,
                             backgroundColor: "transparent",
                             border: "none",
                             color: cMedBlue,
                             fontSize: "3rem",
-                            padding: "0"
+                            padding: "0",
+                            textAlign: "center",
+                            maxWidth: "100%"
                         }}
                         value={name}
                         onChange={onEditNameChange}

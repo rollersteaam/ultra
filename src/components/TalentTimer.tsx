@@ -103,7 +103,7 @@ const dummyTalent = createTalent(0, "Start a talent to begin earning ultra.", 7,
 
 function TalentPlaceholder() {
     return (
-        <Row className="mb-3 mx-auto no-gutters" style={{
+        <Row className="mb-4 mx-auto no-gutters" style={{
             maxWidth: "95vw",
             minHeight: "20vh",
             maxHeight: "20vh",

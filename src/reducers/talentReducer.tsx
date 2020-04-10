@@ -3,10 +3,12 @@ import { Talent } from '../models/Talent';
 
 export type TalentReducerState = {
     items: Talent[]
+    lastBeginsEditing: boolean
 }
 
 const initialState: TalentReducerState = {
-    items: []
+    items: [],
+    lastBeginsEditing: false
 }
 
 export default function(state = initialState, action: any) {
@@ -24,7 +26,8 @@ export default function(state = initialState, action: any) {
                 items: [
                     ...state.items,
                     newTalent
-                ]
+                ],
+                lastBeginsEditing: true
             }
         case DELETE_TALENT:
             let id: number = action.payload;
@@ -66,7 +69,8 @@ export default function(state = initialState, action: any) {
                 items: [
                     ...state.items,
                     includeItem
-                ].sort((a, b) => a.id > b.id ? 1 : -1)
+                ].sort((a, b) => a.id > b.id ? 1 : -1),
+                lastBeginsEditing: false
             }
         default:
             return state;

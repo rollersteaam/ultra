@@ -18,11 +18,14 @@ function App() {
     const state = useSelector((state: RootState) => state);
     const talents = state.talents.items;
     const { talent, session } = state.timer.session;
+    const lastBeginsEditing = state.talents.lastBeginsEditing;
     return (
         <div className="App">
             <Header />
             <TalentTimer talent={talent} session={session} />
-            <TalentList talents={talents} />
+            <TalentList talents={talents}
+                lastBeginsEditing={lastBeginsEditing}
+                />
             <NewTalentButton />
         </div>
     );

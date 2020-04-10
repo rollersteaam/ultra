@@ -5,6 +5,7 @@ import { Talent } from '../models/Talent';
 
 type TalentListProps = {
     talents: Talent[]
+    lastBeginsEditing?: boolean
 }
 
 /**
@@ -12,9 +13,10 @@ type TalentListProps = {
  */
 function TalentList(props: TalentListProps) {
     const talents = props.talents.map(
-        talent => <TalentListItem
+        (talent, i, arr) => <TalentListItem
             key={talent.id}
             talent={talent}
+            beginEditing={props.lastBeginsEditing && i === arr.length - 1}
         />
     );
     return (

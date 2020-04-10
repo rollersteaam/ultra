@@ -96,8 +96,7 @@ function TalentListItem(props: TalentListItemProps) {
             style={{
                 maxWidth: "95vw",
                 background: background,
-                minHeight: "20vh",
-                maxHeight: "20vh",
+                minHeight: "190px",
                 borderRadius: "20px",
             }}
             onContextMenu={openRightClickMenu}>
@@ -114,7 +113,8 @@ function TalentListItem(props: TalentListItemProps) {
             }
 
             <Col style={{...centerCell,
-                maxWidth: "33.33%"
+                maxWidth: "33.33%",
+                minWidth: "450px"
                 }}>
                 { editing ?
                     <form onSubmit={onEditNameFinished} style={{
@@ -146,7 +146,8 @@ function TalentListItem(props: TalentListItemProps) {
             </Col>
 
             <Col style={{...centerCell,
-                maxWidth: "33.33%"
+                maxWidth: "33.33%",
+                minWidth: "450px"
             }}>
                 <Row>
                     <Col>
@@ -174,7 +175,8 @@ function TalentListItem(props: TalentListItemProps) {
             </Col>
 
             <Col style={{...centerCell,
-                maxWidth: "33.33%"
+                maxWidth: "33.33%",
+                minWidth: "450px"
             }}>
                 <TalentControls talent={props.talent} ghost={editing ? true : undefined} />
             </Col>

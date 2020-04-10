@@ -21,4 +21,11 @@ export default class LocalTalentSessionModel extends SimpleModel<TalentSession> 
         );
         return modelSession;
     }
+
+    protected save() {
+        localStorage.setItem(
+            "sessions",
+            JSON.stringify(Array.from(this.models))
+        );
+    }
 }

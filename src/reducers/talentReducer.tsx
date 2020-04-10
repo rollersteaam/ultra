@@ -53,7 +53,7 @@ export default function(state = initialState, action: any) {
                 items: [
                     ...items,
                     payload
-                ]
+                ].sort((a, b) => a.id > b.id ? 1 : -1)
             }
         case EXCLUDE_TALENT:
             let targetId = action.payload;

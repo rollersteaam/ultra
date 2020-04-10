@@ -17,7 +17,11 @@ function Ultra(props: UltraProps) {
     let progressNorm = props.progress / props.progressTarget;
     let newWidth = Math.round(progressNorm * initialWidth);
 
-    let newTopOffset = Math.round((initialWidth - newWidth) * scaleRatio * scaleRatio);
+    // o ~ w
+    // o = k * w
+    
+
+    let newTopOffset = (initialWidth - newWidth) * scaleRatio * scaleRatio;
 
     let backgroundOpacity = props.backgroundOpacity ?? "1";
 

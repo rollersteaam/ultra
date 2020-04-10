@@ -9,21 +9,25 @@ export type Talent = {
     // TalentProgression
     progress: number
     progressTarget: number
-    whiteStars: number
+    goldUltras: number
     totalSeconds: number
     streakCount: number
     streakObtained: boolean
     expiring: boolean
 }
 
-export function createTalent(id: number, name: string, userId: number = 0, progress: number = 0, progressTarget: number = 144000, whiteStars: number = 0, totalSeconds: number = 0, streakCount: number = 0, streakObtained: boolean = false, expiring: boolean = false): Talent {
+// Useful progress targets:
+// 40 hours = 144000 seconds
+// 25 minutes = 1500 seconds
+
+export function createTalent(id: number, name: string, userId: number = 0, progress: number = 0, progressTarget: number = 144000, goldUltras: number = 0, totalSeconds: number = 0, streakCount: number = 0, streakObtained: boolean = false, expiring: boolean = false): Talent {
     return {
         id: id,
         userId: userId,
         name: name,
         progress: progress,
         progressTarget: progressTarget,
-        whiteStars: whiteStars,
+        goldUltras: goldUltras,
         totalSeconds: totalSeconds,
         streakCount: streakCount,
         streakObtained: streakObtained,
@@ -38,7 +42,7 @@ export function cloneTalent(talent: Talent): Talent {
         name: talent.name,
         progress: talent.progress,
         progressTarget: talent.progressTarget,
-        whiteStars: talent.whiteStars,
+        goldUltras: talent.goldUltras,
         totalSeconds: talent.totalSeconds,
         streakCount: talent.streakCount,
         streakObtained: talent.streakObtained,

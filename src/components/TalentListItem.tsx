@@ -68,7 +68,7 @@ function TalentListItem(props: TalentListItemProps) {
     }, [props.talent.id]);
 
     const progressDisplayValue = (id: number) => {
-        let overflow = props.talent.whiteStars % 3;
+        let overflow = props.talent.goldUltras % 3;
         if (overflow === id) return props.talent.progress;
         if (overflow > id) return props.talent.progressTarget;
         return 0

@@ -11,34 +11,33 @@ type UltraProps = {
 }
 
 function Ultra(props: UltraProps) {
-    let scaleRatio = 33/50;
-
-    let initialWidth = 126;
     let progressNorm = props.progress / props.progressTarget;
-    let newWidth = Math.round(progressNorm * initialWidth);
-
-    // o ~ w
-    // o = k * w
-    
-
-    let newTopOffset = (initialWidth - newWidth) * scaleRatio * scaleRatio;
+    progressNorm = Math.floor(progressNorm * 100) / 100;
 
     let backgroundOpacity = props.backgroundOpacity ?? "1";
-
     let topFill = progressNorm === 1 ? cGold : cUltraBlue;
-
     return (
         <>
-        <UltraImage opacity={backgroundOpacity}
-            fill={props.background ?? cGhostBlue} />
-        <UltraImage fill={topFill} style={{
-            position: "absolute",
-            top: `${newTopOffset}px`,
-            left: "15px",
-            right: "0",
-            bottom: "0",
-            width: `${newWidth}px`
-        }} />
+        <div style={{
+            display: "grid"
+        }}>
+            <UltraImage opacity={backgroundOpacity}
+                fill={props.background ?? cGhostBlue}
+                style={{
+                    gridColumn: 1,
+                    gridRow: 1
+                }} />
+            <UltraImage fill={topFill}
+                style={{
+                    position: "relative",
+                    transform: `scale(${progressNorm})`,
+                    transformOrigin: "bottom left",
+                    transitionTimingFunction: "ease-out",
+                    transitionDuration: "300ms",
+                    gridColumn: 1,
+                    gridRow: 1,
+                }} />
+        </div>
         </>
     )
 }

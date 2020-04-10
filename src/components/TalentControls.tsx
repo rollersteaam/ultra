@@ -41,7 +41,7 @@ function TalentControls(props: TalentControlsProps) {
                 <span style={{
                     fontSize: "3rem"
                 }}>
-                    {props.talent.whiteStars}
+                    {props.talent.goldUltras}
                 </span>
             </div>
             <div style={{

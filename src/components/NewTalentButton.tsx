@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { cGhostBlue } from './constants';
@@ -7,21 +7,37 @@ import { newTalent } from '../actions/talentActions';
 
 function NewTalentButton() {
     const dispatch = useDispatch();
-
+    
+    const [opening, setOpening] = useState(false);
     const newTalentAction = useCallback(() => {
-        dispatch(newTalent("Your New Talent"));
-    }, [dispatch])
+        setOpening(true);
+        setTimeout(() => {
+            window.scrollTo(0, window.outerHeight);
+        }, 150);
+        setTimeout(() => {
+            setOpening(false);
+            dispatch(newTalent("Your New Talent"));
+        }, 300);
+    }, [dispatch, setOpening])
 
     return (
-        <div className="p-2 mx-auto"
+        <div id="new-talent-button"
+        className="p-2 mx-auto"
         style={{
-            width: "25vw",
+            width: opening ? "100%" : "25%",
+            height: opening ? "190px" : "46px",
             backgroundColor: cGhostBlue,
             borderRadius: "41px",
-            cursor: "pointer"
+            cursor: "pointer",
+            transitionDuration: "300ms",
+            transitionTimingFunction: "ease-out"
         }}
         onClick={newTalentAction}>
-            <AddTalentButton height="30px" />
+            { opening ?
+                <></>
+            :
+                <AddTalentButton height="30px" />
+            }
         </div>
     )
 }

@@ -40,12 +40,10 @@ export class TalentIncubator implements ITalentIncubator {
 
         this.talent.progress += progress;
         if (this.talent.progress >= this.talent.progressTarget) {
-            // TODO: Account for multi-level overflow, which is unlikely but
-            //      implementing would make this a more robust system
             let overflow = this.talent.progress - this.talent.progressTarget;
             let nOverflow = Math.floor(this.talent.progress / this.talent.progressTarget);
-            this.talent.whiteStars += nOverflow;
-            this.talent.progress = overflow;
+            this.talent.goldUltras += nOverflow;
+            this.talent.progress = overflow / nOverflow;
         }
 
         this.talent.totalSeconds += sDelta;

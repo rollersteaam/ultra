@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { cGhostBlue } from './constants';

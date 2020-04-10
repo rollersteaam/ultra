@@ -75,19 +75,19 @@ function TalentProgress(props: TalentProgressProps) {
                     <Col>
                         <Ultra progress={progressDisplayValue(0)}
                             progressTarget={props.talent.progressTarget}
-                            backgroundOpacity="0.5"
+                            backgroundOpacity="1"
                             />
                     </Col>
                     <Col>
                         <Ultra progress={progressDisplayValue(1)}
                             progressTarget={props.talent.progressTarget}
-                            backgroundOpacity="0.5"
+                            backgroundOpacity="1"
                             />
                     </Col>
                     <Col>
                         <Ultra progress={progressDisplayValue(2)}
                             progressTarget={props.talent.progressTarget}
-                            backgroundOpacity="0.5"
+                            backgroundOpacity="1"
                             />
                     </Col>
                 </Row>

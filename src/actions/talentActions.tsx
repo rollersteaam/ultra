@@ -98,7 +98,7 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
             if (!next.endTimestamp)
                 throw new EvalError("Couldn't calculate talent progression. Transcendent timers aren't implemented yet. Data is possibly corrupted.")
                 // return next;
-            
+
             return next.endTimestamp.getTime() > cur.endTimestamp.getTime() ? next : cur
         });
 

@@ -18,7 +18,7 @@ function App() {
         dispatch(getTalents());
         dispatch(getSessions());
         dispatch(calculateTalentProgression());
-    });
+    }, [dispatch]);
 
     const state = useSelector((state: RootState) => state);
     const talents = state.talents.items;

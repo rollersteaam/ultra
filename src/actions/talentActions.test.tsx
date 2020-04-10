@@ -176,7 +176,7 @@ it("correctly calculates a streak is not obtained when no session today has last
 
 });
 
-it("correctly calculates a talent as not expiring", () => {
+it("correctly calculates a talent is not expiring", () => {
     advanceTo(new Date(2020, 3, 21, 8, 0, 0));
 
     let testTalents = [

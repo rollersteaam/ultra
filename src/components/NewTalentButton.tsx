@@ -20,17 +20,21 @@ function NewTalentButton() {
         }, 300);
     }, [dispatch, setOpening])
 
+    const conditionalAnimation = opening ? {
+        transitionDuration: "300ms",
+        transitionTimingFunction: "ease-out"
+    } : {}
+
     return (
         <div id="new-talent-button"
         className="p-2 mx-auto"
         style={{
-            width: opening ? "100%" : "25%",
+            width: opening ? "95vw" : "25vw",
             height: opening ? "190px" : "46px",
             backgroundColor: cGhostBlue,
             borderRadius: "41px",
             cursor: "pointer",
-            transitionDuration: "300ms",
-            transitionTimingFunction: "ease-out"
+            ...conditionalAnimation
         }}
         onClick={newTalentAction}>
             { opening ?

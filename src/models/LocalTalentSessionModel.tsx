@@ -5,11 +5,20 @@ import SimpleModel from './SimpleModel';
 
 export default class LocalTalentSessionModel extends SimpleModel<TalentSession> implements IExchangeModel<Talent, TalentSession> {
     constructor(initialTalentSessions: TalentSession[] = []) {
-        let kvPairs;
+        let kvPairs: [number, TalentSession][];
         if (initialTalentSessions.length > 0) {
             kvPairs = initialTalentSessions.map(s => [s.id, s]);
         } else {
             kvPairs = JSON.parse(localStorage.getItem("sessions") ?? "[]");
+        }
+        
+        // Convert string values into date objects
+        for (let i = 0; i < kvPairs.length; i++) {
+            const [ id, session ] = kvPairs[i];
+            session.startTimestamp = new Date(session.startTimestamp);
+            if (session.endTimestamp) {
+                session.endTimestamp = new Date(session.endTimestamp);
+            }
         }
 
         super(kvPairs, cloneSession, (el) => el.id, (el, id) => el.id = id);

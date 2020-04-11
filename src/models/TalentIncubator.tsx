@@ -30,9 +30,6 @@ export class TalentIncubator implements ITalentIncubator {
         let nowMs = Date.now();
         let msDelta = nowMs - this.lastUpdateMs;
         let sDelta = msDelta / 1000;
-        // Cheat:
-        // sDelta *= 10000 * 3;
-        sDelta *= 100;
         this.lastUpdateMs = nowMs;
 
         let progress = sDelta;
@@ -53,6 +50,7 @@ export class TalentIncubator implements ITalentIncubator {
         }
 
         this.talent.totalSeconds += sDelta;
+        this.session.ultrasHeld = this.talent.goldUltras;
 
         return {
             talent: cloneTalent(this.talent),

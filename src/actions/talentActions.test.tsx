@@ -331,7 +331,7 @@ it("flags talent as streak not obtained when hit starts just before the beginnin
     })
 });
 
-it("flags a talent as not expiring when a streak hit ended just under 28 hours ago", () => {
+it("flags a talent as not expiring when latest streak hit ended just under 28 hours ago", () => {
     advanceTo(new Date(2020, 3, 21, 8, 0, 0));
 
     let testTalents = [
@@ -343,6 +343,7 @@ it("flags a talent as not expiring when a streak hit ended just under 28 hours a
     let today = new Date();
 
     let yesterdayEnd = new Date(today);
+    // Go back 1 day
     yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
     // Go backwards 4 hours
     yesterdayEnd.setTime(yesterdayEnd.getTime() - (4 * 60 * 60 * 1000));
@@ -352,8 +353,13 @@ it("flags a talent as not expiring when a streak hit ended just under 28 hours a
     let yesterdayStart = new Date(yesterdayEnd);
     yesterdayStart.setTime(yesterdayEnd.getTime() - (30*60*1000));
 
+    // Add an oddball session that wasn't a streak hit to today's waking day,
+    // but came earlier than the last streak hit
+    let oddballSession = createSessionWithinWakingDay(1, [6], [0, 29, 59, 999], new Date());
+
     let testSessions = [
-        createSession(0, 0, 7, yesterdayStart, yesterdayEnd)
+        createSession(0, 0, 7, yesterdayStart, yesterdayEnd),
+        oddballSession
     ]
     let expectedTalent = cloneTalent(testTalents[0]);
     expectedTalent.expiring = false;
@@ -386,7 +392,7 @@ it("flags a talent as not expiring when a streak hit ended just under 28 hours a
     })
 });
 
-it("flags a talent as expiring when one streak hit ended more than 28 hours ago", () => {
+it("flags a talent as expiring when latest streak hit ended more than 28 hours ago", () => {
     // Expiring means a streak hit hasn't been made 28 hours after its last
     // last streak hit.
     advanceTo(new Date(2020, 3, 21, 8, 0, 0));
@@ -409,8 +415,13 @@ it("flags a talent as expiring when one streak hit ended more than 28 hours ago"
     let yesterdayStart = new Date(yesterdayEnd);
     yesterdayStart.setTime(yesterdayEnd.getTime() - (30*60*1000));
 
+    // Add an oddball session that wasn't a streak hit to today's waking day,
+    // but came earlier than the last streak hit
+    let oddballSession = createSessionWithinWakingDay(1, [6], [0, 29, 59, 999], new Date());
+
     let testSessions = [
-        createSession(0, 0, 7, yesterdayStart, yesterdayEnd)
+        createSession(0, 0, 7, yesterdayStart, yesterdayEnd),
+        oddballSession
     ]
     let expectedTalent = cloneTalent(testTalents[0]);
     expectedTalent.expiring = true;

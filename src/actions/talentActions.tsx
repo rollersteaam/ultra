@@ -2,6 +2,7 @@ import { Talent, createTalent } from '../models/Talent';
 import IModel from '../models/IModel';
 import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, UPDATE_TALENT, EXCLUDE_TALENT, INCLUDE_TALENT, CALCULATE_PROGRESSION } from './types';
 import { RootState } from '../store';
+import { TalentSession } from '../models/TalentSession';
 
 let talentModel: IModel<Talent>;
 
@@ -110,49 +111,28 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
             return s.endTimestamp.getTime() - s.startTimestamp.getTime() >= 1800000
         });
 
-        let latestHit = sessions.reduce((cur, next, i, arr) => {
-            if (!cur.endTimestamp && !next.endTimestamp)
-                throw new EvalError("Couldn't calculate talent progression. Two sessions haven't been marked as ended. Data is possibly corrupted.");
+        let hits = sessions
+            .filter(s => {
+                if (!s.endTimestamp)
+                    throw new EvalError("Couldn't calculate talent progression. Transcendent timers aren't implemented yet. Data is possibly corrupted.")
+                
+                return s.endTimestamp.getTime() - s.startTimestamp.getTime() >= 1800000
+            });
 
-            if (!cur.endTimestamp)
-                throw new EvalError("Couldn't calculate talent progression. Transcendent timers aren't implemented yet. Data is possibly corrupted.")
-                // return cur;
-            
-            // Select next if session hasn't ended yet
-            if (!next.endTimestamp)
-                throw new EvalError("Couldn't calculate talent progression. Transcendent timers aren't implemented yet. Data is possibly corrupted.")
-                // return next;
-
-            return next.endTimestamp.getTime() > cur.endTimestamp.getTime() ? next : cur
-        });
-
-        // Mark talent as not expiring if latest session hasn't ended yet
-        if (!latestHit.endTimestamp) {
-            // TODO: Check to see if creating a new talent and refreshing the
-            // page throws an exception
-            throw new EvalError("Couldn't calculate talent progression. Transcendent timers aren't implemented yet. Data is possibly corrupted.");
-            // talent.expiring = false;
-
-            // // Obtain talent streak if started 30 minutes ago and streak
-            // //  hasn't been awarded yet
-            // if (latestHit.startTimestamp.getTime() >= currentDate.getTime() + (30 * 60 * 1000)
-            // &&
-            // !talent.streakObtained) {
-            //     talent.streakObtained = true;
-            //     talent.streakCount++;
-            //     talent.progress += talent.progressTarget * 1/7;
-            //     // Correct as best we can without level up logic
-            //     // TODO: Make levelling up an accessible function, and use it 
-            //     // here
-            //     talent.progress = Math.min(talent.progress, talent.progressTarget);
-            // }
-        } else {
-            // Mark talent as expiring if past expiry date
-            let pastExpiryDate = latestHit.endTimestamp.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
-            talent.expiring = pastExpiryDate;
-
-            talent.streakObtained = todaysHits.length > 0;
+        let latestHit: TalentSession | null = null;
+        if (hits.length > 0) {
+            latestHit = hits.reduce((cur, next, i, arr) =>
+                next.endTimestamp!.getTime() > cur.endTimestamp!.getTime() ? next : cur
+            );
         }
+
+        if (latestHit) {
+            // Mark talent as expiring if past expiry date
+            let pastExpiryDate = latestHit.endTimestamp!.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
+            talent.expiring = pastExpiryDate;
+        }
+
+        talent.streakObtained = todaysHits.length > 0;
     }
 
     dispatch({

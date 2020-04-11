@@ -4,23 +4,26 @@ export type TalentSession = {
     talentId: number,
     startTimestamp: Date,
     endTimestamp: Date | null,
-    progressObtained: number
+    progressObtained: number,
+    ultrasHeld: number
 }
 
-export const createSession = (id: number, talentId: number, userId: number = 0, startTimestamp: Date = new Date(), endTimestamp: Date | null = null, progressObtained: number = 0): TalentSession => ({
+export const createSession = (id: number, talentId: number, userId: number = 0, startTimestamp: Date = new Date(), endTimestamp: Date | null = null, progressObtained: number = 0, ultrasHeld: number = 0): TalentSession => ({
     id: id,
     talentId: talentId,
     userId: userId,
     startTimestamp: startTimestamp,
     endTimestamp: endTimestamp,
-    progressObtained: progressObtained
+    progressObtained: progressObtained,
+    ultrasHeld: ultrasHeld
 });
 
-export const cloneSession = (session: TalentSession) => ({
+export const cloneSession = (session: TalentSession): TalentSession => ({
     id: session.id,
     talentId: session.talentId,
     userId: session.userId,
     startTimestamp: session.startTimestamp,
     endTimestamp: session.endTimestamp,
-    progressObtained: session.progressObtained
+    progressObtained: session.progressObtained,
+    ultrasHeld: session.ultrasHeld
 });

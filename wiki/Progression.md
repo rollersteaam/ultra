@@ -53,3 +53,5 @@ A talent undergoes "expiration" when the last streak hit has been made over 48 h
 
 #### Implementation Thoughts
 Although seemingly complicated, if the amount of ultras held and their current progress is stored at the end of every session, we can use basic functions to extrapolate from timestamps what the current state of the progression should be.
+
+A burndown will be represented on the talent as a burning bright yellow to white radial gradient.

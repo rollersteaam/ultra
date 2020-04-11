@@ -87,12 +87,9 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
     for (let talent of talentsData) {
         let sessions = sessionsData.filter(s => s.talentId === talent.id);
 
-        if (sessions.length === 0) {
-            talent.streakObtained = false;
-            talent.expiring = false;
-            talent.streakCount = 0;
+        // Move on and don't modify talent data, talent has never been timed
+        if (sessions.length === 0)
             continue;
-        }
 
         let reset = new Date(currentDate);
         reset.setHours(4, 0, 0, 0);
@@ -102,7 +99,10 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
             reset.setDate(reset.getDate() - 1);
         }
 
+        // Calculate whether a streak hit is available
+
         let todaysSessions = sessions.filter(s => s.startTimestamp.getTime() >= reset.getTime());
+
         let todaysHits = todaysSessions.filter(s => {
             if (!s.endTimestamp)
                 throw new EvalError("Couldn't calculate talent progression. Two sessions haven't been marked as ended. Data is possibly corrupted.");
@@ -110,6 +110,10 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
 
             return s.endTimestamp.getTime() - s.startTimestamp.getTime() >= 1800000
         });
+
+        talent.streakObtained = todaysHits.length > 0;
+
+        // Calculate whether talent is expiring
 
         let hits = sessions
             .filter(s => {
@@ -126,13 +130,34 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
             );
         }
 
+        // Mark talent as expiring if last hit was before expiry date
         if (latestHit) {
-            // Mark talent as expiring if past expiry date
             let pastExpiryDate = latestHit.endTimestamp!.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
             talent.expiring = pastExpiryDate;
         }
 
-        talent.streakObtained = todaysHits.length > 0;
+        // Calculate talent burndown
+
+        if (latestHit) {
+            let expirationDateMs =
+                currentDate.getTime() - (48 * 60 * 60 * 1000);
+            let hitEndMs = latestHit.endTimestamp!.getTime();
+
+            let isBurningDown = hitEndMs <= expirationDateMs;
+
+            talent.burndown = isBurningDown;
+
+            if (isBurningDown) {
+                let nDays = (expirationDateMs - hitEndMs) / (24 * 60 * 60 * 1000);
+                let ultrasLost = 1 + Math.floor(nDays);
+                console.log(ultrasLost);
+
+                // Bye bye :(
+                talent.goldUltras = latestHit.ultrasHeld - ultrasLost;
+                talent.progress = 0;
+                talent.streakCount = 0;
+            }
+        }
     }
 
     dispatch({

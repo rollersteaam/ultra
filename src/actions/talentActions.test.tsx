@@ -671,6 +671,78 @@ it("doesn't repeat expirations that have been done before", () => {
     expect(jokeDispatch(calculateTalentProgression(), newStateFunc)).toBeCalledWith(expectedDispatch);
 });
 
+it("resets streak and removes multiple ultras for being several days past expiration", () => {
+    advanceTo(new Date(2020, 3, 21, 8, 0, 0));
+
+    let testTalents = [
+        createTalent(0, "Programming", 7, 500, 4000, 2, 7000, 11, true, false, false)
+    ]
+    expect(testTalents[0].expiring).toBeFalsy();
+    expect(testTalents[0].streakObtained).toBeTruthy();
+
+    let today = new Date();
+    let fourDaysAgo = new Date(today);
+    fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
+
+    let yesterdayEnd = fourDaysAgo;
+    // TODO: Potentially implement an hour offset off expiration in the future?
+    // Go backwards 4 hours
+    // yesterdayEnd.setTime(yesterdayEnd.getTime() - (4*60*60*1000));
+
+    let yesterdayStart = new Date(yesterdayEnd);
+    yesterdayStart.setTime(yesterdayEnd.getTime() - (30*60*1000));
+
+    let hitJustBeforeExpirationDate = createSession(0, 0, 7, yesterdayStart, yesterdayEnd);
+    hitJustBeforeExpirationDate.ultrasHeld = 2;
+
+    let notHitJustAfterExpirationDate = createSessionWithinWakingDay(1, [10], [0, 29, 59, 999], fourDaysAgo);
+
+    let testSessions = [
+        hitJustBeforeExpirationDate,
+        notHitJustAfterExpirationDate
+    ]
+
+    let expectedTalent = cloneTalent(testTalents[0]);
+    expectedTalent.expiring = true;
+    expectedTalent.streakObtained = false;
+    expectedTalent.burndown = true;
+    expectedTalent.goldUltras = 0;
+    expectedTalent.progress = 0;
+    expectedTalent.streakCount = 0;
+    expectedTalent.streakObtained = false;
+
+    expect(expectedTalent).not.toEqual(testTalents[0]);
+    expect(expectedTalent).not.toStrictEqual(testTalents[0]);
+    let expectedTalents = [
+        expectedTalent
+    ]
+
+    let state: () => RootState = () => ({
+        talents: {
+            items: testTalents,
+            lastBeginsEditing: false
+        },
+        timer: {
+            session: {
+                talent: null,
+                session: null
+            },
+            sessions: testSessions
+        }
+    })
+
+    let expectedDispatch = {
+        type: CALCULATE_PROGRESSION,
+        payload: {
+            talents: expectedTalents,
+            sessions: testSessions
+        }
+    }
+
+    // Perform an expiration
+    expect(jokeDispatch(calculateTalentProgression(), state)).toBeCalledWith(expectedDispatch);
+});
+
 // Integration Tests
 
 beforeEach(() => {

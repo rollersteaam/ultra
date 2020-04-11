@@ -150,10 +150,9 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
             if (isBurningDown) {
                 let nDays = (expirationDateMs - hitEndMs) / (24 * 60 * 60 * 1000);
                 let ultrasLost = 1 + Math.floor(nDays);
-                console.log(ultrasLost);
 
                 // Bye bye :(
-                talent.goldUltras = latestHit.ultrasHeld - ultrasLost;
+                talent.goldUltras = Math.max(latestHit.ultrasHeld - ultrasLost, 0);
                 talent.progress = 0;
                 talent.streakCount = 0;
             }

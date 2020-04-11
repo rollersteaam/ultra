@@ -743,6 +743,57 @@ it("resets streak and removes multiple ultras for being several days past expira
     expect(jokeDispatch(calculateTalentProgression(), state)).toBeCalledWith(expectedDispatch);
 });
 
+it("stops burndown and resets the talent to normal when a streak hit is performed today", () => {
+    advanceTo(new Date(2020, 3, 21, 8, 0, 0));
+
+    let testTalents = [
+        createTalent(0, "Programming", 7, 500, 4000, 2, 7000, 11, false, true, true)
+    ]
+    expect(testTalents[0].expiring).toBeTruthy();
+    expect(testTalents[0].burndown).toBeTruthy();
+    expect(testTalents[0].streakObtained).toBeFalsy();
+
+    let hitToday = createSessionWithinWakingDay(0, [5], [0, 30], new Date());
+
+    let testSessions = [hitToday]
+
+    let expectedTalent = cloneTalent(testTalents[0]);
+    expectedTalent.expiring = false;
+    expectedTalent.streakObtained = true;
+    expectedTalent.burndown = false;
+
+    expect(expectedTalent).not.toEqual(testTalents[0]);
+    expect(expectedTalent).not.toStrictEqual(testTalents[0]);
+    let expectedTalents = [
+        expectedTalent
+    ]
+
+    let state: () => RootState = () => ({
+        talents: {
+            items: testTalents,
+            lastBeginsEditing: false
+        },
+        timer: {
+            session: {
+                talent: null,
+                session: null
+            },
+            sessions: testSessions
+        }
+    })
+
+    let expectedDispatch = {
+        type: CALCULATE_PROGRESSION,
+        payload: {
+            talents: expectedTalents,
+            sessions: testSessions
+        }
+    }
+
+    // Perform an expiration
+    expect(jokeDispatch(calculateTalentProgression(), state)).toBeCalledWith(expectedDispatch);
+});
+
 // Integration Tests
 
 beforeEach(() => {
@@ -813,19 +864,3 @@ it("updates talent in model", () => {
     expect(modelTalent).not.toBe(testTalent);
     expect(modelTalent).toStrictEqual(testTalent);
 })
-
-it("new talent creates new talent in state", () => {
-
-});
-
-it("new talent is saved across page reloads", () => {
-
-});
-
-it("deletes talent from ", () => {
-
-})
-
-it("delete talent is saved across page reloads", () => {
-    
-});

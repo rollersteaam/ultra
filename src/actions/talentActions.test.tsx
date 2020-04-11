@@ -62,7 +62,15 @@ it("dispatches include request correctly", () => {
     });
 })
 
-it("correctly calculates a talent as expiring", () => {
+
+// Progression Tests
+// 
+// To see key information regarding terminology or rules of the progression
+// system, seek the wiki for answers.
+
+it("flags a talent as expiring when one streak hit ended more than 28 hours ago", () => {
+    // Expiring means a streak hit hasn't been made 28 hours after its last
+    // last streak hit.
     advanceTo(new Date(2020, 3, 21, 8, 0, 0));
 
     let testTalents = [
@@ -118,21 +126,20 @@ it("correctly calculates a talent as expiring", () => {
     })
 });
 
-it("correctly calculates a talent as streak not obtained when a session starting from yesterday ends today", () => {
-    advanceTo(new Date(2020, 3, 21, 8, 0, 0));
+it("flags talent as streak obtained when session starts before midnight of waking day and ends before waking day's streak refresh time", () => {
+    advanceTo(new Date(2020, 3, 21, 3, 59, 59, 999));
 
     let testTalents = [
         createTalent(0, "Programming", 7, 0, 40, 0, 0, 0, true, false)
     ]
-    expect(testTalents[0].streakObtained).toBeTruthy();
+    expect(testTalents[0].streakObtained).toBeFalsy();
 
     let today = new Date();
 
     let yesterdayEnd = new Date(today);
-    // yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
-    // yesterdayEnd.setHours(23, 59, 59, 999);
+    yesterdayEnd.setHours(3, 59, 59, 999);
     // Failure Edge Case: Sessions that end at the very beginning of a day can't
-    //      gain a streak. This is pretty unfair.
+    // gain a streak. This is pretty unfair.
     // yesterdayEnd.setHours(0, 0, 0, 1);
 
     let yesterdayStart = new Date(yesterdayEnd);
@@ -172,11 +179,15 @@ it("correctly calculates a talent as streak not obtained when a session starting
     })
 });
 
-it("correctly calculates a streak is not obtained when no session today has lasted 30 minutes", () => {
+it("flags a talent as streak not obtained when no session was a streak hit before today's refresh time", () => {
 
 });
 
-it("correctly calculates a talent is not expiring", () => {
+it("flags a talent as streak not obtained when there were no sessions before today's refresh time", () => {
+
+});
+
+it("flags a talent as not expiring when a streak hit ended just under 28 hours ago", () => {
     advanceTo(new Date(2020, 3, 21, 8, 0, 0));
 
     let testTalents = [

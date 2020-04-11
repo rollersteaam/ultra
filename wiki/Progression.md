@@ -23,13 +23,18 @@ time is 3am, the waking day is still the 11th April. When the time is
      remember at a time like 11pm or 11:30pm, it will be too late. This is 
      unfair and the waking day system mitigates this.
 
+### Streak Hit
+A session that is at minimum 30 minutes long. A streak hit doesn't necessarily mean that the streak counter was incremented, as a streak hit on the same waking day would have already incremented it.
+
 ### Streak Obtained
 "Streak obtained" is a flag variable on the "Talent" type. If its true, a streak hit can't be made for the rest of the waking day, and its assumed a streak hit was already made at some point during the waking day.
 
 #### Rules
-1. A talent is flagged as streak obtained when a session of at least 30 minutes in length starts just after the beginning of a waking day, and ends before the end of a waking day.
-2. A talent is not flagged as streak obtained when there has been one session or more, but no session has a length of at least 30 minutes (a streak hit).
-3. A talent is not flagged as streak obtained when there are no sessions.
+1. A talent is flagged as streak obtained when a session of at least 30 minutes in length starts any time after the beginning of a waking day, and ends before the end of a waking day.
+2. A talent is not flagged as streak obtained when a streak hit that begins before the beginning of a waking day ends after the beginning of a waking day.
+    - (IGNORE THIS, WE'RE GOING TO TRY THE INVERSE AS I THINK IT WILL WORK.) Ideally this would be the opposite, but due to the nature of the timer and how polling works, we can't implement the opposite way. To have more control over what happens when timing stops, we would need to change the return type of the stop method on the incubator. The advantages of doing this aren't plentiful and it may be wise to just ignore this altogether. Who is doing streaks at 4am anyway? Flagging as 'streak obtained' evens the playing field between people mess up their timing, and people who know about this mechanic and could just refresh the page to gain their second streak hit.
+3. A talent is not flagged as streak obtained when there has been one session or more, but no session has a length of at least 30 minutes (a streak hit).
+4. A talent is not flagged as streak obtained when there are no sessions.
 
 ### Expiring
 A talent is considered to be "expiring" when the last streak hit had been made over 28 hours ago.

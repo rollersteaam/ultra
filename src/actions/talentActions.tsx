@@ -86,7 +86,31 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
     for (let talent of talentsData) {
         let sessions = sessionsData.filter(s => s.talentId === talent.id);
 
-        let latestEndingSession = sessions.reduce((cur, next, i, arr) => {
+        if (sessions.length === 0) {
+            talent.streakObtained = false;
+            talent.expiring = false;
+            talent.streakCount = 0;
+            continue;
+        }
+
+        let reset = new Date(currentDate);
+        reset.setHours(4, 0, 0, 0);
+        
+        // Move back a waking day if we're between the 0 AM - 4 AM time range
+        if (currentDate.getTime() <= reset.getTime()) {
+            reset.setDate(reset.getDate() - 1);
+        }
+
+        let todaysSessions = sessions.filter(s => s.startTimestamp.getTime() >= reset.getTime());
+        let todaysHits = todaysSessions.filter(s => {
+            if (!s.endTimestamp)
+                throw new EvalError("Couldn't calculate talent progression. Two sessions haven't been marked as ended. Data is possibly corrupted.");
+                // return false;
+
+            return s.endTimestamp.getTime() - s.startTimestamp.getTime() >= 1800000
+        });
+
+        let latestHit = sessions.reduce((cur, next, i, arr) => {
             if (!cur.endTimestamp && !next.endTimestamp)
                 throw new EvalError("Couldn't calculate talent progression. Two sessions haven't been marked as ended. Data is possibly corrupted.");
 
@@ -103,35 +127,31 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
         });
 
         // Mark talent as not expiring if latest session hasn't ended yet
-        if (!latestEndingSession.endTimestamp) {
-            talent.expiring = false;
+        if (!latestHit.endTimestamp) {
+            // TODO: Check to see if creating a new talent and refreshing the
+            // page throws an exception
+            throw new EvalError("Couldn't calculate talent progression. Transcendent timers aren't implemented yet. Data is possibly corrupted.");
+            // talent.expiring = false;
 
-            // Obtain talent streak if started 30 minutes ago and streak
-            //  hasn't been awarded yet
-            if (latestEndingSession.startTimestamp.getTime() >= currentDate.getTime() + (30 * 60 * 1000)
-            &&
-            !talent.streakObtained) {
-                talent.streakObtained = true;
-                talent.streakCount++;
-                talent.progress += talent.progressTarget * 1/7;
-                // Correct as best we can without level up logic
-                // TODO: Make levelling up an accessible function, and use //   it here
-                talent.progress = Math.min(talent.progress, talent.progressTarget);
-            }
+            // // Obtain talent streak if started 30 minutes ago and streak
+            // //  hasn't been awarded yet
+            // if (latestHit.startTimestamp.getTime() >= currentDate.getTime() + (30 * 60 * 1000)
+            // &&
+            // !talent.streakObtained) {
+            //     talent.streakObtained = true;
+            //     talent.streakCount++;
+            //     talent.progress += talent.progressTarget * 1/7;
+            //     // Correct as best we can without level up logic
+            //     // TODO: Make levelling up an accessible function, and use it 
+            //     // here
+            //     talent.progress = Math.min(talent.progress, talent.progressTarget);
+            // }
         } else {
             // Mark talent as expiring if past expiry date
-            let pastExpiryDate = latestEndingSession.endTimestamp.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
+            let pastExpiryDate = latestHit.endTimestamp.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
             talent.expiring = pastExpiryDate;
 
-            // Mark streak as obtained if end timestamp's Y, M & D is the same
-            //      as today's Y, M & D
-            let obtainedStreakToday = latestEndingSession.endTimestamp.getFullYear() === currentDate.getFullYear()
-            &&
-            latestEndingSession.endTimestamp.getMonth() === currentDate.getMonth()
-            &&
-            latestEndingSession.endTimestamp.getDay() === currentDate.getDay();
-
-            talent.streakObtained = obtainedStreakToday;
+            talent.streakObtained = todaysHits.length > 0;
         }
     }
 

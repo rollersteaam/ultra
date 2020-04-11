@@ -62,7 +62,7 @@ function TalentProgress(props: TalentProgressProps) {
     return (
         <Row className="mb-3 mx-auto no-gutters" style={{
             maxWidth: "95vw",
-            minHeight: "20vh",
+            minHeight: "190px",
             maxHeight: "20vh",
             borderRadius: "20px",
             background: background
@@ -110,7 +110,7 @@ function TalentPlaceholder() {
     return (
         <Row className="mb-4 mx-auto no-gutters" style={{
             maxWidth: "95vw",
-            minHeight: "20vh",
+            minHeight: "190px",
             maxHeight: "20vh",
             borderStyle: "dashed",
             borderColor: "#D7D6FF",

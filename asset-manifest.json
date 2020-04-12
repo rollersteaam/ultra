@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/ultra/static/css/main.dd769b6f.chunk.css",
+    "main.js": "/ultra/static/js/main.c9d36c47.chunk.js",
+    "main.js.map": "/ultra/static/js/main.c9d36c47.chunk.js.map",
+    "runtime~main.js": "/ultra/static/js/runtime~main.bc209eb5.js",
+    "runtime~main.js.map": "/ultra/static/js/runtime~main.bc209eb5.js.map",
+    "static/css/2.de424728.chunk.css": "/ultra/static/css/2.de424728.chunk.css",
+    "static/js/2.13bc21f9.chunk.js": "/ultra/static/js/2.13bc21f9.chunk.js",
+    "static/js/2.13bc21f9.chunk.js.map": "/ultra/static/js/2.13bc21f9.chunk.js.map",
+    "index.html": "/ultra/index.html",
+    "precache-manifest.389ffa354d8f93465babae3887344616.js": "/ultra/precache-manifest.389ffa354d8f93465babae3887344616.js",
+    "service-worker.js": "/ultra/service-worker.js",
+    "static/css/2.de424728.chunk.css.map": "/ultra/static/css/2.de424728.chunk.css.map",
+    "static/css/main.dd769b6f.chunk.css.map": "/ultra/static/css/main.dd769b6f.chunk.css.map",
+    "static/media/AddTalentButton.4b40846d.svg": "/ultra/static/media/AddTalentButton.4b40846d.svg",
+    "static/media/DeleteIcon.27e494ac.svg": "/ultra/static/media/DeleteIcon.27e494ac.svg",
+    "static/media/EditIcon.42beb80d.svg": "/ultra/static/media/EditIcon.42beb80d.svg",
+    "static/media/Logo.a0de5b4c.svg": "/ultra/static/media/Logo.a0de5b4c.svg",
+    "static/media/PlayButton.97cd76f7.svg": "/ultra/static/media/PlayButton.97cd76f7.svg",
+    "static/media/StopButton.5eeea1b2.svg": "/ultra/static/media/StopButton.5eeea1b2.svg",
+    "static/media/Ultra.14482710.svg": "/ultra/static/media/Ultra.14482710.svg"
+  }
+}

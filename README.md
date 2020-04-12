@@ -3,6 +3,9 @@ Become ultimate in all your desired talents, with habit science designed game Ul
 
 [Try out the app here!](https://rollersteaam.github.io/ultra/)
 
+## Total Project Time
+49.28 + 6.5 = 55.78 = 56.0 hours (rnd. 2sf)
+
 ## What is Ultra?
 Ultra times how long you practice a talent, allowing you to earn ultra. 1 ultra is the equivalent of 7 consecutive days of 30 minutes practice, or 40 hours of total consistent progress.
 

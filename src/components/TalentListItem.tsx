@@ -80,11 +80,11 @@ function TalentListItem(props: TalentListItemProps) {
     } else if (props.talent.burndown) {
         background = "radial-gradient(circle at top left, rgba(255,201,22,1) 0%, rgba(255, 236, 172, 1) 100%)"
     } else if (props.talent.expiring) {
-        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 25%, rgba(255,201,22,1) 100%)"
+        background = "radial-gradient(circle at top left, rgba(255,74,152,1) 0%, rgba(255,201,22,1) 100%)"
     } else if (props.talent.streakObtained) {
         background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 100%)"
     } else {
-        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 50%, rgba(255,201,22,1) 100%)"
+        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 60%, rgba(255,201,22,1) 100%)"
     }
 
     const [ name, setName ] = useState(props.talent.name);

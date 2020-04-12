@@ -22,6 +22,7 @@ function App() {
         dispatch(calculateTalentProgression());
 
         let tm = parseInt(localStorage.getItem("timemod") ?? "1");
+        tm = JSON.parse(localStorage.getItem("chronobreak") ?? "false") ? tm : 1;
         let tickInterval = (30 * 60 * 1000) / tm;
         setInterval(() => {
             dispatch(getSessions());

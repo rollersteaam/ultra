@@ -48,6 +48,8 @@ Run: `$ docker run -v "${PWD}":/app -v /app/node_modules -p 3000:3000 --rm react
 
 ### Available Scripts
 
+You will need to download and install npm: https://www.npmjs.com/get-npm
+
 In the project directory, you can run:
 
 #### `npm start`

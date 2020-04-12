@@ -1,6 +1,7 @@
 {
   "name": "ultra",
   "version": "0.1.0",
+  "homepage": "https://rollersteaam.github.io/ultra",
   "private": true,
   "dependencies": {
     "@types/bootstrap": "^4.3.2",
@@ -15,6 +16,7 @@
     "@types/styled-components": "^5.0.1",
     "bootstrap": "^4.4.1",
     "defiant.js": "^2.2.5",
+    "gh-pages": "^2.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
@@ -27,6 +29,8 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

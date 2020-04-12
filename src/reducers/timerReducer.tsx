@@ -34,11 +34,12 @@ export default function(state = initialState, action: any) {
                 }
             }
         case POLL_SESSION:
+            let session: TalentSession = action.payload.session;
             return {
                 ...state,
                 sessions: [
-                    state.sessions.filter((s: TalentSession) => s.id !== action.payload.id),
-                    action.payload
+                    ...state.sessions.filter((s: TalentSession) => s.id !== session.id),
+                    session
                 ],
                 session: action.payload
             }

@@ -10,7 +10,8 @@ it("puts a timed talent into state", () => {
         session: {
             talent: null,
             session: null
-        }
+        },
+        sessions: []
     }
     let testTalent = createTalent(2, "Programming", 7);
     let testSession = createSession(3, 2, 7);
@@ -28,7 +29,8 @@ it("puts a timed talent into state", () => {
         session: {
             talent: testTalent,
             session: testSession
-        }
+        },
+        sessions: []
     });
 });
 
@@ -39,7 +41,8 @@ it("removes a timed talent from state when stop request sent", () => {
         session: {
             talent: testTalent,
             session: testSession
-        }
+        },
+        sessions: []
     }
     let stopPayload = {
         type: STOP_SESSION,
@@ -51,7 +54,8 @@ it("removes a timed talent from state when stop request sent", () => {
         session: {
             talent: null,
             session: null
-        }
+        },
+        sessions: []
     });
 });
 
@@ -62,7 +66,8 @@ it("updates state with new session info on a valid timer poll request", () => {
         session: {
             talent: cloneTalent(testTalent),
             session: cloneSession(testSession)
-        }
+        },
+        sessions: []
     }
 
     testTalent.name = "Whatever's Left Inside";
@@ -73,7 +78,10 @@ it("updates state with new session info on a valid timer poll request", () => {
         session: {
             talent: testTalent,
             session: testSession
-        }
+        },
+        sessions: [
+            testSession
+        ]
     }
 
     let updatePayload = {

@@ -27,13 +27,22 @@ function TalentControls(props: TalentControlsProps) {
     let hours = props.talent.totalSeconds / 3600;
     hours = Math.ceil(hours * 10) / 10;
 
-    // let sm;
-    // let ss;
+    let sm;
+    let ss;
     let sh;
+    let sessionTimeString;
     if (props.session) {
-        // ss = Math.round(props.session.progressObtained) % 60;
-        // sm = Math.floor(props.session.progressObtained / 60) % 60
-        sh = Math.ceil(props.session.progressObtained / 3600 * 10) / 10;
+        ss = Math.round(props.session.progressObtained) % 60;
+        sm = Math.floor(props.session.progressObtained / 60) % 60
+        sh = Math.floor(props.session.progressObtained / 3600);
+
+        if (props.session.progressObtained < 60) {
+            sessionTimeString = `${ss}s`;
+        } else if (props.session.progressObtained < 3600) {
+            sessionTimeString = `${sm}m ${ss}s`;
+        } else {
+            sessionTimeString = `${sh}h ${sm}m`
+        }
     }
 
     return (
@@ -103,7 +112,7 @@ function TalentControls(props: TalentControlsProps) {
                         fontSize: "3rem",
                         height: "52px"
                     }}>
-                        {sh} hours
+                        {sessionTimeString}
                     </div>
                     <div style={{
                         fontSize: "1rem",

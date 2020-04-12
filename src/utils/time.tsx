@@ -9,10 +9,14 @@ export function prettyTimeString(ts: number) {
     let hours = Math.floor(ts / 3600);
     if (ts < 60) {
         // Show only seconds
-        return `${seconds} sec`
+        return `${seconds} sec`;
     } else if (ts < (60 * 60)) {
-        // Show minutes and seconds
-        return `${minutes}:${seconds} min`
+        if (seconds > 9) {
+            // Show minutes and seconds
+            return `${minutes}:${seconds} min`;
+        } else {
+            return `${minutes}:0${seconds} min`;
+        }
     } else {
         // Show hours and minutes
         if (minutes > 9) {

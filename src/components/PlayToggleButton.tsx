@@ -52,7 +52,8 @@ function PlayToggleButton(props: PlayToggleButtonProps) {
         color="success" 
         onClick={startSessionAction}
         style={{
-            cursor: "pointer"
+            cursor: "pointer",
+            transform: "scale(0.9)"
         }}
         />
 }

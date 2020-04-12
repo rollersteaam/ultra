@@ -15,6 +15,10 @@ export function prettyTimeString(ts: number) {
         return `${minutes}:${seconds} min`
     } else {
         // Show hours and minutes
-        return `${hours}:${minutes} hrs`
+        if (minutes > 9) {
+            return `${hours}:${minutes} hrs`
+        } else {
+            return `${hours}:0${minutes} hrs`
+        }
     }
 }

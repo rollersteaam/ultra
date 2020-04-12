@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
 
 import { Col, Row } from 'reactstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Talent } from "../models/Talent";
 import { cMedBlue, bodyFont, centerCell, cGhostBlue } from './constants';
@@ -9,6 +9,7 @@ import Ultra from '../components/Ultra';
 import TalentControls from './TalentControls';
 import TalentRightClickMenu from './TalentRightClickMenu';
 import { updateTalent } from "../actions/talentActions";
+import { RootState } from "../store";
 
 export type TalentListItemProps = {
     talent: Talent
@@ -69,14 +70,8 @@ function TalentListItem(props: TalentListItemProps) {
 
     const progressDisplayValue = useCallback((id: number) => {
         let overflow = props.talent.goldUltras % 3;
-        if (overflow === id) {
-            // if (props.talent.streakObtained) {
-                return props.talent.progress;
-            // } else {
-            //     // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
-            //     return props.talent.progress * 11.4;
-            // }
-        }
+        if (overflow === id)
+            return props.talent.progress;
         if (overflow > id) return props.talent.progressTarget;
         return 0
     }, [props.talent]);
@@ -84,14 +79,8 @@ function TalentListItem(props: TalentListItemProps) {
         if (props.talent.streakObtained) return 0;
 
         let overflow = props.talent.goldUltras % 3;
-        if (overflow === id) {
-            // if (props.talent.streakObtained) {
-                return (props.talent.progress / props.talent.progressTarget) + 1 / 7;
-            // } else {
-            //     // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
-            //     return props.talent.progress * 11.4;
-            // }
-        }
+        if (overflow === id)
+            return (props.talent.progress / props.talent.progressTarget) + 1 / 7;
         if (overflow > id) return props.talent.progressTarget;
         return 0
     }, [props.talent]);
@@ -119,6 +108,19 @@ function TalentListItem(props: TalentListItemProps) {
         setEditing(false);
         dispatch(updateTalent(props.talent));
     }, [name, setEditing, props.talent, dispatch]);
+
+    let sessions = useSelector((state: RootState) => state.timer.sessions);
+    let talentSessions = sessions.filter(s => s.talentId === props.talent.id);
+    let reset = new Date();
+    reset.setHours(4, 0, 0, 0);
+    let todaysSessions = talentSessions.filter(s => s.endTimestamp && s.endTimestamp.getTime() >= reset.getTime());
+    let todaysProgress = todaysSessions.reduce((cur, next) => cur + next.progressObtained, 0);
+    const todaysProgressDisplayValue = useCallback((id: number) => {
+        let overflow = props.talent.goldUltras % 3;
+        if (overflow === id)
+            return todaysProgress
+        return undefined
+    }, [props.talent, todaysProgress]);
 
     return (
         <Row id={`talent-${props.talent.id}`}
@@ -186,6 +188,7 @@ function TalentListItem(props: TalentListItemProps) {
                             background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
                             closeTarget={closeTargetDisplayValue(0)}
+                            todaysProgress={todaysProgressDisplayValue(0)}
                             />
                     </Col>
                     <Col>
@@ -194,6 +197,7 @@ function TalentListItem(props: TalentListItemProps) {
                             background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
                             closeTarget={closeTargetDisplayValue(1)}
+                            todaysProgress={todaysProgressDisplayValue(1)}
                             />
                     </Col>
                     <Col>
@@ -202,6 +206,7 @@ function TalentListItem(props: TalentListItemProps) {
                             background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
                             closeTarget={closeTargetDisplayValue(2)}
+                            todaysProgress={todaysProgressDisplayValue(2)}
                             />
                     </Col>
                 </Row>

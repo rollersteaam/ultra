@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'reactstrap';
 
 import { Talent, createTalent } from '../models/Talent';
@@ -10,6 +10,7 @@ import { TalentSession } from '../models/TalentSession';
 import { medBlue, bodyFont, centerCell } from './constants';
 import Ultra from '../components/Ultra';
 import TalentControls from './TalentControls';
+import { RootState } from '../store';
 
 type TalentTimerProps = {
     talent: Talent | null,
@@ -82,6 +83,14 @@ function TalentProgress(props: TalentProgressProps) {
         :
         "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 50%, rgba(255,201,22,1) 100%)"
 
+    let todaysProgress = 0;
+    const todaysProgressDisplayValue = useCallback((id: number) => {
+        let overflow = props.talent.goldUltras % 3;
+        if (overflow === id)
+            return todaysProgress
+        return undefined
+    }, [props.talent, todaysProgress]);
+
     return (
         <Row className="mb-3 mx-auto no-gutters" style={{
             maxWidth: "95vw",
@@ -102,6 +111,7 @@ function TalentProgress(props: TalentProgressProps) {
                     <Col>
                         <Ultra progress={progressDisplayValue(0)}
                             progressTarget={props.talent.progressTarget}
+                            todaysProgress={todaysProgressDisplayValue(0)}
                             backgroundOpacity="1"
                             closeTarget={closeTargetDisplayValue(0)}
                             beingTimed={beingTimed(0)}
@@ -110,6 +120,7 @@ function TalentProgress(props: TalentProgressProps) {
                     <Col>
                         <Ultra progress={progressDisplayValue(1)}
                             progressTarget={props.talent.progressTarget}
+                            todaysProgress={todaysProgressDisplayValue(1)}
                             backgroundOpacity="1"
                             closeTarget={closeTargetDisplayValue(1)}
                             beingTimed={beingTimed(1)}
@@ -118,6 +129,7 @@ function TalentProgress(props: TalentProgressProps) {
                     <Col>
                         <Ultra progress={progressDisplayValue(2)}
                             progressTarget={props.talent.progressTarget}
+                            todaysProgress={todaysProgressDisplayValue(2)}
                             backgroundOpacity="1"
                             closeTarget={closeTargetDisplayValue(2)}
                             beingTimed={beingTimed(2)}

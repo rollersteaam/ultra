@@ -21,18 +21,18 @@ function TalentControls(props: TalentControlsProps) {
     else
         textColor = "#FFF";
 
-    let minutes = props.talent.totalSeconds / 60;
+    // let minutes = props.talent.totalSeconds / 60;
+    // minutes = Math.floor(minutes) % 60;
+    // let seconds = Math.round(props.talent.totalSeconds) % 60;
     let hours = props.talent.totalSeconds / 3600;
     hours = Math.ceil(hours * 10) / 10;
-    minutes = Math.floor(minutes) % 60;
-    let seconds = Math.round(props.talent.totalSeconds) % 60;
 
-    let sm;
+    // let sm;
+    // let ss;
     let sh;
-    let ss;
     if (props.session) {
-        ss = Math.round(props.session.progressObtained) % 60;
-        sm = Math.floor(props.session.progressObtained / 60) % 60
+        // ss = Math.round(props.session.progressObtained) % 60;
+        // sm = Math.floor(props.session.progressObtained / 60) % 60
         sh = Math.ceil(props.session.progressObtained / 3600 * 10) / 10;
     }
 

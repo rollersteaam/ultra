@@ -5,6 +5,7 @@ import { IExchangeModel } from '../models/IExchangeModel';
 import { updateTalent, excludeTalent, includeTalent } from './talentActions';
 import { ITalentIncubator } from '../models/ITalentIncubator';
 import { NullTalentIncubator } from '../models/NullTalentIncubator';
+import { prettyTimeString } from '../utils/time';
 
 let sessionModel: IExchangeModel<Talent, TalentSession>;
 
@@ -56,6 +57,8 @@ export const stopSession = () => (dispatch: any) => {
     dispatch(pollSession());
     incubator.stop();
 
+    document.title = "Ultra";
+
     dispatch({
         type: STOP_SESSION
     });
@@ -76,6 +79,9 @@ export const pollSession = () => (dispatch: any) => {
 
     sessionModel.update(poll.session);
     dispatch(updateTalent(poll.talent));
+
+    let timeString = prettyTimeString(poll.session.progressObtained);
+    document.title = `${timeString} + ${poll.talent.name} - Ultra`;
 
     dispatch({
         type: POLL_SESSION,

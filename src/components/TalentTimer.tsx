@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -47,12 +47,35 @@ type TalentProgressProps  = {
 }
 
 function TalentProgress(props: TalentProgressProps) {
-    const progressDisplayValue = (id: number) => {
+    const progressDisplayValue = useCallback((id: number) => {
         let overflow = props.talent.goldUltras % 3;
-        if (overflow === id) return props.talent.progress
-        if (overflow > id) return props.talent.progressTarget
+        if (overflow === id) {
+            if (props.talent.streakObtained) {
+                return props.talent.progress;
+            } else {
+                // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
+                return props.talent.progress + props.session.progressObtained * 10;
+            }
+        }
+        if (overflow > id) return props.talent.progressTarget;
         return 0
-    }
+    }, [props.talent, props.session]);
+
+    const closeTargetDisplayValue = useCallback((id: number) => {
+        if (props.talent.streakObtained) return 0;
+
+        let overflow = props.talent.goldUltras % 3;
+        if (overflow === id) {
+            // if (props.talent.streakObtained) {
+                return (props.talent.progress / props.talent.progressTarget) + 1 / 7;
+            // } else {
+            //     // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
+            //     return props.talent.progress * 11.4;
+            // }
+        }
+        if (overflow > id) return props.talent.progressTarget;
+        return 0
+    }, [props.talent]);
 
     let background = props.talent.streakObtained ?
         "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(69,62,255,1) 75%, rgba(69,62,255,1) 100%)"
@@ -80,18 +103,21 @@ function TalentProgress(props: TalentProgressProps) {
                         <Ultra progress={progressDisplayValue(0)}
                             progressTarget={props.talent.progressTarget}
                             backgroundOpacity="1"
+                            closeTarget={closeTargetDisplayValue(0)}
                             />
                     </Col>
                     <Col>
                         <Ultra progress={progressDisplayValue(1)}
                             progressTarget={props.talent.progressTarget}
                             backgroundOpacity="1"
+                            closeTarget={closeTargetDisplayValue(1)}
                             />
                     </Col>
                     <Col>
                         <Ultra progress={progressDisplayValue(2)}
                             progressTarget={props.talent.progressTarget}
                             backgroundOpacity="1"
+                            closeTarget={closeTargetDisplayValue(2)}
                             />
                     </Col>
                 </Row>

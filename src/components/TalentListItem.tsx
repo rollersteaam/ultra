@@ -67,12 +67,34 @@ function TalentListItem(props: TalentListItemProps) {
         }
     }, [props.talent.id]);
 
-    const progressDisplayValue = (id: number) => {
+    const progressDisplayValue = useCallback((id: number) => {
         let overflow = props.talent.goldUltras % 3;
-        if (overflow === id) return props.talent.progress;
+        if (overflow === id) {
+            // if (props.talent.streakObtained) {
+                return props.talent.progress;
+            // } else {
+            //     // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
+            //     return props.talent.progress * 11.4;
+            // }
+        }
         if (overflow > id) return props.talent.progressTarget;
         return 0
-    };
+    }, [props.talent]);
+    const closeTargetDisplayValue = useCallback((id: number) => {
+        if (props.talent.streakObtained) return 0;
+
+        let overflow = props.talent.goldUltras % 3;
+        if (overflow === id) {
+            // if (props.talent.streakObtained) {
+                return (props.talent.progress / props.talent.progressTarget) + 1 / 7;
+            // } else {
+            //     // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
+            //     return props.talent.progress * 11.4;
+            // }
+        }
+        if (overflow > id) return props.talent.progressTarget;
+        return 0
+    }, [props.talent]);
 
     let background;
     if (editing) {
@@ -84,7 +106,7 @@ function TalentListItem(props: TalentListItemProps) {
     } else if (props.talent.streakObtained) {
         background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 100%)"
     } else {
-        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 60%, rgba(255,201,22,1) 100%)"
+        background = "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 50%, rgba(255,201,22,1) 100%)"
     }
 
     const [ name, setName ] = useState(props.talent.name);
@@ -163,6 +185,7 @@ function TalentListItem(props: TalentListItemProps) {
                             progressTarget={props.talent.progressTarget}
                             background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
+                            closeTarget={closeTargetDisplayValue(0)}
                             />
                     </Col>
                     <Col>
@@ -170,6 +193,7 @@ function TalentListItem(props: TalentListItemProps) {
                             progressTarget={props.talent.progressTarget}
                             background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
+                            closeTarget={closeTargetDisplayValue(1)}
                             />
                     </Col>
                     <Col>
@@ -177,6 +201,7 @@ function TalentListItem(props: TalentListItemProps) {
                             progressTarget={props.talent.progressTarget}
                             background={editing ? cMedBlue : undefined}
                             backgroundOpacity="0.5"
+                            closeTarget={closeTargetDisplayValue(2)}
                             />
                     </Col>
                 </Row>

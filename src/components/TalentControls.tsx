@@ -27,6 +27,15 @@ function TalentControls(props: TalentControlsProps) {
     minutes = Math.floor(minutes) % 60;
     let seconds = Math.round(props.talent.totalSeconds) % 60;
 
+    let sm;
+    let sh;
+    let ss;
+    if (props.session) {
+        ss = Math.round(props.session.progressObtained) % 60;
+        sm = Math.floor(props.session.progressObtained / 60) % 60
+        sh = Math.floor(props.session.progressObtained / 3600);
+    }
+
     return (
         <>
 
@@ -59,6 +68,15 @@ function TalentControls(props: TalentControlsProps) {
                     fontSize: "2.8rem",
                 }}>{props.talent.streakCount}</div>
             </div>
+            { props.session ? 
+                <div style={{
+                    fontSize: "1.5rem"
+                }}>
+                    {sh} hours, {sm} minutes, {ss} seconds
+                </div>
+            :
+                <></>
+            }
             <div style={{
                 fontSize: "1.5rem"
             }}>

@@ -12,7 +12,7 @@ function UltraConsole() {
         if (!con) return;
 
         let dayJump = parseInt(localStorage.getItem("dayjump") ?? "0");
-        let timeModifier = parseInt(localStorage.getItem("timemod") ?? "100");
+        let timeModifier = parseInt(localStorage.getItem("timemod") ?? "1");
     
         let today = JSON.parse(localStorage.getItem("timehack") ?? JSON.stringify(new Date()));
     
@@ -32,7 +32,7 @@ function UltraConsole() {
             advanceTo(tomorrow);
             localStorage.setItem("timehack", JSON.stringify(tomorrow));
         }, 100);
-    }, []);
+    }, [con]);
 
     let previousLogs: string[] = JSON.parse(localStorage.getItem("logs") ?? "[]");
 
@@ -45,7 +45,7 @@ function UltraConsole() {
     const fireCommandEntry = useCallback((e: any) => {
         function niceDate(date: Date): string {
             let raw = date.toString();
-            const [ _, month, day, year, time ] = raw.split(" ");
+            const [, month, day, year, time ] = raw.split(" ");
             return `${month} ${day} ${year} ${time}`;
         }
 
@@ -71,20 +71,24 @@ function UltraConsole() {
             scribe(`Jumping ahead by ${nDays} days...`);
 
             window.location.reload();
-        } else if (strVal.startsWith("accelerate ") &&
-            !isNaN(parseInt(strVal.split(" ")[1]))) {
-            let timeComponent = strVal.split(" ");
-            let mod = timeComponent[1];
-            localStorage.setItem("timemod", mod);
+        } else if (strVal.startsWith("accelerate")) {
+            let split = strVal.split(" ");
 
-            scribe(`Accelerating time by ${mod}x...`);
+            if (split.length === 1) {
+                scribe(`Time acceleration is currently set to ${localStorage.getItem("timemod")}x.`);
+            } else if (!isNaN(parseInt(strVal.split(" ")[1]))) {
+                let mod = split[1];
+                localStorage.setItem("timemod", mod);
 
-            window.location.reload();
+                scribe(`Accelerating time by ${mod}x...`);
+
+                window.location.reload();
+            }
         } else if (strVal === "clear") {
             setLog([]);
             localStorage.setItem("logs", "[]");
         } else if (strVal === "help") {
-            scribe(`You'll get no help here.`);
+            scribe("HELP: // accelerate X - Sets the speed that time moves to a multiplier of X. Not providing X will show the current speed modifier for time. // jump X - Jumps forward X days in time. // clear - Clears console output.");
         } else {
             scribe(`"${strVal}" isn't a valid input. Do you belong here?`);
         }
@@ -128,7 +132,7 @@ function UltraConsole() {
                 borderBottom: "none",
                 overflowY: "scroll"
             }}>
-                {log.map((el: string) => <div>{el}</div>)}
+                {log.map((el: string, i: number, arr: string[]) => <div key={i}>{el}</div>)}
             </div>
             <form onSubmit={fireCommandEntry}>
                 <input className="p-1"

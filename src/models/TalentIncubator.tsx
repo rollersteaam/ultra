@@ -40,6 +40,8 @@ export class TalentIncubator implements ITalentIncubator {
             progress += this.talent.progressTarget / 7;
             this.talent.streakCount++;
             this.talent.streakObtained = true;
+            this.talent.expiring = false;
+            this.talent.burndown = false;
         }
 
         this.talent.progress += progress;

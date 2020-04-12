@@ -11,8 +11,6 @@ import { getTalents, calculateTalentProgression } from './actions/talentActions'
 import Header from './components/Header';
 import NewTalentButton from './components/NewTalentButton';
 import { getSessions } from './actions/timerActions';
-import { advanceTo } from 'jest-date-mock';
-import { cGhostBlue } from './components/constants';
 import UltraConsole from './components/UltraConsole';
 
 function App() {
@@ -22,6 +20,13 @@ function App() {
         dispatch(getTalents());
         dispatch(getSessions());
         dispatch(calculateTalentProgression());
+
+        let tm = parseInt(localStorage.getItem("timemod") ?? "1");
+        let tickInterval = (30 * 60 * 1000) / tm;
+        setInterval(() => {
+            dispatch(getSessions());
+            dispatch(calculateTalentProgression());
+        }, tickInterval)
 
         document.addEventListener("keydown", (ev: KeyboardEvent) => {
             eco.current += ev.key;
@@ -39,9 +44,7 @@ function App() {
     const lastBeginsEditing = state.talents.lastBeginsEditing;
 
     return (
-        <div className="App" style={{
-            scrollbarColor: cGhostBlue
-        }}>
+        <div className="App">
             <Header />
             <TalentTimer talent={talent} session={session} />
             <TalentList talents={talents}

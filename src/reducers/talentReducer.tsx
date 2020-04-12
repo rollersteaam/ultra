@@ -1,4 +1,4 @@
-import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, EXCLUDE_TALENT, INCLUDE_TALENT, UPDATE_TALENT } from '../actions/types';
+import { NEW_TALENT, DELETE_TALENT, GET_TALENTS, EXCLUDE_TALENT, INCLUDE_TALENT, UPDATE_TALENT, CALCULATE_PROGRESSION } from '../actions/types';
 import { Talent } from '../models/Talent';
 
 export type TalentReducerState = {
@@ -71,6 +71,13 @@ export default function(state = initialState, action: any) {
                     includeItem
                 ].sort((a, b) => a.id > b.id ? 1 : -1),
                 lastBeginsEditing: false
+            }
+        case CALCULATE_PROGRESSION:
+            return {
+                ...state,
+                items: [
+                    ...action.payload.talents
+                ]
             }
         default:
             return state;

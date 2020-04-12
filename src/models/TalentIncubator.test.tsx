@@ -12,13 +12,9 @@ function assertProgressJump(incubator: TalentIncubator, seconds: number, initial
 
     let { talent, session } = incubator.poll();
 
-    let expTotalProgressSeconds = talent.progressTarget * 60 * 60;
-    let expProgressRate = 1 / expTotalProgressSeconds;
-    let expProgress = expProgressRate * seconds;
-
-    expect(talent.progress).toBeCloseTo(expProgress, 7);
+    expect(talent.progress).toBeCloseTo(seconds, 2);
     expect(talent.totalSeconds).toBeCloseTo(initialTalent.totalSeconds + seconds);
-    expect(session.progressObtained).toBeCloseTo(expProgress, 7);
+    expect(session.progressObtained).toBeCloseTo(seconds, 2);
 
     return { talent, session }
 }

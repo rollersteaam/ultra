@@ -1,6 +1,6 @@
 import talentReducer, { TalentReducerState } from './talentReducer';
 import { createTalent, cloneTalent } from '../models/Talent';
-import { EXCLUDE_TALENT, INCLUDE_TALENT, UPDATE_TALENT } from '../actions/types';
+import { EXCLUDE_TALENT, INCLUDE_TALENT, UPDATE_TALENT, CALCULATE_PROGRESSION } from '../actions/types';
 
 // Unit Tests
 
@@ -78,10 +78,31 @@ it("updates a talent within state", () => {
     });
 })
 
-it("new talent creates new talent in state", () => {
+it("reduces new talents from progression into state", () => {
+    let talentOne = createTalent(1, "My Excluded Talent");
+    let talentTwo = createTalent(0, "My Not Excluded Talent");
 
-});
+    let state: TalentReducerState = {
+        items: [],
+        lastBeginsEditing: false
+    }
 
-it("delete talent removes talent from state", () => {
+    let newState = talentReducer(state, {
+        type: CALCULATE_PROGRESSION,
+        payload: {
+            talents: [
+                talentOne,
+                talentTwo
+            ],
+            sessions: []
+        }
+    });
 
+    expect(newState).toStrictEqual({
+        ...state,
+        items: [
+            talentOne,
+            talentTwo
+        ]
+    });
 });

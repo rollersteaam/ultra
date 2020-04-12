@@ -14,7 +14,7 @@ export default class LocalTalentSessionModel extends SimpleModel<TalentSession> 
         
         // Convert string values into date objects
         for (let i = 0; i < kvPairs.length; i++) {
-            const [ id, session ] = kvPairs[i];
+            const [ , session ] = kvPairs[i];
             session.startTimestamp = new Date(session.startTimestamp);
             if (session.endTimestamp) {
                 session.endTimestamp = new Date(session.endTimestamp);

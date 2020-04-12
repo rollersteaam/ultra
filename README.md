@@ -1,7 +1,7 @@
 # Ultra
 Become ultimate in all your desired talents, with habit science designed game Ultra.
 
-[Try out the app here.](https://rollersteaam.github.io/ultra/)
+[Try out the app here!](https://rollersteaam.github.io/ultra/)
 
 ## What is Ultra?
 Ultra times how long you practice a talent, allowing you to earn ultra. 1 ultra is the equivalent of 7 consecutive days of 30 minutes practice, or 40 hours of total consistent progress.

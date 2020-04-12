@@ -36,6 +36,10 @@ export default function(state = initialState, action: any) {
         case POLL_SESSION:
             return {
                 ...state,
+                sessions: [
+                    state.sessions.filter((s: TalentSession) => s.id !== action.payload.id),
+                    action.payload
+                ],
                 session: action.payload
             }
         case GET_SESSIONS:

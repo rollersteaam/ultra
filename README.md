@@ -44,7 +44,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Launching with Docker
 Build: `$ docker build -t reactapp:v1 .`
 
-Command: docker run -v "${PWD}":/app -v /app/node_modules -p 3000:3000 --rm reactapp:v1
+Run: `$ docker run -v "${PWD}":/app -v /app/node_modules -p 3000:3000 --rm reactapp:v1`
 
 ### Available Scripts
 

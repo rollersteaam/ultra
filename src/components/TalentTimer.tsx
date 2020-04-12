@@ -20,7 +20,7 @@ function TalentTimer(props: TalentTimerProps) {
     let timing = props.talent !== null && props.session !== null;
 
     const dispatch = useDispatch();
-    const [ timer, setTimer ] = useState<NodeJS.Timeout>();
+    const [ timer, setTimer ] = useState(0);
 
     if (timing && !timer) {
         setTimer(
@@ -32,7 +32,7 @@ function TalentTimer(props: TalentTimerProps) {
 
     if (!timing && timer) {
         clearInterval(timer);
-        setTimer(undefined);
+        setTimer(0);
     }
 
     if (timing)
@@ -53,8 +53,7 @@ function TalentProgress(props: TalentProgressProps) {
             if (props.talent.streakObtained) {
                 return props.talent.progress;
             } else {
-                // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
-                return props.talent.progress + props.session.progressObtained * 10;
+                return props.talent.progress + props.session.progressObtained * 11;
             }
         }
         if (overflow > id) return props.talent.progressTarget;
@@ -65,16 +64,17 @@ function TalentProgress(props: TalentProgressProps) {
         if (props.talent.streakObtained) return 0;
 
         let overflow = props.talent.goldUltras % 3;
-        if (overflow === id) {
-            // if (props.talent.streakObtained) {
-                return (props.talent.progress / props.talent.progressTarget) + 1 / 7;
-            // } else {
-            //     // Calculated from 5.7 / 0.5 ((40 hrs/7) / 0.5hrs)
-            //     return props.talent.progress * 11.4;
-            // }
-        }
+        if (overflow === id)
+            return (props.talent.progress / props.talent.progressTarget) + 1 / 7;
         if (overflow > id) return props.talent.progressTarget;
         return 0
+    }, [props.talent]);
+
+    const beingTimed = useCallback((id: number) => {
+        let overflow = props.talent.goldUltras % 3;
+        if (overflow === id)
+            return true;
+        return false;
     }, [props.talent]);
 
     let background = props.talent.streakObtained ?
@@ -104,6 +104,7 @@ function TalentProgress(props: TalentProgressProps) {
                             progressTarget={props.talent.progressTarget}
                             backgroundOpacity="1"
                             closeTarget={closeTargetDisplayValue(0)}
+                            beingTimed={beingTimed(0)}
                             />
                     </Col>
                     <Col>
@@ -111,6 +112,7 @@ function TalentProgress(props: TalentProgressProps) {
                             progressTarget={props.talent.progressTarget}
                             backgroundOpacity="1"
                             closeTarget={closeTargetDisplayValue(1)}
+                            beingTimed={beingTimed(1)}
                             />
                     </Col>
                     <Col>
@@ -118,6 +120,7 @@ function TalentProgress(props: TalentProgressProps) {
                             progressTarget={props.talent.progressTarget}
                             backgroundOpacity="1"
                             closeTarget={closeTargetDisplayValue(2)}
+                            beingTimed={beingTimed(2)}
                             />
                     </Col>
                 </Row>

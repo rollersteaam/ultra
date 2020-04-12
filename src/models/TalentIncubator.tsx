@@ -1,6 +1,7 @@
 import { Talent, cloneTalent } from "./Talent";
 import { TalentSession, cloneSession } from "./TalentSession";
 import { ITalentIncubator } from './ITalentIncubator';
+import ReactGA from 'react-ga';
 
 export class TalentIncubator implements ITalentIncubator {
     private initialTalent: Talent | null = null;
@@ -38,10 +39,16 @@ export class TalentIncubator implements ITalentIncubator {
         this.session.progressObtained += progress;
         if (!this.talent.streakObtained && this.session.progressObtained >= 1800) {
             progress += this.talent.progressTarget / 7;
+
             this.talent.streakCount++;
             this.talent.streakObtained = true;
             this.talent.expiring = false;
             this.talent.burndown = false;
+
+            ReactGA.event({
+                category: 'User',
+                action: 'Streak Hit'
+            });
         }
 
         this.talent.progress += progress;

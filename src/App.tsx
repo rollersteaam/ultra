@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
+import ReactGA from 'react-ga';
 
 import './App.css';
 import { RootState } from './store';
@@ -17,6 +18,9 @@ function App() {
     const dispatch = useDispatch();
     const eco = useRef("");
     useEffect(() => {
+        ReactGA.initialize('UA-49256271-5');
+        ReactGA.pageview('/talents');
+
         dispatch(getTalents());
         dispatch(getSessions());
         dispatch(calculateTalentProgression());
@@ -32,6 +36,11 @@ function App() {
         document.addEventListener("keydown", (ev: KeyboardEvent) => {
             eco.current += ev.key;
             if (eco.current === "chronobreak") {
+                ReactGA.event({
+                    category: 'User',
+                    action: 'Broke into Chronobreak'
+                });
+
                 let bVal: boolean = JSON.parse(localStorage.getItem("chronobreak") ?? "false");
                 localStorage.setItem("chronobreak", `${!bVal}`);
                 document.location.reload();

@@ -83,7 +83,15 @@ function TalentProgress(props: TalentProgressProps) {
         :
         "radial-gradient(circle at top left, rgba(142,138,255,1) 0%, rgba(255,74,152,1) 50%, rgba(255,201,22,1) 100%)"
 
-    let todaysProgress = 0;
+    let sessions = useSelector((state: RootState) => state.timer.sessions);
+    let [todaysProgress, setTodaysProgress] = useState(0);
+    useEffect(() => {
+        let talentSessions = sessions.filter(s => s.talentId === props.talent.id);
+        let reset = new Date();
+        reset.setHours(4, 0, 0, 0);
+        let todaysSessions = talentSessions.filter(s => s.endTimestamp && s.endTimestamp.getTime() >= reset.getTime());
+        setTodaysProgress(todaysSessions.reduce((cur, next) => cur + next.progressObtained, 0));
+    }, [sessions, props.talent.id])
     const todaysProgressDisplayValue = useCallback((id: number) => {
         let overflow = props.talent.goldUltras % 3;
         if (overflow === id)

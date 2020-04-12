@@ -36,19 +36,10 @@ type UltraProps = {
 }
 
 function Ultra(props: UltraProps) {
-    let sessions = useSelector((state: RootState) => state.timer.sessions);
-    let [todaysProgress, setTodaysProgress] = useState(0);
-    useEffect(() => {
-        let talentSessions = sessions.filter(s => s.talentId === props.talent.id);
-        let reset = new Date();
-        reset.setHours(4, 0, 0, 0);
-        let todaysSessions = talentSessions.filter(s => s.endTimestamp && s.endTimestamp.getTime() >= reset.getTime());
-        setTodaysProgress(todaysSessions.reduce((cur, next) => cur + next.progressObtained, 0));
-    })
-    
     let progress = 0;
     let progressNorm = 0;
     let flashbarScale = 0;
+    let todaysProgress = 0;
     if (props.todaysProgress !== undefined) {
         // Limit progress as emulated progress results in values greater than 1
         progress = Math.min(props.progress, props.progressTarget)
@@ -56,7 +47,7 @@ function Ultra(props: UltraProps) {
         progressNorm = Math.max(progressNorm, 0);
         // progressNorm = Math.floor(progressNorm * 100) / 100;
 
-        setTodaysProgress(Math.min((progress + props.todaysProgress) / props.progressTarget, 1));
+        todaysProgress = Math.min((progress + props.todaysProgress) / props.progressTarget, 1);
 
         flashbarScale = Math.min(props.beingTimed ? progressNorm + 0.05 : 0, 1);
     }

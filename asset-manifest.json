@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/ultra/static/css/main.dd769b6f.chunk.css",
-    "main.js": "/ultra/static/js/main.ad777c98.chunk.js",
-    "main.js.map": "/ultra/static/js/main.ad777c98.chunk.js.map",
-    "runtime~main.js": "/ultra/static/js/runtime~main.bc209eb5.js",
-    "runtime~main.js.map": "/ultra/static/js/runtime~main.bc209eb5.js.map",
-    "static/css/2.de424728.chunk.css": "/ultra/static/css/2.de424728.chunk.css",
-    "static/js/2.1891eb85.chunk.js": "/ultra/static/js/2.1891eb85.chunk.js",
-    "static/js/2.1891eb85.chunk.js.map": "/ultra/static/js/2.1891eb85.chunk.js.map",
+    "main.css": "/ultra/static/css/main.8307cefd.chunk.css",
+    "main.js": "/ultra/static/js/main.458eab81.chunk.js",
+    "main.js.map": "/ultra/static/js/main.458eab81.chunk.js.map",
+    "runtime-main.js": "/ultra/static/js/runtime-main.13492a9d.js",
+    "runtime-main.js.map": "/ultra/static/js/runtime-main.13492a9d.js.map",
+    "static/css/2.f85d8267.chunk.css": "/ultra/static/css/2.f85d8267.chunk.css",
+    "static/js/2.43d54d2b.chunk.js": "/ultra/static/js/2.43d54d2b.chunk.js",
+    "static/js/2.43d54d2b.chunk.js.map": "/ultra/static/js/2.43d54d2b.chunk.js.map",
     "index.html": "/ultra/index.html",
-    "precache-manifest.88c667ef26298c52204b9603897e547a.js": "/ultra/precache-manifest.88c667ef26298c52204b9603897e547a.js",
+    "precache-manifest.92387a45a79c80f3565f52495de4436e.js": "/ultra/precache-manifest.92387a45a79c80f3565f52495de4436e.js",
     "service-worker.js": "/ultra/service-worker.js",
-    "static/css/2.de424728.chunk.css.map": "/ultra/static/css/2.de424728.chunk.css.map",
-    "static/css/main.dd769b6f.chunk.css.map": "/ultra/static/css/main.dd769b6f.chunk.css.map",
+    "static/css/2.f85d8267.chunk.css.map": "/ultra/static/css/2.f85d8267.chunk.css.map",
+    "static/css/main.8307cefd.chunk.css.map": "/ultra/static/css/main.8307cefd.chunk.css.map",
+    "static/js/2.43d54d2b.chunk.js.LICENSE.txt": "/ultra/static/js/2.43d54d2b.chunk.js.LICENSE.txt",
     "static/media/AddTalentButton.4b40846d.svg": "/ultra/static/media/AddTalentButton.4b40846d.svg",
     "static/media/DeleteIcon.27e494ac.svg": "/ultra/static/media/DeleteIcon.27e494ac.svg",
     "static/media/EditIcon.42beb80d.svg": "/ultra/static/media/EditIcon.42beb80d.svg",
@@ -20,5 +21,12 @@
     "static/media/PlayButton.97cd76f7.svg": "/ultra/static/media/PlayButton.97cd76f7.svg",
     "static/media/StopButton.5eeea1b2.svg": "/ultra/static/media/StopButton.5eeea1b2.svg",
     "static/media/Ultra.14482710.svg": "/ultra/static/media/Ultra.14482710.svg"
-  }
+  },
+  "entrypoints": [
+    "static/js/runtime-main.13492a9d.js",
+    "static/css/2.f85d8267.chunk.css",
+    "static/js/2.43d54d2b.chunk.js",
+    "static/css/main.8307cefd.chunk.css",
+    "static/js/main.458eab81.chunk.js"
+  ]
 }

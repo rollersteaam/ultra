@@ -132,7 +132,7 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
 
         if (latestHit) {
             // Mark talent as expiring if last hit was before expiry date
-            let pastExpiryDate = latestHit.endTimestamp!.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
+            let pastExpiryDate = latestHit.endTimestamp!.getTime() <= currentDate.getTime() - (40 * 60 * 60 * 1000);
             talent.expiring = pastExpiryDate;
 
             // Calculate talent burndown

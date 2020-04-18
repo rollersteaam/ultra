@@ -131,20 +131,35 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
         }
 
         if (latestHit) {
+            // let currentResetDate = new Date(currentDate);
+            // currentResetDate.setHours(4, 0, 0, 0);
+
+            // // Jump ahead by 1 day if we're actually in the next waking day
+            // if (currentDate.getTime() >= currentResetDate.getTime()) {
+            //     currentResetDate.setDate(currentResetDate.getDate() + 1);
+            // }
+
+            let cutoffDateYesterday = new Date(reset);
+            cutoffDateYesterday.setDate(cutoffDateYesterday.getDate() - 1);
+
+            let cutoffDateTwoDaysAgo = new Date(reset);
+            cutoffDateTwoDaysAgo.setDate(cutoffDateTwoDaysAgo.getDate() - 2);
+            
             // Mark talent as expiring if last hit was before expiry date
-            let pastExpiryDate = latestHit.endTimestamp!.getTime() <= currentDate.getTime() - (28 * 60 * 60 * 1000);
-            talent.expiring = pastExpiryDate;
+            let missedLastStreakHit = latestHit.startTimestamp.getTime() < cutoffDateYesterday.getTime() && latestHit.endTimestamp!.getTime() < cutoffDateYesterday.getTime();
+            talent.expiring = missedLastStreakHit;
 
             // Calculate talent burndown
-            let expirationDateMs =
-                currentDate.getTime() - (48 * 60 * 60 * 1000);
-            let hitEndMs = latestHit.endTimestamp!.getTime();
+            let missedBothLastStreakHits = latestHit.startTimestamp.getTime() < cutoffDateTwoDaysAgo.getTime() && latestHit.endTimestamp!.getTime() < cutoffDateTwoDaysAgo.getTime();
 
-            let isBurningDown = hitEndMs <= expirationDateMs;
+            let isBurningDown = missedBothLastStreakHits;
+            // let isBurningDown = latestHit.startTimestamp.getTime() < cutoffDateTwoDaysAgo.getTime();
 
             talent.burndown = isBurningDown;
 
             if (isBurningDown) {
+                let hitEndMs = latestHit.endTimestamp!.getTime();
+                let expirationDateMs = cutoffDateTwoDaysAgo.getTime();
                 let nDays = (expirationDateMs - hitEndMs) / (24 * 60 * 60 * 1000);
                 let ultrasLost = 1 + Math.floor(nDays);
 

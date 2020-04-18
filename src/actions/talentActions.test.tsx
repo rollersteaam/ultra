@@ -331,7 +331,7 @@ it("flags talent as streak not obtained when hit starts just before the beginnin
     })
 });
 
-it("flags a talent as not expiring when latest streak hit ended just under 28 hours ago", () => {
+it("flags a talent as not expiring when latest streak hit ended just after the beginning of last waking day (so no streak hits have been missed)", () => {
     advanceTo(new Date(2020, 3, 21, 8, 0, 0));
 
     let testTalents = [
@@ -345,10 +345,7 @@ it("flags a talent as not expiring when latest streak hit ended just under 28 ho
     let yesterdayEnd = new Date(today);
     // Go back 1 day
     yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
-    // Go backwards 4 hours
-    yesterdayEnd.setTime(yesterdayEnd.getTime() - (4 * 60 * 60 * 1000));
-    // Plus 1 ms to fall within non-expiration boundary
-    yesterdayEnd.setTime(yesterdayEnd.getTime() + 1);
+    yesterdayEnd.setHours(4, 0, 0, 0);
 
     let yesterdayStart = new Date(yesterdayEnd);
     yesterdayStart.setTime(yesterdayEnd.getTime() - (30*60*1000));
@@ -392,10 +389,8 @@ it("flags a talent as not expiring when latest streak hit ended just under 28 ho
     })
 });
 
-it("flags a talent as expiring when latest streak hit ended more than 28 hours ago", () => {
-    // Expiring means a streak hit hasn't been made 28 hours after its last
-    // last streak hit.
-    advanceTo(new Date(2020, 3, 21, 8, 0, 0));
+it("flags a talent as expiring when a talent has missed one streak hit (latest streak hit ended before the start of yesterday's waking day)", () => {
+    advanceTo(new Date(2020, 3, 21, 6, 0, 0));
 
     let testTalents = [
         createTalent(0, "Programming", 7, 0, 40, 0, 0, 0, true, false)
@@ -407,10 +402,7 @@ it("flags a talent as expiring when latest streak hit ended more than 28 hours a
 
     let yesterdayEnd = new Date(today);
     yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
-    // Go backwards 4 hours
-    yesterdayEnd.setTime(yesterdayEnd.getTime() - (4*60*60*1000));
-    // Minus 1 milliseconds to fall within boundary
-    yesterdayEnd.setTime(yesterdayEnd.getTime() - 1);
+    yesterdayEnd.setHours(3, 59, 59, 999);
 
     let yesterdayStart = new Date(yesterdayEnd);
     yesterdayStart.setTime(yesterdayEnd.getTime() - (30*60*1000));

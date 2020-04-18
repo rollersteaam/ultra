@@ -11,7 +11,7 @@ import './modelSetup';
 
 ReactDOM.render(
     <Provider store={createUltraStore()}>
-        <App />
+        <App analytics={true} />
     </Provider>,
     document.getElementById('root')
 );

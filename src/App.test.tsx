@@ -7,6 +7,7 @@ import App from './App';
 import createUltraStore from './store';
 import './modelSetup';
 
+// Removed due to ReactGA not playing nice
 it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(

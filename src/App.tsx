@@ -14,12 +14,14 @@ import NewTalentButton from './components/NewTalentButton';
 import { getSessions } from './actions/timerActions';
 import UltraConsole from './components/UltraConsole';
 
-function App() {
+function App(props: any) {
     const dispatch = useDispatch();
     const eco = useRef("");
     useEffect(() => {
-        ReactGA.initialize('UA-49256271-5');
-        ReactGA.pageview('/talents');
+        if (props.analytics) {
+            ReactGA.initialize('UA-49256271-5');
+            ReactGA.pageview('/talents');
+        }
 
         dispatch(getTalents());
         dispatch(getSessions());

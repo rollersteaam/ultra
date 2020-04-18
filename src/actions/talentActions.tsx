@@ -137,7 +137,7 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
 
             // Calculate talent burndown
             let expirationDateMs =
-                currentDate.getTime() - (48 * 60 * 60 * 1000);
+                currentDate.getTime() - (56 * 60 * 60 * 1000);
             let hitEndMs = latestHit.endTimestamp!.getTime();
 
             let isBurningDown = hitEndMs <= expirationDateMs;

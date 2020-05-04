@@ -146,12 +146,31 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
 
             if (isBurningDown) {
                 let nDays = (expirationDateMs - hitEndMs) / (24 * 60 * 60 * 1000);
-                let ultrasLost = 1 + Math.floor(nDays);
+                let lossModifier = 1 + Math.floor(nDays);
 
                 // Bye bye :(
-                talent.goldUltras = Math.max(latestHit.ultrasHeld - ultrasLost, 0);
-                talent.progress = 0;
-                talent.streakCount = 0;
+
+                // talent.goldUltras = Math.max(latestHit.ultrasHeld - lossModifier, 0);
+                // talent.progress = 0;
+
+                let lostProgress = (talent.progressTarget / 7) * lossModifier;
+                let finalProgress = talent.progress - lostProgress;
+
+                if (finalProgress <= 0) {
+                    // Overflow loss into previous ultra
+
+                    // Remove an ultra if there is at least one to remove
+                    if (talent.goldUltras > 0) {
+                        talent.goldUltras = Math.max(0, talent.goldUltras - 1)
+                    } 
+
+                    // Start from the target and remove the overflowed loss
+                    talent.progress = talent.progressTarget + finalProgress
+                } else {
+                    // Remove from current ultra
+                    talent.streakCount = 0;
+                    talent.progress = finalProgress
+                }
             }
         }
     }

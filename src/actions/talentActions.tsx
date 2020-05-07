@@ -154,23 +154,19 @@ export const calculateTalentProgression = () => (dispatch: any, getState: () => 
                 // talent.progress = 0;
 
                 let lostProgress = (talent.progressTarget / 7) * lossModifier;
-                let finalProgress = talent.progress - lostProgress;
+                let lostUltras = Math.floor(lostProgress / talent.progressTarget);
+                let finalProgress = latestHit.progressHeld - lostProgress;
 
-                if (finalProgress <= 0) {
-                    // Overflow loss into previous ultra
+                // Overflow loss into previous ultra
 
-                    // Remove an ultra if there is at least one to remove
-                    if (talent.goldUltras > 0) {
-                        talent.goldUltras = Math.max(0, talent.goldUltras - 1)
-                    } 
+                // Remove an ultra if there is at least one to remove
+                if (latestHit.ultrasHeld > 0) {
+                    talent.goldUltras = Math.max(0, latestHit.ultrasHeld - lostUltras);
+                } 
 
-                    // Start from the target and remove the overflowed loss
-                    talent.progress = talent.progressTarget + finalProgress
-                } else {
-                    // Remove from current ultra
-                    talent.streakCount = 0;
-                    talent.progress = finalProgress
-                }
+                // Start from the target and remove the overflowed loss
+                talent.progress = finalProgress % talent.progressTarget;
+                talent.streakCount = 0;
             }
         }
     }

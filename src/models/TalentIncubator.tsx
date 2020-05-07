@@ -60,6 +60,7 @@ export class TalentIncubator implements ITalentIncubator {
 
         this.talent.totalSeconds += sDelta;
         this.session.ultrasHeld = this.talent.goldUltras;
+        this.session.progressHeld = this.talent.progress;
 
         return {
             talent: cloneTalent(this.talent),

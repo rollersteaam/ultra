@@ -1,12 +1,12 @@
 # Ultra
-Become ultimate in all your desired talents, with habit science designed game Ultra.
+Time your talents and keep up a semi-daily streak to earn ultra: a mark of mastery that shows one step of significant improvement in an activity.
 
 [Try out the app here!](https://rollersteaam.github.io/ultra/)
 
-## Total Project Time
+## Total Project Development Time
 49.28 tracked hours + 6.5 untracked hours = 55.78 = 56.0 hours (rnd. 2sf)
 
-## What is Ultra?
+## How does Ultra work?
 Ultra times how long you practice a talent, allowing you to earn ultra. 1 ultra is the equivalent of 7 consecutive days of 30 minutes practice, or 40 hours of total consistent progress.
 
 Both will progress towards an ultra, so you can put in as much effort as you want and be rewarded for it. 1 ultra represents 1 step of major improvement in a talent. If you don't keep up at minimum 30 minutes of practice, every other day for a talent, you'll lose 1 ultra.
@@ -31,15 +31,17 @@ To learn and execute the full MERN stack on a cool project idea that I think wil
 4. TypeScript
 5. Jest
 6. Node.js
-7. MongoDB
-8. Express
-9. Feather (Express, MongoDB, Node.js)
-10. Docker
-11. Git
-12. Adobe XD
+7. Docker
+8. Git
+9. Adobe XD
+
+### Planned to Be Used
+1. MongoDB
+2. Express
+3. Feather (Express, MongoDB, Node.js)
 
 ## Getting Started with Developing Ultra
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), so ejection is an option if you wanted to play around with that. Make any pull request to contribute to the project, will happily review your improvements!
 
 ### Launching with Docker
 Build: `$ docker build -t reactapp:v1 .`
@@ -62,55 +64,8 @@ You will also see any lint errors in the console.
 
 #### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
-#### `npm run build`
+#### `npm run deploy`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-#### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-### Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-#### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Deploys the application to GitHub Pages.

@@ -42,9 +42,13 @@ To learn and execute the full MERN stack on a cool project idea that I think wil
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### Launching with Docker
-Command: docker run -v ${PWD}:/app -v /app/node_modules -p 3000:3000 --rm reactapp:v1
+Build: `$ docker build -t reactapp:v1 .`
+
+Run: `$ docker run -v "${PWD}":/app -v /app/node_modules -p 3000:3000 --rm reactapp:v1`
 
 ### Available Scripts
+
+You will need to download and install npm: https://www.npmjs.com/get-npm
 
 In the project directory, you can run:
 

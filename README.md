@@ -1,5 +1,5 @@
 # Ultra
-Time your talents and keep up a semi-daily streak to earn ultra: a mark of mastery that shows one step of significant improvement in an activity, and motivate yourself every day with healthy habits.
+Time your talents and keep up a semi-daily streak to earn ultra: a mark of mastery that shows one step of significant improvement in an activity, and to motivate yourself every day with healthy habits.
 
 [Try out the app here!](https://rollersteaam.github.io/ultra/)
 
